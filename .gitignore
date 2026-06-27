@@ -115,6 +115,8 @@ client/public/__manus__/version.json
 # Claude Code session data
 .claude/
 
+# (large media files are tracked via Git LFS — see .gitattributes)
+
 # Misc dev artifacts
 api-test-err.txt
 api-test-out.txt
