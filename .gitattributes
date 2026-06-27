@@ -1,3 +1,8 @@
+# Linguist — tell GitHub what languages to count
+pnpm-lock.yaml linguist-generated=true
+*.lock linguist-generated=true
+client/src/components/ui/*.tsx linguist-vendored=true
+
 client/public/*.mov filter=lfs diff=lfs merge=lfs -text
 client/public/dji-check.jpg filter=lfs diff=lfs merge=lfs -text
 client/public/hores-hero.jpg filter=lfs diff=lfs merge=lfs -text
