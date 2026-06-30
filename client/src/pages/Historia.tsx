@@ -582,10 +582,9 @@ export default function Historia() {
       {/* ── Stats rápidas ───────────────────────────────────── */}
       <section style={{ borderBottom: "1px solid var(--section-border)", backgroundColor: "var(--section-bg-alt)" }}>
         <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x" style={{ borderColor: "var(--section-border)" }}>
+          <div className="grid grid-cols-3 md:grid-cols-3 divide-x max-w-2xl mx-auto" style={{ borderColor: "var(--section-border)" }}>
             {[
               { icon: Calendar, value: "+20",  label: t("historia.stat_years") },
-              { icon: Factory,  value: "+500", label: t("historia.stat_molds_year") },
               { icon: Users,    value: "+150", label: t("historia.stat_clients") },
               { icon: Globe,    value: "6",    label: t("historia.stat_countries") },
             ].map((stat, i) => (

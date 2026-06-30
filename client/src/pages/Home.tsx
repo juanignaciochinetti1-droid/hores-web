@@ -10,6 +10,7 @@ import Navbar from "@/components/Navbar";
 import EmpresaSection from "@/components/sections/EmpresaSection";
 import ProductosSection from "@/components/sections/ProductosSection";
 import VideoSection from "@/components/sections/VideoSection";
+import MisionVisionSection from "@/components/sections/MisionVisionSection";
 
 import TestimoniosSection from "@/components/sections/TestimoniosSection";
 import CurriculumSection from "@/components/sections/CurriculumSection";
@@ -46,6 +47,7 @@ export default function Home() {
       <Navbar activeSection={activeSection} />
       <main>
         <EmpresaSection />
+        <MisionVisionSection />
         <VideoSection />
         <ProductosSection />
 <TestimoniosSection />

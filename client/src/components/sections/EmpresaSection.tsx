@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useRef } from "react";
-import { X, Factory, Award, Users, Calendar } from "lucide-react";
+import { X, Award, Users, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const HERO_IMG = "/hores-hero-web.jpg?v=2";
@@ -14,7 +14,6 @@ const ABOUT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663723930343/HjyB
 
 const STAT_ICONS = [
   { icon: Calendar, value: "+20", key: "stat_years" },
-  { icon: Factory, value: "+500", key: "stat_molds" },
   { icon: Users, value: "+150", key: "stat_clients" },
   { icon: Award, value: "ISO", key: "stat_iso" },
 ];
@@ -178,7 +177,7 @@ export default function EmpresaSection() {
           }}
         >
           <div className="container">
-            <div className="grid grid-cols-2 md:grid-cols-4" style={{ borderColor: "var(--hero-stats-divider)" }}>
+            <div className="grid grid-cols-3 md:grid-cols-3 max-w-2xl mx-auto" style={{ borderColor: "var(--hero-stats-divider)" }}>
               {stats.map((stat, i) => (
                 <div
                   key={i}
