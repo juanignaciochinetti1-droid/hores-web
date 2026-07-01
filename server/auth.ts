@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "hores-dev-secret-do-not-use-in-production";
+const JWT_SECRET = process.env.JWT_SECRET ?? "hores-dev-secret-do-not-use-in-production";
 
 export function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
