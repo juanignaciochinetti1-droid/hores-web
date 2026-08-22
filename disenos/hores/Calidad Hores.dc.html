@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #23282c; background: #f5f6f6; }
+  a { color: #c26a1e; text-decoration: none; }
+  a:hover { color: #9c5314; }
+  ::selection { background: #f6e0c2; }
+  @keyframes hFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="max-width:100%; overflow-x:hidden; background:#f5f6f6;">
+
+  <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
+    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
+        <span style="opacity:.9;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
+        <span style="opacity:.9;">Tel./Fax: 54 3537 427085</span>
+        <a href="mailto:administracion@hores.com.ar" style="color:#fff; text-decoration:underline;">administracion@hores.com.ar</a>
+      </div>
+      <div style="display:flex; gap:4px; align-items:center;">
+        <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
+          <button onClick="{{ lg.set }}" style="background:{{ lg.bg }}; border:none; color:#fff; font-family:'Archivo',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.06em; padding:4px 9px; border-radius:5px; cursor:pointer; opacity:{{ lg.op }};">{{ lg.code }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <header style="position:sticky; top:0; z-index:20; background:rgba(255,255,255,.94); backdrop-filter:blur(8px); border-bottom:1px solid #e7e9eb;">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="Home%20Hores.dc.html" style="display:flex; align-items:center; color:inherit;">
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:64px; width:auto; display:block;"/>
+      </a>
+      <nav style="display:flex; gap:26px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+        <a href="Empresa%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Empresa</a>
+        <a href="Productos%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Productos</a>
+        <a href="Calidad%20Hores.dc.html" style="color:#c26a1e; font-weight:600;">Calidad</a>
+        <a href="Sustentabilidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#3f7d38;">Compromiso</a>
+        <a href="Home%20Hores.dc.html#faq" style="color:#5a4f44;" style-hover="color:#2f6f8f;">FAQ</a>
+        <a href="Home%20Hores.dc.html#contacto-form" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;" style-hover="background:#9c5314;">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero limpio -->
+  <section style="background:#ffffff; border-bottom:1px solid #e7e9eb;">
+    <div style="max-width:1200px; margin:0 auto; padding:34px 28px 0;">
+      <div style="font-size:13px; color:#8a9099;"><a href="Home%20Hores.dc.html" style="color:#8a9099;">Inicio</a> <span style="opacity:.6;">/</span> Calidad</div>
+    </div>
+    <div style="max-width:1200px; margin:0 auto; padding:44px 28px 60px; display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;">
+      <div style="animation:hFade .6s ease both;">
+        <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:20px;">
+          <span style="width:26px; height:2px; background:#c26a1e; display:inline-block;"></span> Calidad y certificaciones
+        </div>
+        <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.2vw,54px); line-height:1.06; letter-spacing:-.015em; margin:0 0 18px; color:#1c2124; text-wrap:balance;">Inocuidad controlada en cada etapa</h1>
+        <p style="font-size:18px; line-height:1.6; color:#565c62; margin:0 0 28px; max-width:32em; text-wrap:pretty;">Todos nuestros productos están autorizados para el contacto directo con alimentos y se fabrican bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
+        <div style="display:inline-flex; align-items:center; gap:12px; background:#f6ede1; border:1px solid #ecd9bf; border-radius:10px; padding:12px 18px;">
+          <span style="width:34px; height:34px; border-radius:8px; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Source Serif 4',serif; font-weight:700;">✓</span>
+          <span style="font-size:14px; color:#4a4f54;"><strong style="color:#1c2124;">ISO 22000:2018</strong> — Gestión de inocuidad certificada</span>
+        </div>
+      </div>
+      <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e7e9eb; box-shadow:0 20px 50px rgba(30,40,50,.08);">
+        <img src="uploads/Gemini_Generated_Image_2w0ia32w0ia32w0i.jpeg" alt="Control de calidad en planta HORES — inspección de lotes" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- Métricas -->
+  <section style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e7e9eb; border-radius:14px; overflow:hidden; background:#fff;">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">{{ s.k }}</div>
+          <div style="font-size:13.5px; line-height:1.5; color:#565c62;">{{ s.v }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- Compromiso -->
+  <section style="max-width:1200px; margin:0 auto; padding:48px 28px;">
+    <div style="display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center;">
+      <div>
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Inocuidad alimentaria</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#1c2124; text-wrap:balance;">Materiales aptos, procesos trazables</h2>
+        <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0 0 16px; text-wrap:pretty;">Trabajamos con materiales aptos para uso alimentario y controlamos la trazabilidad de la materia prima. Cada lote se produce siguiendo procedimientos documentados que garantizan condiciones seguras de higiene y manipulación.</p>
+        <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0;">La gestión de inocuidad certificada ISO 22000:2018 ordena todos nuestros procesos: desde la recepción de insumos hasta el despacho del producto terminado.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <sc-for list="{{ points }}" as="p" hint-placeholder-count="4">
+          <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+            <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
+            <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">{{ p.title }}</h3>
+            <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">{{ p.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proceso -->
+  <section style="background:#ffffff; border-top:1px solid #e7e9eb; border-bottom:1px solid #e7e9eb;">
+    <div style="max-width:1200px; margin:0 auto; padding:60px 28px;">
+      <div style="max-width:44em; margin-bottom:38px;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestro proceso</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Control en cada etapa</h2>
+        <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Un sistema documentado que asegura la misma calidad en cada lote.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0;">
+        <sc-for list="{{ steps }}" as="p" hint-placeholder-count="4">
+          <div style="padding:0 26px 0 0; border-left:2px solid #f0ddc4; padding-left:22px;">
+            <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">{{ p.n }}</div>
+            <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">{{ p.title }}</h3>
+            <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">{{ p.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificaciones -->
+  <section style="max-width:1200px; margin:0 auto; padding:60px 28px;">
+    <div style="max-width:44em; margin-bottom:30px;">
+      <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Certificaciones</div>
+      <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Documentación disponible</h2>
+      <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+      <sc-for list="{{ certs }}" as="c" hint-placeholder-count="3">
+        <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+          <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">▤</div>
+          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">{{ c.title }}</div>
+          <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">{{ c.text }}</p>
+          <a href="#" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">↓ Descargar PDF</a>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:#c26a1e; color:#fff;">
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff; text-wrap:balance;">¿Necesitás la documentación de calidad?</h2>
+        <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Escribinos y te enviamos los certificados y fichas técnicas correspondientes.</p>
+      </div>
+      <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+    <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+      <div>
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
+          <a href="Home%20Hores.dc.html#empresa" style="color:#cfccc5;">Empresa</a>
+          <a href="Productos%20Hores.dc.html" style="color:#cfccc5;">Productos</a>
+          <a href="Calidad%20Hores.dc.html" style="color:#cfccc5;">Calidad</a>
+          <a href="Sustentabilidad%20Hores.dc.html" style="color:#cfccc5;">Compromiso</a>
+          <a href="Home%20Hores.dc.html#faq" style="color:#cfccc5;">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;">
+          <span>Ruta Prov. 3, Km. 183.5, 2550 Bell Ville, Córdoba</span>
+          <span>Tel./Fax: 54 3537 427085 / 417085</span>
+          <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/543537427085" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;" style-hover="background:#1eb457;">
+    <img src="uploads/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'ES' };
+  stats = [
+    { k: 'ISO 22000', v: 'Gestión de inocuidad certificada (2018)' },
+    { k: '100%', v: 'Productos aptos para contacto con alimentos' },
+    { k: 'Trazable', v: 'Control de lote y materia prima' },
+    { k: '+40 años', v: 'Experiencia fabricando' }
+  ];
+  points = [
+    { title: 'Materia prima apta', text: 'Insumos habilitados para contacto con alimentos.' },
+    { title: 'Higiene en planta', text: 'Procedimientos de limpieza y manipulación documentados.' },
+    { title: 'Control por lote', text: 'Verificación de medidas y materiales en cada producción.' },
+    { title: 'Trazabilidad', text: 'Registro desde la recepción hasta el despacho.' }
+  ];
+  steps = [
+    { n: '01', title: 'Recepción de insumos', text: 'Control de proveedores y materia prima apta.' },
+    { n: '02', title: 'Producción', text: 'Higiene y manipulación bajo procedimientos.' },
+    { n: '03', title: 'Control de calidad', text: 'Verificación por lote de medidas y materiales.' },
+    { n: '04', title: 'Despacho', text: 'Trazabilidad hasta la entrega del producto.' }
+  ];
+  certs = [
+    { title: 'Certificado ISO 22000:2018', text: 'Sistema de gestión de inocuidad de los alimentos vigente.' },
+    { title: 'Aptitud sanitaria', text: 'Documentación que acredita el uso en contacto con alimentos.' },
+    { title: 'Fichas técnicas', text: 'Especificaciones de cada producto: medidas, gramaje y material.' }
+  ];
+  renderVals() {
+    return {
+      langs: ['ES', 'EN', 'PT'].map(code => ({
+        code,
+        op: this.state.lang === code ? 1 : 0.6,
+        bg: this.state.lang === code ? 'rgba(0,0,0,.22)' : 'transparent',
+        set: () => this.setState({ lang: code })
+      })),
+      stats: this.stats, points: this.points, steps: this.steps, certs: this.certs
+    };
+  }
+}
+</script>
+</body>
+</html>

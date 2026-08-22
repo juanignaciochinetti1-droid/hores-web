@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
+  a { color: #c26a1e; text-decoration: none; }
+  a:hover { color: #9c5314; }
+  ::selection { background: #f6e0c2; }
+  @keyframes hFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+
+  <!-- Utility bar -->
+  <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
+    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
+        <span style="opacity:.82;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
+        <span style="opacity:.82;">Tel./Fax: 54 3537 427085</span>
+        <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+      </div>
+      <div style="display:flex; gap:4px; align-items:center;">
+        <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
+          <button onClick="{{ lg.set }}" style="background:{{ lg.bg }}; border:none; color:#e9e0d4; font-family:'Archivo',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.06em; padding:4px 9px; border-radius:5px; cursor:pointer; opacity:{{ lg.op }};">{{ lg.code }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="#top" style="display:flex; align-items:center; color:inherit;">
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:64px; width:auto; display:block;"/>
+      </a>
+      <nav style="display:flex; gap:26px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+        <a href="#empresa" style="color:#5a4f44;" style-hover="color:#c26a1e;">Empresa</a>
+        <a href="Productos%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Productos</a>
+        <a href="Calidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Calidad</a>
+        <a href="Sustentabilidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#3f7d38;">Compromiso</a>
+        <a href="#faq" style="color:#5a4f44;" style-hover="color:#2f6f8f;">FAQ</a>
+        <a href="#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;" style-hover="background:#9c5314;">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero full-bleed con imagen/video de fondo -->
+  <section id="top" style="position:relative; min-height:calc(100vh - 140px); display:flex; align-items:center; overflow:hidden; background:#241d17;">
+    <img src="uploads/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,15,11,.88) 0%, rgba(20,15,11,.66) 42%, rgba(20,15,11,.34) 100%);"></div>
+
+    <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:80px 28px; width:100%;">
+      <div style="max-width:38rem; animation:hFade .7s ease both;">
+        <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:22px;">
+          <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Seriedad y Eficiencia
+        </div>
+        <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(40px,5vw,66px); line-height:1.03; letter-spacing:-.015em; margin:0 0 20px; color:#fff; text-wrap:balance;">Moldes de papel para panificación</h1>
+        <p style="font-size:19px; line-height:1.6; color:#e4dccf; margin:0 0 32px; max-width:30em; text-wrap:pretty;">Desarrollamos y fabricamos envases de papel para pan dulce, budín, rosca, bizcochuelo y más. Calidad para contacto alimentario, presente en toda Latinoamérica.</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#productos" style="background:#c26a1e; color:#fff; padding:15px 28px; border-radius:9px; font-weight:600; font-size:15px;" style-hover="background:#d67b2a;">Ver productos</a>
+          <a href="#empresa" style="background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.28); padding:15px 28px; border-radius:9px; font-weight:600; font-size:15px; backdrop-filter:blur(4px);" style-hover="background:rgba(255,255,255,.16);">Conocé la empresa</a>
+        </div>
+        <div style="display:flex; gap:40px; margin-top:48px; flex-wrap:wrap;">
+          <div><div style="font-family:'Source Serif 4',serif; font-size:30px; font-weight:700; color:#f0b878;">+40</div><div style="font-size:13px; color:#c6bba9;">años fabricando</div></div>
+          <div><div style="font-family:'Source Serif 4',serif; font-size:30px; font-weight:700; color:#f0b878;">Latam</div><div style="font-size:13px; color:#c6bba9;">alcance regional</div></div>
+          <div><div style="font-family:'Source Serif 4',serif; font-size:30px; font-weight:700; color:#f0b878;">100%</div><div style="font-size:13px; color:#c6bba9;">apto alimentario</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué hacemos (claridad inmediata) -->
+  <section id="empresa" style="background:#ffffff; border-top:1px solid #e8e3d9; border-bottom:1px solid #e8e3d9;">
+    <div style="max-width:1200px; margin:0 auto; padding:54px 28px;">
+      <div style="margin-bottom:36px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <div style="max-width:52em;">
+          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 12px; color:#241d17;">Qué hacemos</h2>
+          <p style="font-size:17px; line-height:1.6; color:#5a4f44; margin:0; text-wrap:pretty;">Cartotécnica Hores diseña, desarrolla y fabrica moldes y envases de papel para la industria alimentaria, panaderías profesionales y grandes minoristas.</p>
+        </div>
+        <a href="Empresa%20Hores.dc.html" style="flex-shrink:0; display:inline-flex; align-items:center; gap:8px; color:#c26a1e; font-weight:600; font-size:15px; white-space:nowrap;" style-hover="color:#9c5314;">Quiénes somos →</a>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0;">
+        <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
+          <div style="padding:8px 34px; border-left:1px solid #e8e3d9;">
+            <div style="font-family:'Source Serif 4',serif; font-size:15px; font-weight:600; letter-spacing:.14em; color:#c26a1e; margin-bottom:18px;">{{ p.n }}</div>
+            <h3 style="font-family:'Source Serif 4',serif; font-size:22px; font-weight:600; margin:0 0 12px; color:#241d17; letter-spacing:-.01em;">{{ p.title }}</h3>
+            <p style="font-size:15px; line-height:1.65; color:#5a4f44; margin:0; text-wrap:pretty;">{{ p.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos: grilla con acceso ágil a la ficha -->
+  <section id="productos" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:30px;">
+      <div style="max-width:40em;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestros productos</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 10px; color:#241d17;">Moldes para cada elaboración</h2>
+        <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0;">Elegí una línea y accedé a su ficha técnica en un clic.</p>
+      </div>
+      <a href="#" style="display:inline-flex; align-items:center; gap:8px; color:#5a4f44; font-weight:600; font-size:14px; border:1px solid #d9ccb9; padding:11px 18px; border-radius:9px; background:#ffffff;" style-hover="border-color:#c26a1e; color:#c26a1e;">Ver catálogo completo →</a>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
+      <sc-for list="{{ cards }}" as="p" hint-placeholder-count="6">
+        <a href="#" style="display:block; color:inherit;" style-hover="opacity:.72;">
+          <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8; margin-bottom:16px;">
+            <img src="uploads/ec6b9edf-683e-4b7a-bb80-febe1aba3539.jpeg" alt="{{ p.name }} — molde de papel HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            <sc-if value="{{ p.custom }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute; right:11px; top:11px; width:8px; height:8px; border-radius:50%; background:#c26a1e; box-shadow:0 0 0 3px rgba(255,255,255,.85);" title="Personalizable"></span>
+            </sc-if>
+          </div>
+          <span style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;">{{ p.name }}</span>
+          <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 12px;">{{ p.summary }}</span>
+          <span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica →</span>
+        </a>
+      </sc-for>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:34px; padding-top:22px; border-top:1px solid #e6e0d4; font-size:13px; color:#8a7a67;">
+      <span style="width:8px; height:8px; border-radius:50%; background:#c26a1e;"></span> Personalizable
+    </div>
+  </section>
+
+  <!-- Calidad -->
+  <section id="calidad" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+    <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; align-items:center;">
+      <div>
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Calidad y certificaciones</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17; text-wrap:balance;">Autorizados para el contacto con alimentos</h2>
+        <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 20px; text-wrap:pretty;">Todos nuestros productos están autorizados para contacto directo con alimentos. Desarrollamos los procesos bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
+        <a href="Calidad%20Hores.dc.html" style="display:inline-flex; align-items:center; gap:8px; color:#c26a1e; font-weight:600; font-size:15px;">Ver calidad y certificaciones →</a>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <sc-for list="{{ quality }}" as="q" hint-placeholder-count="4">
+          <div style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
+            <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">{{ q.k }}</div>
+            <div style="font-size:14px; line-height:1.5; color:#5a4f44;">{{ q.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sustentabilidad (sección secundaria / acceso directo) -->
+  <section id="sustentabilidad" style="background:#20301f; color:#e7ecdf;">
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px;">
+      <div style="display:grid; grid-template-columns:1.15fr 1fr; gap:44px; align-items:center;">
+        <div>
+          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:14px;">Compromiso</div>
+          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; line-height:1.12; margin:0 0 14px; color:#fff; text-wrap:balance;">Compromiso con el medioambiente</h2>
+          <p style="font-size:16px; line-height:1.6; color:#cbd6bd; margin:0 0 22px; max-width:34em; text-wrap:pretty;">Valorizamos el papel como materia prima renovable: trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap para minimizar el impacto ambiental.</p>
+          <div style="display:flex; gap:26px; flex-wrap:wrap; margin-bottom:26px;">
+            <sc-for list="{{ sustain }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="width:8px; height:8px; border-radius:50%; background:#a9c48f; flex-shrink:0;"></span>
+                <span style="font-size:14px; font-weight:600; color:#e7ecdf;">{{ s.title }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <a href="Sustentabilidad%20Hores.dc.html" style="display:inline-flex; align-items:center; gap:9px; background:#a9c48f; color:#1a2718; padding:13px 24px; border-radius:9px; font-weight:600; font-size:15px;" style-hover="background:#bcd4a3;">Conocé nuestro compromiso →</a>
+        </div>
+        <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #3a4a37;">
+          <img src="uploads/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background:#ffffff; border-top:1px solid #e8e3d9;">
+    <div style="max-width:840px; margin:0 auto; padding:64px 28px;">
+      <div style="text-align:center; margin-bottom:34px;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Preguntas frecuentes</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0; color:#241d17;">FAQ</h2>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; min-height:232px;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+          <div style="border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#f6f4ef;">
+            <button onClick="{{ f.toggle }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left; background:none; border:none; padding:20px 22px; cursor:pointer; font-family:'Archivo',sans-serif;">
+              <span style="font-size:16px; font-weight:600; color:#241d17;">{{ f.q }}</span>
+              <span style="font-size:22px; color:#c26a1e; line-height:1; flex-shrink:0;">{{ f.sign }}</span>
+            </button>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 22px 22px; font-size:15px; line-height:1.6; color:#5a4f44;">{{ f.a }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-top:28px;">
+        <button onClick="{{ faqPrev }}" style="background:none; border:1px solid #e0d8ca; color:#8a7a67; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center;" style-hover="border-color:#c26a1e; color:#c26a1e;">‹</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <sc-for list="{{ faqDots }}" as="d" hint-placeholder-count="2">
+            <button onClick="{{ d.go }}" style="width:{{ d.w }}; height:8px; border-radius:20px; border:none; background:{{ d.bg }}; cursor:pointer; padding:0; transition:all .2s;"></button>
+          </sc-for>
+        </div>
+        <button onClick="{{ faqNext }}" style="background:none; border:1px solid #e0d8ca; color:#8a7a67; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center;" style-hover="border-color:#c26a1e; color:#c26a1e;">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto (unificado) -->
+  <section id="contacto">
+    <div style="background:#c26a1e; color:#fff;">
+    <div style="max-width:1200px; margin:0 auto; padding:56px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 8px; color:#fff; text-wrap:balance;">¿Necesitás una solución a medida?</h2>
+        <p style="font-size:16.5px; line-height:1.5; color:#fbe6d2; margin:0; max-width:38em;">Contactanos y desarrollamos el molde que tu producción necesita.</p>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="tel:543537427085" style="background:#ffffff; color:#241d17; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Línea directa 3537 427085</a>
+        <a href="mailto:administracion@hores.com.ar" style="background:#2a2b2e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Escribinos</a>
+      </div>
+    </div>
+    </div>
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px 64px;">
+    <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:stretch;">
+      <div style="display:flex; flex-direction:column;">
+        <p style="font-size:16px; line-height:1.6; color:#5a4f44; margin:0 0 26px; text-wrap:pretty;">Completá el formulario y te respondemos a la brevedad. También podés escribirnos por WhatsApp, email o acercarte a la planta.</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <a href="https://wa.me/543537427085" target="_blank" rel="noopener" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <img src="uploads/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="WhatsApp" style="width:38px; height:38px; border-radius:9px; object-fit:contain;"/>
+            <span><strong style="display:block; color:#241d17;">WhatsApp</strong>+54 3537 427085</span>
+          </a>
+          <a href="mailto:administracion@hores.com.ar" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <span style="width:38px; height:38px; border-radius:9px; background:#f6e0c2; display:flex; align-items:center; justify-content:center; color:#c26a1e; font-weight:700;">@</span>
+            <span><strong style="display:block; color:#241d17;">Email</strong>administracion@hores.com.ar</span>
+          </a>
+          <div style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <span style="width:38px; height:38px; border-radius:9px; background:#efe6d8; display:flex; align-items:center; justify-content:center; color:#8a7a67; font-weight:700;">◎</span>
+            <span><strong style="display:block; color:#241d17;">Planta</strong>Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
+          </div>
+        </div>
+        <div style="margin-top:22px; flex:1; display:flex; flex-direction:column; border:1px solid #e8e3d9; border-radius:12px; overflow:hidden;">
+          <iframe title="Ubicación HORES Cartotécnica — Bell Ville" src="https://www.openstreetmap.org/export/embed.html?bbox=-62.7090%2C-32.6380%2C-62.6690%2C-32.6180&layer=mapnik&marker=-32.6284%2C-62.6890" style="width:100%; flex:1; min-height:200px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.openstreetmap.org/?mlat=-32.6284&mlon=-62.6890#map=15/-32.6284/-62.6890" target="_blank" rel="noopener" style="display:block; text-align:center; padding:9px; font-size:13px; font-weight:600; color:#c26a1e; background:#ffffff;">Cómo llegar →</a>
+        </div>
+      </div>
+      <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px;">
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center; padding:34px 12px;">
+            <div style="font-family:'Source Serif 4',serif; font-size:22px; font-weight:700; color:#2f7d33; margin-bottom:8px;">¡Gracias por escribirnos!</div>
+            <p style="font-size:15px; color:#5a4f44; margin:0 0 20px;">Recibimos tu consulta y te vamos a responder a la brevedad.</p>
+            <button onClick="{{ reset }}" style="background:none; border:1px solid #d9ccb9; color:#5a4f44; padding:10px 20px; border-radius:8px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14px; cursor:pointer;">Enviar otra consulta</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ onSubmit }}">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <label style="display:block;">
+                <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Nombre*</span>
+                <input required style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;" style-focus="border-color:#c26a1e;"/>
+              </label>
+              <label style="display:block;">
+                <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Empresa</span>
+                <input style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;" style-focus="border-color:#c26a1e;"/>
+              </label>
+            </div>
+            <label style="display:block; margin-top:16px;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Email*</span>
+              <input required type="email" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;" style-focus="border-color:#c26a1e;"/>
+            </label>
+            <label style="display:block; margin-top:16px;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Mensaje*</span>
+              <textarea required rows="4" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;" style-focus="border-color:#c26a1e;"></textarea>
+            </label>
+            <label style="display:block; margin-top:16px; cursor:pointer;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Adjuntar archivos o fotos</span>
+              <div style="display:flex; align-items:center; gap:12px; border:1.5px dashed #d9ccb9; border-radius:8px; padding:14px 16px; background:#faf7f1;" style-hover="border-color:#c26a1e;">
+                <span style="width:36px; height:36px; flex-shrink:0; border-radius:8px; background:#f6e0c2; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">＋</span>
+                <span style="font-size:13.5px; color:#8a7a67; line-height:1.4;">Arrastrá o hacé clic para subir. Fichas, imágenes o PDF (máx. 10&nbsp;MB).</span>
+              </div>
+              <input type="file" multiple accept="image/*,.pdf,.doc,.docx" style="display:none;"/>
+            </label>
+            <button type="submit" style="margin-top:20px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer;" style-hover="background:#9c5314;">Enviar consulta</button>
+          </form>
+        </sc-if>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+    <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+      <div>
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
+          <a href="Home%20Hores.dc.html#empresa" style="color:#cfccc5;">Empresa</a>
+          <a href="Productos%20Hores.dc.html" style="color:#cfccc5;">Productos</a>
+          <a href="Calidad%20Hores.dc.html" style="color:#cfccc5;">Calidad</a>
+          <a href="Sustentabilidad%20Hores.dc.html" style="color:#cfccc5;">Compromiso</a>
+          <a href="Home%20Hores.dc.html#faq" style="color:#cfccc5;">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;">
+          <span>Ruta Prov. 3, Km. 183.5, 2550 Bell Ville, Córdoba</span>
+          <span>Tel./Fax: 54 3537 427085 / 417085</span>
+          <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flotante -->
+  <a href="https://wa.me/543537427085" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;" style-hover="background:#1eb457;">
+    <img src="uploads/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'ES', openFaq: 0, sent: false, faqPage: 0 };
+  faqPerPage = 3;
+
+  cardsData = [
+    { name: 'Pan Dulce', summary: 'Distintos tamaños, apto contacto alimentario.', custom: true },
+    { name: 'Budín', summary: 'Clásico y funditas individuales.', custom: false },
+    { name: 'Bizcochuelo', summary: 'Formato redondo, base reforzada.', custom: false },
+    { name: 'Rosca', summary: 'Rosca de Pascua y variantes.', custom: true },
+    { name: 'Pan de Pascua', summary: 'Formato estándar para producción.', custom: false },
+    { name: 'Budín Funditas', summary: 'Individuales para porcionado.', custom: true }
+  ];
+
+  faqList = [
+    { q: '¿Los moldes son aptos para contacto directo con alimentos?', a: 'Sí. Todos nuestros productos están autorizados para contacto con alimentos y se fabrican bajo un sistema de gestión de inocuidad certificado ISO 22000:2018.' },
+    { q: '¿Puedo pedir moldes personalizados o con impresión?', a: 'Sí. Desarrollamos moldes a medida en distintos tamaños, gramajes e impresión personalizada según las necesidades de tu producción.' },
+    { q: '¿Cuál es la cantidad mínima de compra?', a: 'La cantidad mínima varía según el producto y si es estándar o personalizado. Escribinos y te pasamos las condiciones para tu caso.' },
+    { q: '¿Realizan envíos a toda Latinoamérica?', a: 'Sí. Nuestros productos se comercializan en toda la región. Coordinamos la logística según destino y volumen.' },
+    { q: '¿Dónde consigo la ficha técnica de un producto?', a: 'Cada producto del catálogo tiene su ficha técnica descargable en PDF, con medidas, capacidad, gramaje y material.' }
+  ];
+
+  pillarsData = [
+    { n: '01', title: 'Investigación y Desarrollo', text: 'Innovamos constantemente: nuevos mercados, mejores diseños y cambios positivos para el sector.' },
+    { n: '02', title: 'Al servicio del cliente', text: 'Fabricamos según las necesidades de cada cliente, tomándonos muy en serio la calidad.' },
+    { n: '03', title: 'Tecnología alimentaria', text: 'Línea de producción con alta tecnología que nos permite ofrecer más y mejores productos.' }
+  ];
+
+  sustainData = [
+    { title: 'Bosques responsables', text: 'Proveedores de papel orientados a una adecuada administración de bosques.' },
+    { title: 'Menos desperdicio', text: 'Ingeniería de procesos para minimizar el scrap de materia prima.' },
+    { title: 'Materia prima secundaria', text: 'Recuperamos el scrap de papel y lo revalorizamos como recurso renovable.' }
+  ];
+
+  qualityData = [
+    { k: 'ISO 22000', v: 'Gestión de inocuidad certificada' },
+    { k: 'Apto', v: 'Contacto directo con alimentos' },
+    { k: 'Latam', v: 'Comercialización regional' },
+    { k: '+40 años', v: 'Experiencia fabricando' }
+  ];
+
+  renderVals() {
+    return {
+      langs: ['ES', 'EN', 'PT'].map(code => ({
+        code,
+        op: this.state.lang === code ? 1 : 0.55,
+        bg: this.state.lang === code ? 'rgba(0,0,0,.22)' : 'transparent',
+        set: () => this.setState({ lang: code })
+      })),
+      pillars: this.pillarsData,
+      sustain: this.sustainData,
+      quality: this.qualityData,
+      cards: this.cardsData,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      reset: () => this.setState({ sent: false }),
+      faqs: this.faqList.map((f, i) => ({
+        q: f.q, a: f.a,
+        open: this.state.openFaq === i,
+        sign: this.state.openFaq === i ? '−' : '+',
+        toggle: () => this.setState({ openFaq: this.state.openFaq === i ? -1 : i })
+      })).slice(this.state.faqPage * this.faqPerPage, this.state.faqPage * this.faqPerPage + this.faqPerPage),
+      faqDots: Array.from({ length: Math.ceil(this.faqList.length / this.faqPerPage) }, (_, i) => ({
+        w: i === this.state.faqPage ? '22px' : '8px',
+        bg: i === this.state.faqPage ? '#c26a1e' : '#e0d8ca',
+        go: () => this.setState({ faqPage: i, openFaq: -1 })
+      })),
+      faqPrev: () => { const n = Math.ceil(this.faqList.length / this.faqPerPage); this.setState({ faqPage: (this.state.faqPage - 1 + n) % n, openFaq: -1 }); },
+      faqNext: () => { const n = Math.ceil(this.faqList.length / this.faqPerPage); this.setState({ faqPage: (this.state.faqPage + 1) % n, openFaq: -1 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Secretos / credenciales locales
+.env
+
+# Clon del framework Odoo (vendored, tiene su propio repo git — no se versiona acá)
+odoo/
+
+# Python
+*.pyc
+__pycache__/

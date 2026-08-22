@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
+  a { color: #c26a1e; text-decoration: none; }
+  a:hover { color: #9c5314; }
+  ::selection { background: #f6e0c2; }
+  @keyframes hFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  [data-galcard]:hover [data-galpanel] { transform: translateY(0) !important; }
+</style>
+</helmet>
+<div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+
+  <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
+    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
+        <span style="opacity:.9;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
+        <span style="opacity:.9;">Tel./Fax: 54 3537 427085</span>
+        <a href="mailto:administracion@hores.com.ar" style="color:#fff; text-decoration:underline;">administracion@hores.com.ar</a>
+      </div>
+      <div style="display:flex; gap:4px; align-items:center;">
+        <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
+          <button onClick="{{ lg.set }}" style="background:{{ lg.bg }}; border:none; color:#fff; font-family:'Archivo',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.06em; padding:4px 9px; border-radius:5px; cursor:pointer; opacity:{{ lg.op }};">{{ lg.code }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="Home%20Hores.dc.html" style="display:flex; align-items:center; color:inherit;">
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:64px; width:auto; display:block;"/>
+      </a>
+      <nav style="display:flex; gap:26px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+        <a href="Empresa%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Empresa</a>
+        <a href="Productos%20Hores.dc.html" style="color:#c26a1e; font-weight:600;">Productos</a>
+        <a href="Calidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Calidad</a>
+        <a href="Sustentabilidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#3f7d38;">Compromiso</a>
+        <a href="Home%20Hores.dc.html#faq" style="color:#5a4f44;" style-hover="color:#2f6f8f;">FAQ</a>
+        <a href="Home%20Hores.dc.html#contacto-form" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;" style-hover="background:#9c5314;">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section style="position:relative; overflow:hidden; background:#241d17;">
+    <img src="uploads/ec6b9edf-683e-4b7a-bb80-febe1aba3539.jpeg" alt="Moldes de papel HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5;"/>
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,15,11,.9) 0%, rgba(20,15,11,.64) 60%, rgba(20,15,11,.4) 100%);"></div>
+    <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:34px 28px 70px;">
+      <div style="font-size:13px; color:#e4dccf; margin-bottom:16px;"><a href="Home%20Hores.dc.html" style="color:#e4dccf;">Inicio</a> <span style="opacity:.6;">/</span> Productos</div>
+      <div style="max-width:40rem; animation:hFade .6s ease both;">
+        <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:18px;">
+          <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Catálogo técnico
+        </div>
+        <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.4vw,54px); line-height:1.05; letter-spacing:-.015em; margin:0 0 16px; color:#fff; text-wrap:balance;">Moldes para cada elaboración</h1>
+        <p style="font-size:18px; line-height:1.6; color:#e4dccf; margin:0; max-width:32em; text-wrap:pretty;">Filtrá por línea, buscá por nombre y accedé a las especificaciones técnicas y la ficha PDF de cada molde.</p>
+      </div>
+    </div>
+    <div style="position:absolute; left:0; right:0; bottom:-1px; height:70px; z-index:3; background:#f6f4ef; -webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%2270%22 viewBox=%220 0 600 70%22 preserveAspectRatio=%22none%22><path d=%22M0,70 L600,70 L600,34 C590,33 585,40 576,46 C568,51 560,33 551,31 C540,28 534,44 524,47 C513,50 506,30 496,29 C484,28 478,45 467,48 C455,51 448,31 436,30 C424,29 418,43 407,46 C395,49 387,28 375,27 C363,26 356,44 344,47 C332,50 324,29 312,29 C300,29 293,45 281,47 C269,49 261,30 250,30 C238,30 231,44 219,47 C207,50 199,30 187,30 C176,30 169,45 158,47 C146,49 138,31 127,31 C115,31 108,44 97,46 C86,48 78,30 66,30 C55,30 48,43 37,46 C27,49 18,35 9,33 C6,32 3,33 0,32 Z%22 fill=%22black%22/></svg>'); mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%2270%22 viewBox=%220 0 600 70%22 preserveAspectRatio=%22none%22><path d=%22M0,70 L600,70 L600,34 C590,33 585,40 576,46 C568,51 560,33 551,31 C540,28 534,44 524,47 C513,50 506,30 496,29 C484,28 478,45 467,48 C455,51 448,31 436,30 C424,29 418,43 407,46 C395,49 387,28 375,27 C363,26 356,44 344,47 C332,50 324,29 312,29 C300,29 293,45 281,47 C269,49 261,30 250,30 C238,30 231,44 219,47 C207,50 199,30 187,30 C176,30 169,45 158,47 C146,49 138,31 127,31 C115,31 108,44 97,46 C86,48 78,30 66,30 C55,30 48,43 37,46 C27,49 18,35 9,33 C6,32 3,33 0,32 Z%22 fill=%22black%22/></svg>'); -webkit-mask-size:600px 100%; mask-size:600px 100%; -webkit-mask-repeat:repeat-x; mask-repeat:repeat-x;"></div>
+  </section>
+
+  <!-- Catálogo -->
+  <section style="max-width:1200px; margin:0 auto; padding:52px 28px 72px;">
+    <!-- Controles -->
+    <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom:22px;">
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <sc-for list="{{ typeChips }}" as="c" hint-placeholder-count="6">
+          <button onClick="{{ c.set }}" style="background:{{ c.bg }}; color:{{ c.fg }}; border:1px solid {{ c.bd }}; padding:9px 16px; border-radius:22px; font-family:'Archivo',sans-serif; font-size:13.5px; font-weight:600; cursor:pointer;">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <div style="flex:1; min-width:220px; display:flex; align-items:center; gap:9px; background:#ffffff; border:1px solid #d9ccb9; border-radius:9px; padding:11px 15px;">
+        <span style="color:#b09a80;">⌕</span>
+        <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Buscar producto…" style="border:none; outline:none; background:none; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; width:100%;"/>
+      </div>
+      <div style="display:flex; background:#ffffff; border:1px solid #d9ccb9; border-radius:9px; padding:3px; gap:0;">
+        <button onClick="{{ setGallery }}" style="display:inline-flex; align-items:center; background:{{ galBg }}; color:{{ galFg }}; border:none; padding:8px 12px; border-radius:7px; font-family:'Archivo',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:background .3s ease, color .3s ease;"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;"><rect x="1" y="1" width="6" height="6" rx="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.3"/></svg><span style="overflow:hidden; white-space:nowrap; max-width:{{ galW }}; opacity:{{ galOp }}; margin-left:{{ galMl }}; transition:max-width .32s ease, opacity .28s ease, margin-left .32s ease;">Galería</span></button>
+        <button onClick="{{ setTable }}" style="display:inline-flex; align-items:center; background:{{ tabBg }}; color:{{ tabFg }}; border:none; padding:8px 12px; border-radius:7px; font-family:'Archivo',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:background .3s ease, color .3s ease;"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;"><circle cx="2" cy="3" r="1.4"/><rect x="6" y="2.1" width="9" height="1.8" rx="0.9"/><circle cx="2" cy="8" r="1.4"/><rect x="6" y="7.1" width="9" height="1.8" rx="0.9"/><circle cx="2" cy="13" r="1.4"/><rect x="6" y="12.1" width="9" height="1.8" rx="0.9"/></svg><span style="overflow:hidden; white-space:nowrap; max-width:{{ tabW }}; opacity:{{ tabOp }}; margin-left:{{ tabMl }}; transition:max-width .32s ease, opacity .28s ease, margin-left .32s ease;">Tabla</span></button>
+      </div>
+    </div>
+
+    <!-- Vista galería -->
+    <sc-if value="{{ isGallery }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <div data-galcard style="position:relative; border:1px solid #e8e3d9; border-radius:15px; overflow:hidden; background:#ffffff; transition:box-shadow .25s, transform .25s, border-color .25s;" style-hover="box-shadow:0 16px 38px rgba(60,40,20,.14); transform:translateY(-4px); border-color:#e2c49b;">
+            <div style="position:relative; aspect-ratio:4/3; overflow:hidden; background:#efe6d8;">
+              <img src="uploads/ec6b9edf-683e-4b7a-bb80-febe1aba3539.jpeg" alt="{{ r.name }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+              <sc-if value="{{ r.custom }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute; right:12px; top:12px; z-index:2; font-size:11px; font-weight:600; color:#9c5314; background:#f6e0c2; padding:4px 9px; border-radius:20px;">Personalizable</span>
+              </sc-if>
+              <div data-galpanel style="position:absolute; left:0; right:0; bottom:0; padding:16px; background:linear-gradient(transparent, rgba(20,15,11,.9)); transform:translateY(100%); transition:transform .28s ease;">
+                <div style="display:flex; gap:14px; margin-bottom:10px;">
+                  <div><div style="font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#f0b878;">Medidas</div><div style="font-size:12.5px; color:#fff; font-weight:600;">{{ r.dims }}</div></div>
+                  <div><div style="font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#f0b878;">Capacidad</div><div style="font-size:12.5px; color:#fff; font-weight:600;">{{ r.cap }}</div></div>
+                </div>
+                <span style="display:inline-flex; align-items:center; gap:6px; color:#fff; font-size:13px; font-weight:600;">Ver ficha técnica →</span>
+              </div>
+            </div>
+            <div style="padding:16px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <div>
+                <h3 style="font-size:17px; font-weight:600; margin:0; color:#241d17;">{{ r.name }}</h3>
+                <p style="font-size:12px; color:#8a7a67; margin:3px 0 0;">{{ r.meta }}</p>
+              </div>
+              <a href="#" title="Descargar ficha PDF" style="flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:9px; border:1px solid #e6dccb; color:#8a7a67; font-size:15px; background:#f6f4ef;" style-hover="border-color:#c26a1e; color:#c26a1e;">↓</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:34px; text-align:center; color:#8a7a67; font-size:14.5px;">No se encontraron productos con ese filtro.</div>
+      </sc-if>
+    </sc-if>
+
+    <!-- Vista tabla -->
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+    <div style="border:1px solid #e8e3d9; border-radius:14px; overflow:hidden; background:#ffffff;">
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px;">
+          <thead>
+            <tr style="background:#f1efe8; text-align:left;">
+              <th style="padding:14px 18px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Producto</th>
+              <th style="padding:14px 12px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Medidas (mm)</th>
+              <th style="padding:14px 12px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Capacidad</th>
+              <th style="padding:14px 12px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Gramaje</th>
+              <th style="padding:14px 12px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Material</th>
+              <th style="padding:14px 12px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">U/caja</th>
+              <th style="padding:14px 18px; font-weight:600; color:#6a5c4c; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Ficha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+              <tr style="border-top:1px solid #f1efe8;">
+                <td style="padding:15px 18px;">
+                  <div style="font-weight:600; color:#241d17; font-size:14.5px;">{{ r.name }}</div>
+                  <div style="font-size:12px; color:#8a7a67; margin-top:3px;">{{ r.meta }}</div>
+                </td>
+                <td style="padding:15px 12px; color:#4a4038; white-space:nowrap;">{{ r.dims }}</td>
+                <td style="padding:15px 12px; color:#4a4038; white-space:nowrap;">{{ r.cap }}</td>
+                <td style="padding:15px 12px; color:#4a4038; white-space:nowrap;">{{ r.gsm }}</td>
+                <td style="padding:15px 12px; color:#4a4038;">{{ r.material }}</td>
+                <td style="padding:15px 12px; color:#4a4038;">{{ r.box }}</td>
+                <td style="padding:15px 18px;">
+                  <a href="#" style="display:inline-flex; align-items:center; gap:6px; color:#c26a1e; font-weight:600; font-size:13px; white-space:nowrap;">↓ PDF</a>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:34px; text-align:center; color:#8a7a67; font-size:14.5px;">No se encontraron productos con ese filtro.</div>
+      </sc-if>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 18px; border-top:1px solid #f1efe8; background:#f6f4ef; flex-wrap:wrap;">
+        <span style="font-size:13px; color:#8a7a67;">{{ countLabel }}</span>
+        <a href="#" style="display:inline-flex; align-items:center; gap:8px; background:#211e1b; color:#f0c9a0; padding:10px 18px; border-radius:8px; font-weight:600; font-size:13.5px;">↓ Descargar catálogo completo (PDF)</a>
+      </div>
+    </div>
+    </sc-if>
+
+    <p style="font-size:12.5px; color:#8a7a67; margin:16px 2px 0;">Los valores técnicos son de referencia y pueden variar según el desarrollo. Consultanos por medidas y personalizaciones específicas.</p>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:#c26a1e; color:#fff;">
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff; text-wrap:balance;">¿Necesitás un molde a medida?</h2>
+        <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Desarrollamos productos con impresión y medidas personalizadas según tu producción.</p>
+      </div>
+      <a href="Home%20Hores.dc.html#contacto-form" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar desarrollo</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+    <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+      <div>
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
+          <a href="Home%20Hores.dc.html#empresa" style="color:#cfccc5;">Empresa</a>
+          <a href="Productos%20Hores.dc.html" style="color:#cfccc5;">Productos</a>
+          <a href="Calidad%20Hores.dc.html" style="color:#cfccc5;">Calidad</a>
+          <a href="Sustentabilidad%20Hores.dc.html" style="color:#cfccc5;">Compromiso</a>
+          <a href="Home%20Hores.dc.html#faq" style="color:#cfccc5;">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;">
+          <span>Ruta Prov. 3, Km. 183.5, 2550 Bell Ville, Córdoba</span>
+          <span>Tel./Fax: 54 3537 427085 / 417085</span>
+          <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/543537427085" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;" style-hover="background:#1eb457;">
+    <img src="uploads/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'ES', type: 'Todos', search: '', view: 'gallery' };
+
+  data = [
+    { name: 'Pan Dulce Mediano', type: 'Pan Dulce', size: 'Mediano', dims: '160 × 160 × 90', cap: '500 g', gsm: '90 g/m²', material: 'Papel c/ recubrimiento', box: '500', custom: true },
+    { name: 'Pan Dulce Grande', type: 'Pan Dulce', size: 'Grande', dims: '190 × 190 × 105', cap: '1 kg', gsm: '100 g/m²', material: 'Papel c/ recubrimiento', box: '300', custom: true },
+    { name: 'Budín Clásico', type: 'Budín', size: 'Estándar', dims: '210 × 90 × 65', cap: '400 g', gsm: '85 g/m²', material: 'Papel vegetal', box: '600', custom: false },
+    { name: 'Budín Funditas', type: 'Budín', size: 'Individual', dims: '120 × 55 × 45', cap: '120 g', gsm: '80 g/m²', material: 'Papel vegetal', box: '1000', custom: true },
+    { name: 'Bizcochuelo Redondo', type: 'Bizcochuelo', size: 'Redondo', dims: 'Ø 200 × 70', cap: '600 g', gsm: '90 g/m²', material: 'Papel c/ recubrimiento', box: '400', custom: false },
+    { name: 'Rosca de Pascua', type: 'Rosca', size: 'Grande', dims: 'Ø 260 × 55', cap: '700 g', gsm: '95 g/m²', material: 'Papel c/ recubrimiento', box: '300', custom: true },
+    { name: 'Pan de Pascua', type: 'Pan de Pascua', size: 'Estándar', dims: '150 × 150 × 85', cap: '450 g', gsm: '90 g/m²', material: 'Papel c/ recubrimiento', box: '500', custom: false }
+  ];
+  types = ['Todos', 'Pan Dulce', 'Budín', 'Bizcochuelo', 'Rosca', 'Pan de Pascua'];
+
+  renderVals() {
+    const filtered = this.data.filter(d =>
+      (this.state.type === 'Todos' || d.type === this.state.type) &&
+      d.name.toLowerCase().includes(this.state.search.toLowerCase())
+    );
+    return {
+      langs: ['ES', 'EN', 'PT'].map(code => ({
+        code,
+        op: this.state.lang === code ? 1 : 0.6,
+        bg: this.state.lang === code ? 'rgba(0,0,0,.22)' : 'transparent',
+        set: () => this.setState({ lang: code })
+      })),
+      search: this.state.search,
+      onSearch: (e) => this.setState({ search: e.target.value }),
+      typeChips: this.types.map(t => {
+        const on = this.state.type === t;
+        return { label: t, set: () => this.setState({ type: t }),
+          bg: on ? '#c26a1e' : '#ffffff', fg: on ? '#fff' : '#5a4f44', bd: on ? '#c26a1e' : '#d9ccb9' };
+      }),
+      rows: filtered.map(d => ({ ...d, meta: d.type + ' · ' + d.size + (d.custom ? ' · Personalizable' : '') })),
+      empty: filtered.length === 0,
+      countLabel: filtered.length + ' de ' + this.data.length + ' productos',
+      isGallery: this.state.view === 'gallery',
+      isTable: this.state.view === 'table',
+      setGallery: () => this.setState({ view: 'gallery' }),
+      setTable: () => this.setState({ view: 'table' }),
+      galBg: this.state.view === 'gallery' ? '#c26a1e' : 'transparent',
+      galFg: this.state.view === 'gallery' ? '#fff' : '#5a4f44',
+      tabBg: this.state.view === 'table' ? '#c26a1e' : 'transparent',
+      tabFg: this.state.view === 'table' ? '#fff' : '#5a4f44',
+      galW: this.state.view === 'gallery' ? '80px' : '0px',
+      galOp: this.state.view === 'gallery' ? '1' : '0',
+      galMl: this.state.view === 'gallery' ? '7px' : '0px',
+      tabW: this.state.view === 'table' ? '60px' : '0px',
+      tabOp: this.state.view === 'table' ? '1' : '0',
+      tabMl: this.state.view === 'table' ? '7px' : '0px'
+    };
+  }
+}
+</script>
+</body>
+</html>

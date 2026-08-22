@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="design_doc_mode" content="canvas">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #ece7dd; }
+  a { color: #c26a1e; text-decoration: none; }
+</style>
+</helmet>
+<div style="padding:40px 32px 80px; display:flex; flex-direction:column; gap:38px; max-width:1280px; margin:0 auto;">
+
+  <div>
+    <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 6px; color:#241d17;">Variantes de header</h1>
+    <p style="font-size:15px; color:#5a4f44; margin:0;">Cada opción mantiene el mismo contenido; cambia el fondo, el borde y el tratamiento del menú. Referí por su id (A, B, C…).</p>
+  </div>
+
+  <!-- A: Blanco cálido crema -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">A</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Blanco cálido crema</span></div>
+    <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+      <div style="background:#c26a1e; color:#fff; font-size:12px; padding:8px 24px; display:flex; justify-content:space-between;"><span>Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba</span><span>ES · EN · PT</span></div>
+      <header style="background:#faf5ec; border-bottom:1px solid #eadfce;">
+        <div style="padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+          <img src="uploads/logo_hores.png" alt="HORES" style="height:48px; width:auto; display:block;"/>
+          <nav style="display:flex; gap:24px; align-items:center; font-size:14.5px; font-weight:500;">
+            <span style="color:#4a4038;">Empresa</span><span style="color:#4a4038;">Productos</span><span style="color:#4a4038;">Calidad</span><span style="color:#4a4038;">Sustentabilidad</span><span style="color:#4a4038;">FAQ</span>
+            <span style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600;">Contacto</span>
+          </nav>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <!-- B: Beige claro con borde inferior naranja fino -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">B</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Blanco con filete naranja inferior</span></div>
+    <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+      <div style="background:#c26a1e; color:#fff; font-size:12px; padding:8px 24px; display:flex; justify-content:space-between;"><span>Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba</span><span>ES · EN · PT</span></div>
+      <header style="background:#ffffff; border-bottom:2.5px solid #c26a1e;">
+        <div style="padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+          <img src="uploads/logo_hores.png" alt="HORES" style="height:48px; width:auto; display:block;"/>
+          <nav style="display:flex; gap:24px; align-items:center; font-size:14.5px; font-weight:500;">
+            <span style="color:#4a4038;">Empresa</span><span style="color:#4a4038;">Productos</span><span style="color:#4a4038;">Calidad</span><span style="color:#4a4038;">Sustentabilidad</span><span style="color:#4a4038;">FAQ</span>
+            <span style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600;">Contacto</span>
+          </nav>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <!-- C: Blanco con textura papel sutil -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">C</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Textura papel muy sutil</span></div>
+    <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+      <div style="background:#c26a1e; color:#fff; font-size:12px; padding:8px 24px; display:flex; justify-content:space-between;"><span>Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba</span><span>ES · EN · PT</span></div>
+      <header style="background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); border-bottom:1px solid #e6dcc9;">
+        <div style="padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+          <img src="uploads/logo_hores.png" alt="HORES" style="height:48px; width:auto; display:block;"/>
+          <nav style="display:flex; gap:24px; align-items:center; font-size:14.5px; font-weight:500;">
+            <span style="color:#4a4038;">Empresa</span><span style="color:#4a4038;">Productos</span><span style="color:#4a4038;">Calidad</span><span style="color:#4a4038;">Sustentabilidad</span><span style="color:#4a4038;">FAQ</span>
+            <span style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600;">Contacto</span>
+          </nav>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <!-- D: Editorial, nav en mayúsculas espaciadas -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">D</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Editorial — menú en versalitas espaciadas</span></div>
+    <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+      <div style="background:#c26a1e; color:#fff; font-size:12px; padding:8px 24px; display:flex; justify-content:space-between;"><span>Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba</span><span>ES · EN · PT</span></div>
+      <header style="background:#ffffff; border-bottom:1px solid #e8e3d9;">
+        <div style="padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+          <img src="uploads/logo_hores.png" alt="HORES" style="height:46px; width:auto; display:block;"/>
+          <nav style="display:flex; gap:26px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+            <span style="color:#5a4f44;">Empresa</span><span style="color:#5a4f44;">Productos</span><span style="color:#5a4f44;">Calidad</span><span style="color:#5a4f44;">Sustentabilidad</span><span style="color:#5a4f44;">FAQ</span>
+            <span style="background:#241d17; color:#fff; padding:9px 18px; border-radius:8px; letter-spacing:.08em;">Contacto</span>
+          </nav>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <!-- ===== Header contextual por sección ===== -->
+  <div style="border-top:1px dashed #c9bda8; padding-top:30px; margin-top:6px;">
+    <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 6px; color:#241d17;">Header contextual por sección</h2>
+    <p style="font-size:14px; color:#5a4f44; margin:0 0 4px;">Misma base (textura + versalitas). El acento cambia sutilmente: filete inferior e ítem activo subrayado en el color de la sección.</p>
+  </div>
+
+  <sc-for list="{{ ctx }}" as="c" hint-placeholder-count="4">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:{{ c.color }}; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">{{ c.tag }}</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">{{ c.name }}</span></div>
+      <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+        <div style="background:#c26a1e; color:#fff; font-size:12px; padding:8px 24px; display:flex; justify-content:space-between;"><span>Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba</span><span>ES · EN · PT</span></div>
+        <header style="background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); border-bottom:2.5px solid {{ c.color }};">
+          <div style="padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+            <img src="uploads/logo_hores.png" alt="HORES" style="height:56px; width:auto; display:block;"/>
+            <nav style="display:flex; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+              <sc-for list="{{ c.items }}" as="it" hint-placeholder-count="5">
+                <span style="color:{{ it.color }}; border-bottom:2px solid {{ it.underline }}; padding-bottom:3px;">{{ it.label }}</span>
+              </sc-for>
+              <span style="background:{{ c.color }}; color:#fff; padding:9px 18px; border-radius:8px; letter-spacing:.08em;">Contacto</span>
+            </nav>
+          </div>
+        </header>
+      </div>
+    </div>
+  </sc-for>
+
+  <!-- E: Crema con línea superior naranja y sombra suave -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">E</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Crema, sin barra superior, con acento naranja</span></div>
+    <div style="border:1px solid #e0d8ca; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.06);">
+      <header style="background:#f7f1e7; border-top:3px solid #c26a1e; border-bottom:1px solid #e8ddc9;">
+        <div style="padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+          <img src="uploads/logo_hores.png" alt="HORES" style="height:50px; width:auto; display:block;"/>
+          <nav style="display:flex; gap:24px; align-items:center; font-size:14.5px; font-weight:500;">
+            <span style="color:#4a4038;">Empresa</span><span style="color:#4a4038;">Productos</span><span style="color:#4a4038;">Calidad</span><span style="color:#4a4038;">Sustentabilidad</span><span style="color:#4a4038;">FAQ</span>
+            <span style="border:1.5px solid #c26a1e; color:#c26a1e; padding:8px 18px; border-radius:8px; font-weight:600;">Contacto</span>
+          </nav>
+        </div>
+      </header>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const nav = ['Empresa','Productos','Calidad','Sustentabilidad','FAQ'];
+    const mk = (active, color) => nav.map(label => ({
+      label,
+      color: label === active ? color : '#5a4f44',
+      underline: label === active ? color : 'transparent'
+    }));
+    return {
+      ctx: [
+        { tag: 'Home', name: 'Inicio — naranja de marca', color: '#c26a1e', items: mk('Empresa', '#c26a1e') },
+        { tag: 'Prod', name: 'Productos — naranja', color: '#c26a1e', items: mk('Productos', '#c26a1e') },
+        { tag: 'Cal', name: 'Calidad — azul clínico', color: '#2f7d92', items: mk('Calidad', '#2f7d92') },
+        { tag: 'Sust', name: 'Sustentabilidad — verde', color: '#3f7d38', items: mk('Sustentabilidad', '#3f7d38') }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

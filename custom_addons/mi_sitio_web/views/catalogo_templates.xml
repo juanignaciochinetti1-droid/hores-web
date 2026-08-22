@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ============ Assets / estilo compartido ============ -->
+<template id="head_assets" name="Mi Sitio - Head Assets">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;family=Archivo:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&amp;display=swap" rel="stylesheet"/>
+<style>
+  #wrap.oe_structure * { box-sizing: border-box; }
+  #wrap.oe_structure { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
+  #wrap.oe_structure a { text-decoration: none; }
+</style>
+</template>
+
+<!-- ============ Header compartido ============ -->
+<template id="site_header" name="Mi Sitio - Header">
+  <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
+    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
+        <span style="opacity:.82;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
+        <span style="opacity:.82;">Tel./Fax: 54 3537 427085</span>
+        <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+      </div>
+    </div>
+  </div>
+  <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+      <a href="/mi-sitio" style="display:flex; align-items:center; color:inherit;">
+        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:56px; width:auto; display:block;"/>
+      </a>
+      <nav style="display:flex; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
+        <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
+        <a href="/historia" style="color:#5a4f44;">Historia</a>
+        <a href="/compras" style="color:#5a4f44;">Productos</a>
+        <a href="/calidad" style="color:#5a4f44;">Calidad</a>
+        <a href="/compromiso" style="color:#5a4f44;">Compromiso</a>
+        <a href="/mi-sitio#faq" style="color:#5a4f44;">FAQ</a>
+        <a href="/mi-sitio#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;">Contacto</a>
+      </nav>
+    </div>
+  </header>
+</template>
+
+<!-- ============ Footer compartido ============ -->
+<template id="site_footer" name="Mi Sitio - Footer">
+  <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+    <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+      <div>
+        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
+          <a href="/mi-sitio#empresa" style="color:#cfccc5;">Empresa</a>
+          <a href="/historia" style="color:#cfccc5;">Historia</a>
+          <a href="/compras" style="color:#cfccc5;">Productos</a>
+          <a href="/calidad" style="color:#cfccc5;">Calidad</a>
+          <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
+          <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;">
+          <span>Ruta Prov. 3, Km. 183.5, 2550 Bell Ville, Córdoba</span>
+          <span>Tel./Fax: 54 3537 427085 / 417085</span>
+          <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+    </div>
+  </footer>
+  <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20HORES%20Cartot%C3%A9cnica" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
+    <img src="/mi_sitio_web/static/src/img/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
+  </a>
+</template>
+
+<!-- ============ /compras — catálogo completo ============ -->
+<template id="compras_template" name="Mi Sitio - Compras">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
+          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Catálogo</div>
+          <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 10px; color:#241d17;">Nuestros productos</h1>
+          <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0 0 20px; max-width:44em;">Elegí una línea, revisá la ficha técnica y consultanos por WhatsApp para tu pedido.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <t t-foreach="categorias" t-as="c">
+              <a t-attf-href="/categoria/#{c.slug}" style="border:1px solid #d9ccb9; background:#ffffff; color:#5a4f44; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600;" t-esc="c.name"/>
+            </t>
+          </div>
+        </section>
+
+        <section style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
+            <t t-foreach="productos" t-as="p">
+              <div style="display:block; color:inherit;">
+                <a t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
+                  <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8; margin-bottom:16px;">
+                    <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                  </div>
+                  <span style="display:block; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:4px;" t-esc="p.category_id.name"/>
+                  <span style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
+                  <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 14px;" t-esc="p.summary"/>
+                </a>
+                <a t-attf-href="/producto/#{p.id}" style="display:inline-block; font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ficha técnica →</a>
+                <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
+              </div>
+            </t>
+          </div>
+        </section>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /categoria/<slug> ============ -->
+<template id="categoria_template" name="Mi Sitio - Categoría">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <style>
+        .lightbox-overlay { display:none; position:fixed; inset:0; background:rgba(20,15,11,.92); z-index:100; align-items:center; justify-content:center; padding:40px; cursor:zoom-out; }
+        .lightbox-overlay.open { display:flex; }
+        .lightbox-overlay img { max-width:90%; max-height:90%; border-radius:8px; }
+        .variant-thumb { cursor:zoom-in; }
+      </style>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
+          <a href="/compras" style="font-size:13px; font-weight:600; color:#8a7a67;">← Todo el catálogo</a>
+          <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:14px 0 30px; color:#241d17;" t-esc="categoria.name if categoria else 'Categoría'"/>
+        </section>
+
+        <section style="max-width:1200px; margin:0 auto; padding:0 28px 70px;">
+          <t t-if="not productos">
+            <p style="color:#8a7a67;">No hay productos publicados en esta categoría todavía.</p>
+          </t>
+          <t t-foreach="productos" t-as="p">
+            <div style="display:grid; grid-template-columns:.8fr 1.2fr; gap:36px; align-items:start; padding:34px 0; border-bottom:1px solid #e8e3d9;">
+              <a t-attf-href="/producto/#{p.id}" style="display:block;">
+                <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8;">
+                  <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                </div>
+              </a>
+              <div>
+                <a t-attf-href="/producto/#{p.id}" style="color:inherit;">
+                  <span style="font-family:'Source Serif 4',serif; font-size:24px; font-weight:600; color:#241d17;" t-esc="p.name"/>
+                </a>
+                <p style="font-size:15px; line-height:1.6; color:#5a4f44; margin:8px 0 18px;" t-esc="p.summary"/>
+                <div t-if="p.variante_ids" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+                  <t t-foreach="p.variante_ids" t-as="v">
+                    <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image"
+                         t-att-alt="v.dimensions" t-att-title="v.dimensions"
+                         class="variant-thumb"
+                         onclick="document.getElementById('lb-img').src=this.src; document.getElementById('lightbox').classList.add('open');"
+                         style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid #e0d8ca;"/>
+                  </t>
+                </div>
+                <a t-attf-href="/producto/#{p.id}" style="font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ver ficha técnica completa →</a>
+                <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
+              </div>
+            </div>
+          </t>
+        </section>
+
+        <div id="lightbox" class="lightbox-overlay" onclick="this.classList.remove('open');">
+          <img id="lb-img" src=""/>
+        </div>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /producto/<id> ============ -->
+<template id="producto_detalle_template" name="Mi Sitio - Ficha de producto">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 70px;">
+          <a t-if="producto.category_id" t-attf-href="/categoria/#{producto.category_id.slug}" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
+          <a t-else="" href="/compras" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
+
+          <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; margin-top:24px; align-items:start;">
+            <div style="position:relative; aspect-ratio:1/1; border-radius:14px; overflow:hidden; background:#efe6d8;">
+              <img t-attf-src="/web/image/mi_sitio_web.producto/#{producto.id}/image" t-att-alt="producto.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            </div>
+            <div>
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:8px;" t-esc="producto.code"/>
+              <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:34px; margin:0 0 14px; color:#241d17;" t-esc="producto.name"/>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 24px;" t-esc="producto.description or producto.summary"/>
+
+              <a t-att-href="producto.whatsapp_url"
+                 target="_blank" rel="noopener"
+                 style="display:inline-flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px; margin-bottom:30px;">
+                Consultar por WhatsApp
+              </a>
+
+              <div t-if="producto.feature_ids" style="margin-bottom:26px;">
+                <div style="font-size:13px; font-weight:700; color:#241d17; margin-bottom:10px;">Características</div>
+                <ul style="margin:0; padding-left:18px; font-size:14.5px; line-height:1.8; color:#5a4f44;">
+                  <li t-foreach="producto.feature_ids" t-as="f" t-esc="f.name"/>
+                </ul>
+              </div>
+
+              <div t-if="producto.spec_ids">
+                <div style="font-size:13px; font-weight:700; color:#241d17; margin-bottom:10px;">Especificaciones técnicas</div>
+                <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                  <tr t-foreach="producto.spec_ids" t-as="s" style="border-top:1px solid #e8e3d9;">
+                    <td style="padding:9px 0; color:#8a7a67; width:38%;" t-esc="s.label"/>
+                    <td style="padding:9px 0; color:#241d17;" t-esc="s.value"/>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div t-if="producto.variante_ids" style="margin-top:56px;">
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:24px; margin:0 0 20px; color:#241d17;">Variantes disponibles</h2>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+              <t t-foreach="producto.variante_ids" t-as="v">
+                <div style="border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#ffffff;">
+                  <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image" t-att-alt="v.dimensions" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;"/>
+                  <div style="padding:12px 14px;">
+                    <div style="font-size:13px; font-weight:600; color:#241d17;" t-esc="v.code"/>
+                    <div style="font-size:12.5px; color:#8a7a67;" t-esc="v.dimensions"/>
+                    <div t-if="v.weight" style="font-size:12.5px; color:#8a7a67;" t-esc="v.weight"/>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+        </section>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /calidad ============ -->
+<template id="calidad_template" name="Mi Sitio - Calidad">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f5f6f6;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <!-- Hero -->
+        <section style="background:#ffffff; border-bottom:1px solid #e7e9eb;">
+          <div style="max-width:1200px; margin:0 auto; padding:34px 28px 0;">
+            <div style="font-size:13px; color:#8a9099;"><a href="/mi-sitio" style="color:#8a9099;">Inicio</a> <span style="opacity:.6;">/</span> Calidad</div>
+          </div>
+          <div style="max-width:1200px; margin:0 auto; padding:44px 28px 60px; display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;">
+            <div>
+              <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:20px;">
+                <span style="width:26px; height:2px; background:#c26a1e; display:inline-block;"></span> Calidad y certificaciones
+              </div>
+              <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.2vw,54px); line-height:1.06; letter-spacing:-.015em; margin:0 0 18px; color:#1c2124;">Inocuidad controlada en cada etapa</h1>
+              <p style="font-size:18px; line-height:1.6; color:#565c62; margin:0 0 28px; max-width:32em;">Todos nuestros productos están autorizados para el contacto directo con alimentos y se fabrican bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
+              <div style="display:inline-flex; align-items:center; gap:12px; background:#f6ede1; border:1px solid #ecd9bf; border-radius:10px; padding:12px 18px;">
+                <span style="width:34px; height:34px; border-radius:8px; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Source Serif 4',serif; font-weight:700;">✓</span>
+                <span style="font-size:14px; color:#4a4f54;"><strong style="color:#1c2124;">ISO 22000:2018</strong> — Gestión de inocuidad certificada</span>
+              </div>
+            </div>
+            <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e7e9eb; box-shadow:0 20px 50px rgba(30,40,50,.08);">
+              <img src="/mi_sitio_web/static/src/img/Gemini_Generated_Image_2w0ia32w0ia32w0i.jpeg" alt="Control de calidad en planta HORES — inspección de lotes" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            </div>
+          </div>
+        </section>
+
+        <!-- Métricas -->
+        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e7e9eb; border-radius:14px; overflow:hidden; background:#fff;">
+            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Gestión de inocuidad certificada (2018)</div>
+            </div>
+            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">100%</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Productos aptos para contacto con alimentos</div>
+            </div>
+            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">Trazable</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Control de lote y materia prima</div>
+            </div>
+            <div style="padding:28px 24px;">
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">+40 años</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Experiencia fabricando</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Inocuidad alimentaria -->
+        <section style="max-width:1200px; margin:0 auto; padding:48px 28px;">
+          <div style="display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center;">
+            <div>
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Inocuidad alimentaria</div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#1c2124;">Materiales aptos, procesos trazables</h2>
+              <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0 0 16px;">Trabajamos con materiales aptos para uso alimentario y controlamos la trazabilidad de la materia prima. Cada lote se produce siguiendo procedimientos documentados que garantizan condiciones seguras de higiene y manipulación.</p>
+              <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0;">La gestión de inocuidad certificada ISO 22000:2018 ordena todos nuestros procesos: desde la recepción de insumos hasta el despacho del producto terminado.</p>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+                <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Materia prima apta</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Insumos habilitados para contacto con alimentos.</p>
+              </div>
+              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+                <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Higiene en planta</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Procedimientos de limpieza y manipulación documentados.</p>
+              </div>
+              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+                <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Control por lote</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Verificación de medidas y materiales en cada producción.</p>
+              </div>
+              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+                <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Trazabilidad</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Registro desde la recepción hasta el despacho.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Proceso -->
+        <section style="background:#ffffff; border-top:1px solid #e7e9eb; border-bottom:1px solid #e7e9eb;">
+          <div style="max-width:1200px; margin:0 auto; padding:60px 28px;">
+            <div style="max-width:44em; margin-bottom:38px;">
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestro proceso</div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Control en cada etapa</h2>
+              <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Un sistema documentado que asegura la misma calidad en cada lote.</p>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
+              <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">01</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Recepción de insumos</h3>
+                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Control de proveedores y materia prima apta.</p>
+              </div>
+              <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">02</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Producción</h3>
+                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Higiene y manipulación bajo procedimientos.</p>
+              </div>
+              <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">03</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Control de calidad</h3>
+                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Verificación por lote de medidas y materiales.</p>
+              </div>
+              <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">04</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Despacho</h3>
+                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Trazabilidad hasta la entrega del producto.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Certificaciones -->
+        <section style="max-width:1200px; margin:0 auto; padding:60px 28px;">
+          <div style="max-width:44em; margin-bottom:30px;">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Certificaciones</div>
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Documentación disponible</h2>
+            <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Certificado ISO 22000:2018</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Sistema de gestión de inocuidad de los alimentos vigente.</p>
+              <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+            </div>
+            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Aptitud sanitaria</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Documentación que acredita el uso en contacto con alimentos.</p>
+              <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+            </div>
+            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Fichas técnicas</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Especificaciones de cada producto: medidas, gramaje y material.</p>
+              <a href="/compras" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Ver catálogo →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section style="background:#c26a1e; color:#fff;">
+          <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff;">¿Necesitás la documentación de calidad?</h2>
+              <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Escribinos y te enviamos los certificados y fichas técnicas correspondientes.</p>
+            </div>
+            <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
+          </div>
+        </section>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /compromiso ============ -->
+<template id="compromiso_template" name="Mi Sitio - Compromiso">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <!-- Hero -->
+        <section style="position:relative; overflow:hidden; background:#1f2e1c;">
+          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Naturaleza — compromiso ambiental HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5;"/>
+          <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(18,28,16,.9) 0%, rgba(18,28,16,.64) 60%, rgba(18,28,16,.4) 100%);"></div>
+          <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:34px 28px 78px;">
+            <div style="font-size:13px; color:#d5e3c8; margin-bottom:16px;"><a href="/mi-sitio" style="color:#d5e3c8;">Inicio</a> <span style="opacity:.6;">/</span> Compromiso</div>
+            <div style="max-width:40rem;">
+              <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:20px;">
+                <span style="width:26px; height:2px; background:#a9c48f; display:inline-block;"></span> Compromiso
+              </div>
+              <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.4vw,56px); line-height:1.05; letter-spacing:-.015em; margin:0 0 18px; color:#fff;">Compromiso con el medioambiente y respeto por la naturaleza</h1>
+              <p style="font-size:18px; line-height:1.6; color:#dde7d2; margin:0; max-width:34em;">El papel es una materia prima renovable y reciclable. Trabajamos para aprovecharlo de manera responsable en cada etapa, reduciendo el impacto ambiental de nuestra actividad.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Intro -->
+        <section style="max-width:1000px; margin:0 auto; padding:64px 28px 20px; text-align:center;">
+          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(26px,3vw,34px); line-height:1.2; margin:0 0 18px; color:#1c2124;">Producimos pensando en las próximas generaciones</h2>
+          <p style="font-size:17px; line-height:1.65; color:#5a4f44; margin:0;">La industria del papel se basa en un recurso natural, renovable y biodegradable. Asumimos la responsabilidad de gestionarlo con criterio: elegimos proveedores comprometidos con el manejo responsable de los bosques, optimizamos nuestros procesos para generar menos desperdicio y recuperamos el papel como recurso.</p>
+        </section>
+
+        <!-- Pilares -->
+        <section style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+              <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🌳</div>
+              <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Bosques responsables</h3>
+              <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Proveedores comprometidos con una adecuada administración de los bosques y la reposición de la materia prima.</p>
+            </div>
+            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+              <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">♻️</div>
+              <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Menos desperdicio</h3>
+              <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Ingeniería de procesos y diseño de envases eficientes para minimizar el scrap de material.</p>
+            </div>
+            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+              <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🔄</div>
+              <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Materia prima secundaria</h3>
+              <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Recuperamos el scrap de papel y lo revalorizamos como recurso, cerrando el ciclo.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bosques responsables -->
+        <section style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+          <div style="display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center;">
+            <div>
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:14px;">Bosques responsables</div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#1c2124;">Un recurso renovable, bien administrado</h2>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 16px;">Priorizamos proveedores de papel comprometidos con una adecuada administración de los bosques, donde por cada árbol utilizado se planifica su reposición. Así, el papel se mantiene como una materia prima verdaderamente renovable.</p>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0;">El papel es, además, uno de los materiales más reciclados y biodegradables, lo que reduce su huella respecto de otras alternativas de envase.</p>
+            </div>
+            <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e8e3d9; box-shadow:0 20px 50px rgba(30,40,30,.08);">
+              <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Bosque — administración responsable" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            </div>
+          </div>
+        </section>
+
+        <!-- Economía circular -->
+        <section style="background:#20301f; color:#e7ecdf;">
+          <div style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+            <div style="max-width:44em; margin-bottom:38px;">
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:10px;">Menos desperdicio</div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#fff;">Del diseño al reciclado</h2>
+              <p style="font-size:16px; line-height:1.55; color:#cbd6bd; margin:0;">Cada etapa está pensada para aprovechar mejor el material y darle una segunda vida.</p>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
+              <div style="border-left:2px solid #4a5f43; padding-left:20px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#a9c48f; letter-spacing:.08em; margin-bottom:12px;">01</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#fff;">Diseño eficiente</h3>
+                <p style="font-size:14px; line-height:1.55; color:#c1cdb2; margin:0;">Moldes optimizados para usar menos material por unidad.</p>
+              </div>
+              <div style="border-left:2px solid #4a5f43; padding-left:20px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#a9c48f; letter-spacing:.08em; margin-bottom:12px;">02</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#fff;">Producción</h3>
+                <p style="font-size:14px; line-height:1.55; color:#c1cdb2; margin:0;">Control del consumo y aprovechamiento del papel.</p>
+              </div>
+              <div style="border-left:2px solid #4a5f43; padding-left:20px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#a9c48f; letter-spacing:.08em; margin-bottom:12px;">03</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#fff;">Recupero de scrap</h3>
+                <p style="font-size:14px; line-height:1.55; color:#c1cdb2; margin:0;">El recorte se separa y reingresa como recurso.</p>
+              </div>
+              <div style="border-left:2px solid #4a5f43; padding-left:20px;">
+                <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#a9c48f; letter-spacing:.08em; margin-bottom:12px;">04</div>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#fff;">Reciclado</h3>
+                <p style="font-size:14px; line-height:1.55; color:#c1cdb2; margin:0;">El papel es reciclable y biodegradable al final de su vida útil.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Compromisos -->
+        <section style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+          <div style="max-width:44em; margin-bottom:30px;">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:10px;">Nuestros compromisos</div>
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Cómo lo llevamos a la práctica</h2>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Materia prima renovable</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Valorizamos el papel como recurso natural y renovable.</p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Proveedores responsables</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Selección con criterio de manejo forestal adecuado.</p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Eficiencia de material</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Diseños que reducen el desperdicio en origen.</p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Gestión del scrap</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Separación y revalorización del recorte de papel.</p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Envases reciclables</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Productos pensados para su reciclado posterior.</p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+              <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
+              <div>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Mejora continua</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Revisamos procesos para reducir el impacto ambiental.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section style="background:#3f7d38; color:#fff;">
+          <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff;">Trabajemos de forma más sustentable</h2>
+              <p style="font-size:16px; line-height:1.5; color:#dcecd3; margin:0; max-width:40em;">Consultanos por soluciones de envase más eficientes para tu producción.</p>
+            </div>
+            <a href="/mi-sitio#contacto" style="background:#1f2e1c; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Contactanos</a>
+          </div>
+        </section>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /historia ============ -->
+<template id="historia_template" name="Mi Sitio - Historia">
+  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <section style="max-width:840px; margin:0 auto; padding:70px 28px;">
+          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Nuestra historia</div>
+          <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 30px; color:#241d17;">+40 años fabricando moldes de papel</h1>
+
+          <div style="display:flex; flex-direction:column; gap:30px; font-size:16px; line-height:1.7; color:#5a4f44;">
+            <p>Cartotécnica Hores nació en Bell Ville, Córdoba, con el objetivo de desarrollar y fabricar envases de papel para la industria alimentaria. A lo largo de más de cuatro décadas, la empresa se especializó en moldes para panificación: pan dulce, budín, rosca, bizcochuelo y pan de pascua.</p>
+            <p>Con el correr de los años, la planta incorporó tecnología de producción para sostener altos volúmenes sin resignar calidad, y amplió su alcance comercial a toda la región de Latinoamérica.</p>
+            <p>Hoy, Hores trabaja bajo un sistema de gestión de inocuidad certificado ISO 22000:2018, y continúa invirtiendo en investigación y desarrollo para ofrecer moldes personalizados según las necesidades de cada cliente.</p>
+          </div>
+        </section>
+
+        <t t-call="mi_sitio_web.site_footer"/>
+      </div>
+    </div>
+  </t>
+</template>
+
+</odoo>

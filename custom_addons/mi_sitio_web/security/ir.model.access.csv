@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mi_sitio_web_producto_user,mi_sitio_web.producto.user,model_mi_sitio_web_producto,base.group_user,1,1,1,1
+access_mi_sitio_web_producto_public,mi_sitio_web.producto.public,model_mi_sitio_web_producto,base.group_public,1,0,0,0
+access_mi_sitio_web_categoria_user,mi_sitio_web.categoria.user,model_mi_sitio_web_categoria,base.group_user,1,1,1,1
+access_mi_sitio_web_categoria_public,mi_sitio_web.categoria.public,model_mi_sitio_web_categoria,base.group_public,1,0,0,0
+access_mi_sitio_web_producto_spec_user,mi_sitio_web.producto.spec.user,model_mi_sitio_web_producto_spec,base.group_user,1,1,1,1
+access_mi_sitio_web_producto_spec_public,mi_sitio_web.producto.spec.public,model_mi_sitio_web_producto_spec,base.group_public,1,0,0,0
+access_mi_sitio_web_producto_feature_user,mi_sitio_web.producto.feature.user,model_mi_sitio_web_producto_feature,base.group_user,1,1,1,1
+access_mi_sitio_web_producto_feature_public,mi_sitio_web.producto.feature.public,model_mi_sitio_web_producto_feature,base.group_public,1,0,0,0
+access_mi_sitio_web_producto_variante_user,mi_sitio_web.producto.variante.user,model_mi_sitio_web_producto_variante,base.group_user,1,1,1,1
+access_mi_sitio_web_producto_variante_public,mi_sitio_web.producto.variante.public,model_mi_sitio_web_producto_variante,base.group_public,1,0,0,0

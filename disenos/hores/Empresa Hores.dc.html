@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
+  a { color: #c26a1e; text-decoration: none; }
+  a:hover { color: #9c5314; }
+  ::selection { background: #f6e0c2; }
+  @keyframes hFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+
+  <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
+    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
+        <span style="opacity:.9;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
+        <span style="opacity:.9;">Tel./Fax: 54 3537 427085</span>
+        <a href="mailto:administracion@hores.com.ar" style="color:#fff; text-decoration:underline;">administracion@hores.com.ar</a>
+      </div>
+      <div style="display:flex; gap:4px; align-items:center;">
+        <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
+          <button onClick="{{ lg.set }}" style="background:{{ lg.bg }}; border:none; color:#fff; font-family:'Archivo',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.06em; padding:4px 9px; border-radius:5px; cursor:pointer; opacity:{{ lg.op }};">{{ lg.code }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="Home%20Hores.dc.html" style="display:flex; align-items:center; color:inherit;">
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:64px; width:auto; display:block;"/>
+      </a>
+      <nav style="display:flex; gap:26px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;">
+        <a href="Empresa%20Hores.dc.html" style="color:#c26a1e; font-weight:600;">Empresa</a>
+        <a href="Productos%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Productos</a>
+        <a href="Calidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#c26a1e;">Calidad</a>
+        <a href="Sustentabilidad%20Hores.dc.html" style="color:#5a4f44;" style-hover="color:#3f7d38;">Compromiso</a>
+        <a href="Home%20Hores.dc.html#faq" style="color:#5a4f44;" style-hover="color:#2f6f8f;">FAQ</a>
+        <a href="Home%20Hores.dc.html#contacto-form" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;" style-hover="background:#9c5314;">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section style="position:relative; overflow:hidden; background:#241d17;">
+    <img src="uploads/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.42;"/>
+    <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,15,11,.9) 0%, rgba(20,15,11,.64) 60%, rgba(20,15,11,.4) 100%);"></div>
+    <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:34px 28px 78px;">
+      <div style="font-size:13px; color:#e4dccf; margin-bottom:16px;"><a href="Home%20Hores.dc.html" style="color:#e4dccf;">Inicio</a> <span style="opacity:.6;">/</span> Empresa</div>
+      <div style="max-width:42rem; animation:hFade .6s ease both;">
+        <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:20px;">
+          <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Quiénes somos
+        </div>
+        <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.4vw,56px); line-height:1.05; letter-spacing:-.015em; margin:0 0 18px; color:#fff; text-wrap:balance;">Más de 30 años dando forma al papel</h1>
+        <p style="font-size:18px; line-height:1.6; color:#e4dccf; margin:0; max-width:34em; text-wrap:pretty;">De un taller con una máquina en 1992 a una planta de 15.000 m² que exporta a toda Latinoamérica. Esta es la historia de Cartotécnica Hores.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro + video -->
+  <section style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;">
+      <div>
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Sobre nosotros</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17; text-wrap:balance;">Somos HORES</h2>
+        <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 16px; text-wrap:pretty;">Cartotécnica Hores diseña, desarrolla y fabrica moldes de papel para la industria alimentaria. Nacimos en Bell Ville, Córdoba, de la pasión de dos emprendedores por hacer las cosas bien.</p>
+        <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0; text-wrap:pretty;">Hoy nuestros productos se comercializan en Uruguay, Chile, Paraguay, Colombia y México, entre otros, manteniendo el mismo compromiso de calidad de siempre.</p>
+      </div>
+      <div style="position:relative; aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:1px solid #e6dcc9; box-shadow:0 20px 50px rgba(60,40,20,.10); background:#000;">
+        <iframe src="https://www.youtube-nocookie.com/embed/BcVLoAW7TA4?rel=0" title="Somos HORES" style="position:absolute; inset:0; width:100%; height:100%; border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Métricas -->
+  <section style="max-width:1200px; margin:0 auto; padding:0 28px 20px;">
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e6dcc9; border-radius:14px; overflow:hidden; background:#ffffff;">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:28px 24px; border-right:1px solid #f0e8da;">
+          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">{{ s.k }}</div>
+          <div style="font-size:13.5px; line-height:1.5; color:#5a4f44;">{{ s.v }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- Línea de tiempo -->
+  <section style="background:#ffffff; border-top:1px solid #e8e3d9; border-bottom:1px solid #e8e3d9; margin-top:44px;">
+    <div style="max-width:1000px; margin:0 auto; padding:64px 28px;">
+      <div style="margin-bottom:44px;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestra historia</div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0; color:#241d17;">Una línea de tiempo</h2>
+      </div>
+      <div style="position:relative; padding-left:38px;">
+        <div style="position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:linear-gradient(#e0cbb0,#efe7d9);"></div>
+        <div style="display:flex; flex-direction:column; gap:36px;">
+          <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="8">
+            <div style="position:relative;">
+              <span style="position:absolute; left:-38px; top:2px; width:24px; height:24px; border-radius:50%; background:#f6f4ef; border:2px solid #c26a1e; display:flex; align-items:center; justify-content:center;"><span style="width:8px; height:8px; border-radius:50%; background:#c26a1e;"></span></span>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; color:#c26a1e; margin-bottom:6px;">{{ t.year }}</div>
+              <h3 style="font-size:18px; font-weight:600; margin:0 0 8px; color:#241d17;">{{ t.title }}</h3>
+              <p style="font-size:15px; line-height:1.65; color:#5a4f44; margin:0; max-width:52em; text-wrap:pretty;">{{ t.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Misión y Visión -->
+  <section style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div style="border:1px solid #e6dcc9; border-radius:16px; padding:36px; background:#ffffff;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Misión</div>
+        <p style="font-size:17px; line-height:1.65; color:#3f382f; margin:0; text-wrap:pretty;">Producir y proveer moldes de papel inocuos para la industria de la alimentación, atendiendo las necesidades de los clientes y brindando las condiciones para el desarrollo de las personas que forman la empresa.</p>
+      </div>
+      <div style="border:1px solid #e6dcc9; border-radius:16px; padding:36px; background:#20301f; color:#e7ecdf;">
+        <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:14px;">Visión</div>
+        <p style="font-size:17px; line-height:1.65; color:#dde7d2; margin:0; text-wrap:pretty;">Posicionarnos como una de las principales empresas a nivel mundial en la producción de moldes de papel para la industria de la alimentación.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:#c26a1e; color:#fff;">
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff; text-wrap:balance;">Conocé lo que fabricamos</h2>
+        <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Explorá nuestras líneas de moldes y sus especificaciones técnicas.</p>
+      </div>
+      <a href="Productos%20Hores.dc.html" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Ver productos</a>
+    </div>
+  </section>
+
+  <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+    <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+      <div>
+        <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
+          <a href="Empresa%20Hores.dc.html" style="color:#cfccc5;">Empresa</a>
+          <a href="Productos%20Hores.dc.html" style="color:#cfccc5;">Productos</a>
+          <a href="Calidad%20Hores.dc.html" style="color:#cfccc5;">Calidad</a>
+          <a href="Sustentabilidad%20Hores.dc.html" style="color:#cfccc5;">Compromiso</a>
+          <a href="Home%20Hores.dc.html#faq" style="color:#cfccc5;">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;">
+          <span>Ruta Prov. 3, Km. 183.5, 2550 Bell Ville, Córdoba</span>
+          <span>Tel./Fax: 54 3537 427085 / 417085</span>
+          <a href="mailto:administracion@hores.com.ar" style="color:#f0c9a0;">administracion@hores.com.ar</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/543537427085" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;" style-hover="background:#1eb457;">
+    <img src="uploads/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'ES' };
+  stats = [
+    { k: '1992', v: 'Año de fundación' },
+    { k: '15.000 m²', v: 'Planta industrial actual' },
+    { k: '+5 países', v: 'Uruguay, Chile, Paraguay, Colombia, México' },
+    { k: 'ISO 22000', v: 'Gestión de inocuidad certificada' }
+  ];
+  timeline = [
+    { year: '1992', title: 'Los inicios', text: 'Gabriel Markarian y Oscar Urbano construyen una máquina automática de moldes de papel para pan dulce. Con pasión y dedicación empiezan a hacer realidad lo que soñaban.' },
+    { year: '1999', title: 'Nace Cartotécnica Hores SRL', text: 'Le dan a la empresa todo el rigor legal y se conforma Cartotécnica Hores SRL, ingresando e instalándose exitosamente en el mercado de la industria panificadora.' },
+    { year: '2002', title: 'Moldes de budín sin fleje', text: 'Se pone en marcha la línea de moldes de budín sin fleje, que reduce el costo y favorece la activación de los detectores de metales. Registro de modelo industrial N.º 68399.' },
+    { year: '2003 – 2005', title: 'Diversificación de líneas', text: 'Para abastecer una demanda cada vez más variada se diversifican las líneas: pan dulce, roscas y bizcochuelos, budines y pan de pascua. Comienza la construcción de nuevas conformadoras para modernizar los procesos.' },
+    { year: '2006 – 2009', title: 'Ampliación y tecnología', text: 'Se amplía la planta a 5.000 m² y se invierte en capacidad productiva: una Super Calandra para procesar bobinas de papel virgen, micro corrugado y máquinas flexográficas de 4 colores para impresión.' },
+    { year: '2011 – 2012', title: 'Certificación ISO 22000', text: 'Con un trabajo persistente y compromiso de calidad, la empresa certifica la norma ISO 22000:2005 junto a Bureau Veritas.' },
+    { year: '2015', title: 'Un predio para crecer', text: 'Se adquiere un predio de 4,5 hectáreas con el objetivo de trasladar la planta industrial y acompañar la expansión hacia nuevos mercados internos y externos.' },
+    { year: '2018 – 2020', title: 'Nueva planta de 12.000 m²', text: 'El 9 de marzo de 2020 la empresa se instala completamente en la nueva planta de 15.000 m², con áreas dedicadas de proceso de materia prima, producción, mantenimiento y logística. Hoy Hores exporta a diferentes países del mundo.' }
+  ];
+  renderVals() {
+    return {
+      langs: ['ES', 'EN', 'PT'].map(code => ({
+        code,
+        op: this.state.lang === code ? 1 : 0.6,
+        bg: this.state.lang === code ? 'rgba(0,0,0,.22)' : 'transparent',
+        set: () => this.setState({ lang: code })
+      })),
+      stats: this.stats,
+      timeline: this.timeline
+    };
+  }
+}
+</script>
+</body>
+</html>

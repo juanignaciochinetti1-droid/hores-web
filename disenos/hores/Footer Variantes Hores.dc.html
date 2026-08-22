@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+<meta name="design_doc_mode" content="canvas">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #ece7dd; }
+  a { color: #c26a1e; text-decoration: none; }
+</style>
+</helmet>
+<div style="padding:40px 32px 90px; display:flex; flex-direction:column; gap:44px; max-width:1240px; margin:0 auto;">
+
+  <div>
+    <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 6px; color:#241d17;">Variantes de footer — por tipografía</h1>
+    <p style="font-size:15px; color:#5a4f44; margin:0;">Cada uno propone una personalidad tipográfica distinta. Referí por su id (F1, F2, F3, F4).</p>
+  </div>
+
+  <!-- F1: Industrial — Oswald condensado + Space Mono -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F1</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Industrial — Oswald condensado + datos en mono</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08);">
+      <footer style="background:linear-gradient(rgba(38,38,42,.93),rgba(38,38,42,.93)),repeating-linear-gradient(135deg,#26262a,#26262a 3px,#2a2a2f 3px,#2a2a2f 6px); color:#b9b6b0;">
+        <div style="padding:48px 44px 28px; display:grid; grid-template-columns:1.5fr 1fr 1.2fr; gap:40px; align-items:start;">
+          <div>
+            <div style="font-family:'Oswald',sans-serif; font-weight:600; font-size:40px; line-height:.95; letter-spacing:.02em; color:#fff; text-transform:uppercase;">Hores</div>
+            <div style="font-family:'Oswald',sans-serif; font-weight:400; font-size:14px; letter-spacing:.42em; color:#e08a34; text-transform:uppercase; margin-top:4px;">Cartotécnica</div>
+            <p style="font-size:13px; line-height:1.6; color:#8f8b85; margin:18px 0 0; max-width:24em;">Moldes de papel para panificación desde Bell Ville, Córdoba.</p>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#fff; margin-bottom:14px;">Navegación</div>
+            <div style="display:flex; flex-direction:column; gap:9px; font-size:13.5px; color:#c7c4bd;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#fff; margin-bottom:14px;">Contacto</div>
+            <div style="display:flex; flex-direction:column; gap:9px; font-family:'Space Mono',monospace; font-size:12.5px; color:#a8a49d;"><span>RUTA PROV. 3, KM 183.5</span><span>BELL VILLE, CÓRDOBA</span><span>+54 3537 427085</span><span style="color:#f0c9a0;">administracion@hores.com.ar</span></div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #3a3a3f; padding:15px 44px; font-family:'Space Mono',monospace; font-size:11.5px; color:#7a766f; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES CARTOTÉCNICA</span><span>PAN DULCE · BUDÍN · ROSCA · BIZCOCHUELO</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- F2: Editorial — statement grande en serif -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F2</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Editorial — frase grande en serif</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08);">
+      <footer style="background:#241d17; color:#c9bdac;">
+        <div style="padding:56px 44px 30px;">
+          <div style="font-family:'Source Serif 4',serif; font-weight:600; font-size:clamp(26px,3.4vw,40px); line-height:1.12; color:#fff; letter-spacing:-.015em; max-width:16em; margin-bottom:38px; text-wrap:balance;">Seriedad y eficiencia en cada molde de papel.</div>
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:36px; border-top:1px solid #3a3128; padding-top:30px;">
+            <div>
+              <img src="uploads/logo_hores.png" alt="HORES" style="height:42px; width:auto; display:block; margin-bottom:12px;"/>
+              <p style="font-size:13px; line-height:1.6; color:#a89a86; margin:0; max-width:24em;">Bell Ville, Córdoba, Argentina.</p>
+            </div>
+            <div>
+              <div style="font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#e08a34; margin-bottom:12px;">Navegación</div>
+              <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#d8cbb8;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+            </div>
+            <div>
+              <div style="font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#e08a34; margin-bottom:12px;">Contacto</div>
+              <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#a89a86;"><span>54 3537 427085</span><span style="color:#f0c9a0;">administracion@hores.com.ar</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #3a3128; padding:15px 44px; font-size:12px; color:#7d6f5d;">© 2026 HORES Cartotécnica — Moldes de papel para panificación</div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- F3: Moderno cálido — Bricolage Grotesque sobre crema -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F3</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Bricolage Grotesque — carbón + barra gris pastel</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08);">
+      <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
+        <div style="padding:50px 44px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+          <div>
+            <img src="uploads/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+            <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+          </div>
+          <div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+            <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#cfccc5;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+          </div>
+          <div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+            <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;"><span>Ruta Prov. 3, Km. 183.5, Bell Ville</span><span>54 3537 427085</span><span style="color:#f0c9a0;">administracion@hores.com.ar</span></div>
+          </div>
+        </div>
+        <div style="background:#e6e6e4; border-top:1px solid #d7d7d3; padding:16px 44px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica</span><span>Pan dulce · Budín · Rosca · Bizcochuelo</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- F5: Papel rasgado -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F5</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Papel rasgado — borde superior irregular</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08); background:#e6e6e4;">
+      <div style="position:relative; padding-top:26px;">
+        <!-- borde rasgado -->
+        <div style="position:absolute; top:0; left:0; right:0; height:30px; background:linear-gradient(rgba(38,38,42,.92),rgba(38,38,42,.92)),repeating-linear-gradient(135deg,#26262a,#26262a 3px,#2a2a2f 3px,#2a2a2f 6px); -webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2230%22 viewBox=%220 0 120 30%22 preserveAspectRatio=%22none%22><path d=%22M0,30 L0,14 L6,17 L12,11 L18,16 L24,9 L30,15 L36,8 L42,14 L48,7 L54,13 L60,6 L66,13 L72,8 L78,15 L84,9 L90,16 L96,10 L102,17 L108,11 L114,16 L120,12 L120,30 Z%22 fill=%22black%22/></svg>'); mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2230%22 viewBox=%220 0 120 30%22 preserveAspectRatio=%22none%22><path d=%22M0,30 L0,14 L6,17 L12,11 L18,16 L24,9 L30,15 L36,8 L42,14 L48,7 L54,13 L60,6 L66,13 L72,8 L78,15 L84,9 L90,16 L96,10 L102,17 L108,11 L114,16 L120,12 L120,30 Z%22 fill=%22black%22/></svg>'); -webkit-mask-size:120px 100%; mask-size:120px 100%; -webkit-mask-repeat:repeat-x; mask-repeat:repeat-x;"></div>
+        <footer style="background:linear-gradient(rgba(38,38,42,.92),rgba(38,38,42,.92)),repeating-linear-gradient(135deg,#26262a,#26262a 3px,#2a2a2f 3px,#2a2a2f 6px); color:#b9b6b0;">
+          <div style="padding:30px 44px 26px; display:grid; grid-template-columns:1.5fr 1fr 1.2fr; gap:40px; align-items:start;">
+            <div>
+              <img src="uploads/logo_hores.png" alt="HORES" style="height:46px; width:auto; display:block; margin-bottom:14px;"/>
+              <p style="font-size:13px; line-height:1.6; color:#8f8b85; margin:0; max-width:24em;">Moldes de papel para panificación. Bell Ville, Córdoba, Argentina.</p>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:12px;">Navegación</div>
+              <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#c7c4bd;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:12px;">Contacto</div>
+              <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#a8a49d;"><span>Ruta Prov. 3, Km. 183.5, Bell Ville</span><span>54 3537 427085</span><span style="color:#f0c9a0;">administracion@hores.com.ar</span></div>
+            </div>
+          </div>
+          <div style="background:#e6e6e4; border-top:1px solid #d7d7d3; padding:15px 44px; font-size:12px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica</span><span>Pan dulce · Budín · Rosca · Bizcochuelo</span></div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- F4: Wordmark gigante de cierre -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F4</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Wordmark gigante de cierre</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08);">
+      <footer style="background:#26262a; color:#b9b6b0; overflow:hidden;">
+        <div style="padding:44px 44px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:36px;">
+          <div>
+            <div style="font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#e08a34; margin-bottom:12px;">Navegación</div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#c7c4bd;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+          </div>
+          <div>
+            <div style="font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#e08a34; margin-bottom:12px;">Contacto</div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:13.5px; color:#a8a49d;"><span>Ruta Prov. 3, Km. 183.5</span><span>Bell Ville, Córdoba</span><span>54 3537 427085</span></div>
+          </div>
+          <div>
+            <div style="font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#e08a34; margin-bottom:12px;">Escribinos</div>
+            <div style="font-size:13.5px; color:#f0c9a0;">administracion@hores.com.ar</div>
+          </div>
+        </div>
+        <div style="font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(80px,17vw,220px); line-height:.8; letter-spacing:-.01em; text-transform:uppercase; color:#313136; padding:0 30px; user-select:none;">Hores</div>
+        <div style="border-top:1px solid #3a3a3f; padding:15px 44px; font-size:12px; color:#7a766f; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica</span><span>Moldes de papel para panificación</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- F6: Todo combinado -->
+  <div>
+    <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:12px;"><span style="background:#c26a1e; color:#fff; font-weight:700; font-size:12px; padding:3px 9px; border-radius:6px;">F6</span><span style="font-size:13.5px; font-weight:600; color:#5a4f44;">Combo final — rasgado + textura + Bricolage + wordmark + barra gris</span></div>
+    <div style="border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(60,40,20,.08); background:#e6e6e4;">
+      <div style="position:relative; padding-top:26px;">
+        <div style="position:absolute; top:0; left:0; right:0; height:30px; background:linear-gradient(rgba(38,38,42,.92),rgba(38,38,42,.92)),repeating-linear-gradient(135deg,#26262a,#26262a 3px,#2a2a2f 3px,#2a2a2f 6px); -webkit-mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2230%22 viewBox=%220 0 120 30%22 preserveAspectRatio=%22none%22><path d=%22M0,30 L0,14 L6,17 L12,11 L18,16 L24,9 L30,15 L36,8 L42,14 L48,7 L54,13 L60,6 L66,13 L72,8 L78,15 L84,9 L90,16 L96,10 L102,17 L108,11 L114,16 L120,12 L120,30 Z%22 fill=%22black%22/></svg>'); mask-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%2230%22 viewBox=%220 0 120 30%22 preserveAspectRatio=%22none%22><path d=%22M0,30 L0,14 L6,17 L12,11 L18,16 L24,9 L30,15 L36,8 L42,14 L48,7 L54,13 L60,6 L66,13 L72,8 L78,15 L84,9 L90,16 L96,10 L102,17 L108,11 L114,16 L120,12 L120,30 Z%22 fill=%22black%22/></svg>'); -webkit-mask-size:120px 100%; mask-size:120px 100%; -webkit-mask-repeat:repeat-x; mask-repeat:repeat-x;"></div>
+        <footer style="background:linear-gradient(rgba(38,38,42,.92),rgba(38,38,42,.92)),repeating-linear-gradient(135deg,#26262a,#26262a 3px,#2a2a2f 3px,#2a2a2f 6px); color:#b9b6b0; overflow:hidden;">
+          <div style="padding:34px 44px 24px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
+            <div>
+              <img src="uploads/logo_hores.png" alt="HORES" style="height:46px; width:auto; display:block; margin-bottom:14px;"/>
+              <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Navegación</div>
+              <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#cfccc5;"><span>Empresa</span><span>Productos</span><span>Calidad</span><span>Sustentabilidad</span><span>FAQ</span></div>
+            </div>
+            <div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:14px; color:#e08a34; margin-bottom:14px;">Contacto</div>
+              <div style="display:flex; flex-direction:column; gap:9px; font-size:14px; color:#a8a49d;"><span>Ruta Prov. 3, Km. 183.5, Bell Ville</span><span>54 3537 427085</span><span style="color:#f0c9a0;">administracion@hores.com.ar</span></div>
+            </div>
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:clamp(80px,17vw,220px); line-height:.78; letter-spacing:-.03em; color:#313136; padding:0 30px; user-select:none;">Hores</div>
+          <div style="background:#e6e6e4; border-top:1px solid #d7d7d3; padding:15px 44px; font-size:12px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica</span><span>Pan dulce · Budín · Rosca · Bizcochuelo</span></div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
