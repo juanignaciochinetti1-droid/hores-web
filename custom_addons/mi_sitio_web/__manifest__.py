@@ -15,6 +15,7 @@
         'views/producto_views.xml',
         'views/website_templates.xml',
         'views/catalogo_templates.xml',
+        'views/seo_templates.xml',
     ],
     'installable': True,
     'application': True,

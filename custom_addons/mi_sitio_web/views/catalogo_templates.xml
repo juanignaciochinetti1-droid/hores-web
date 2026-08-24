@@ -10,7 +10,89 @@
   #wrap.oe_structure * { box-sizing: border-box; }
   #wrap.oe_structure { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
   #wrap.oe_structure a { text-decoration: none; }
+
+  /* Transición suave en todos los links/botones del sitio */
+  #wrap.oe_structure a, #wrap.oe_structure button {
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  /* Los links con pinta de botón (tienen border-radius inline) levantan
+     un poco y se aclaran al hover; los links de texto plano quedan igual. */
+  #wrap.oe_structure a[style*="border-radius"]:hover, #wrap.oe_structure button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.07);
+    box-shadow: 0 8px 18px rgba(0,0,0,.14);
+  }
+
+  /* Foco visible para navegación por teclado (accesibilidad) — los campos
+     tenían outline:none sin ningún reemplazo, invisibles para teclado. */
+  #wrap.oe_structure a:focus-visible,
+  #wrap.oe_structure button:focus-visible,
+  #wrap.oe_structure input:focus-visible,
+  #wrap.oe_structure textarea:focus-visible {
+    outline: 2.5px solid #c26a1e;
+    outline-offset: 2px;
+  }
+  #wrap.oe_structure input:focus, #wrap.oe_structure textarea:focus {
+    border-color: #c26a1e !important;
+  }
+
+  /* Scroll-reveal reutilizable: cualquier elemento con class="reveal" */
+  #wrap.oe_structure .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  #wrap.oe_structure .reveal.is-visible { opacity: 1; transform: none; }
+
+  /* Tarjeta con sombra + lift al hover, reusable en todo el sitio */
+  #wrap.oe_structure .hc-card {
+    box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  #wrap.oe_structure .hc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(36,29,23,.08), 0 18px 34px rgba(36,29,23,.1);
+  }
+
+  /* Tarjeta de producto: zoom de imagen + lift al hover */
+  #wrap.oe_structure .hc-product-card .hc-product-thumb { overflow: hidden; }
+  #wrap.oe_structure .hc-product-card .hc-product-thumb img { transition: transform .45s ease; }
+  #wrap.oe_structure .hc-product-card:hover .hc-product-thumb img { transform: scale(1.06); }
+  #wrap.oe_structure .hc-product-name { display: block; transition: color .2s ease; }
+  #wrap.oe_structure .hc-product-card:hover .hc-product-name { color: #c26a1e; }
+
+  /* Badge "Personalizable" con texto, en vez del punto chico */
+  #wrap.oe_structure .hc-badge-custom {
+    position: absolute; right: 10px; top: 10px; background: #c26a1e; color: #fff;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.18);
+  }
+
+  /* Empty state cuidado (categoría sin productos, etc.) */
+  #wrap.oe_structure .hc-empty-state { text-align: center; padding: 60px 28px; border: 1.5px dashed #d9ccb9; border-radius: 16px; background: #fffdf9; }
+
+  /* Grid pattern sutil reusable para heros oscuros */
+  #wrap.oe_structure .hc-hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 42px 42px; opacity: .5;
+  }
 </style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var revealEls = document.querySelectorAll('#wrap .reveal');
+    if (!revealEls.length) return;
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach(function (el) { obs.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    }
+  });
+</script>
 </template>
 
 <!-- ============ Header compartido ============ -->
@@ -82,32 +164,40 @@
 <!-- ============ /compras — catálogo completo ============ -->
 <template id="compras_template" name="Mi Sitio - Compras">
   <t t-call="website.layout">
+    <t t-set="title">Catálogo de moldes de papel — HORES Cartotécnica</t>
+    <t t-set="website_meta_description">Moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Consultá ficha técnica y especificaciones de cada línea.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
         <t t-call="mi_sitio_web.site_header"/>
 
-        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
           <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Catálogo</div>
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 10px; color:#241d17;">Nuestros productos</h1>
           <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0 0 20px; max-width:44em;">Elegí una línea, revisá la ficha técnica y consultanos por WhatsApp para tu pedido.</p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
             <t t-foreach="categorias" t-as="c">
               <a t-attf-href="/categoria/#{c.slug}" style="border:1px solid #d9ccb9; background:#ffffff; color:#5a4f44; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600;" t-esc="c.name"/>
             </t>
           </div>
+          <div style="position:relative; max-width:360px;">
+            <input id="compras-search" type="search" placeholder="Buscar producto (ej: budín, rosca...)"
+                   style="width:100%; border:1px solid #d9ccb9; background:#ffffff; border-radius:9px; padding:11px 14px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;"/>
+          </div>
         </section>
 
-        <section style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
+          <p id="compras-sin-resultados" style="display:none; color:#8a7a67; font-size:15px;">No encontramos productos que coincidan con tu búsqueda.</p>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
             <t t-foreach="productos" t-as="p">
-              <div style="display:block; color:inherit;">
+              <div class="hc-product-card" t-attf-data-search-name="#{(p.name or '').lower()} #{(p.summary or '').lower()} #{(p.category_id.name or '').lower()}" style="display:block; color:inherit;">
                 <a t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
-                  <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8; margin-bottom:16px;">
-                    <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                  <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8; margin-bottom:16px;">
+                    <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                    <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
                   </div>
                   <span style="display:block; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:4px;" t-esc="p.category_id.name"/>
-                  <span style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
+                  <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
                   <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 14px;" t-esc="p.summary"/>
                 </a>
                 <a t-attf-href="/producto/#{p.id}" style="display:inline-block; font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ficha técnica →</a>
@@ -119,6 +209,24 @@
 
         <t t-call="mi_sitio_web.site_footer"/>
       </div>
+      <script>
+        (function () {
+          var input = document.getElementById('compras-search');
+          if (!input) return;
+          var cards = document.querySelectorAll('.hc-product-card[data-search-name]');
+          var emptyMsg = document.getElementById('compras-sin-resultados');
+          input.addEventListener('input', function () {
+            var term = input.value.trim().toLowerCase();
+            var visibleCount = 0;
+            cards.forEach(function (card) {
+              var match = !term || card.getAttribute('data-search-name').indexOf(term) !== -1;
+              card.style.display = match ? '' : 'none';
+              if (match) visibleCount++;
+            });
+            if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? '' : 'none';
+          });
+        })();
+      </script>
     </div>
   </t>
 </template>
@@ -126,6 +234,8 @@
 <!-- ============ /categoria/<slug> ============ -->
 <template id="categoria_template" name="Mi Sitio - Categoría">
   <t t-call="website.layout">
+    <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — HORES Cartotécnica</t>
+    <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por HORES Cartotécnica. Aptos para contacto alimentario, consultá por WhatsApp.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <style>
@@ -142,27 +252,30 @@
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:14px 0 30px; color:#241d17;" t-esc="categoria.name if categoria else 'Categoría'"/>
         </section>
 
-        <section style="max-width:1200px; margin:0 auto; padding:0 28px 70px;">
-          <t t-if="not productos">
-            <p style="color:#8a7a67;">No hay productos publicados en esta categoría todavía.</p>
-          </t>
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:0 28px 70px;">
+          <div t-if="not productos" class="hc-empty-state">
+            <div style="font-size:32px; margin-bottom:12px;">📦</div>
+            <p style="color:#8a7a67; font-size:15px; margin:0 0 16px;">No hay productos publicados en esta categoría todavía.</p>
+            <a href="/compras" style="display:inline-block; background:#c26a1e; color:#fff; padding:11px 22px; border-radius:9px; font-weight:600; font-size:14px;">Ver todo el catálogo</a>
+          </div>
           <t t-foreach="productos" t-as="p">
-            <div style="display:grid; grid-template-columns:.8fr 1.2fr; gap:36px; align-items:start; padding:34px 0; border-bottom:1px solid #e8e3d9;">
+            <div class="hc-product-card" style="display:grid; grid-template-columns:.8fr 1.2fr; gap:36px; align-items:start; padding:34px 0; border-bottom:1px solid #e8e3d9;">
               <a t-attf-href="/producto/#{p.id}" style="display:block;">
-                <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8;">
-                  <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8;">
+                  <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+                  <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
                 </div>
               </a>
               <div>
                 <a t-attf-href="/producto/#{p.id}" style="color:inherit;">
-                  <span style="font-family:'Source Serif 4',serif; font-size:24px; font-weight:600; color:#241d17;" t-esc="p.name"/>
+                  <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:24px; font-weight:600; color:#241d17;" t-esc="p.name"/>
                 </a>
                 <p style="font-size:15px; line-height:1.6; color:#5a4f44; margin:8px 0 18px;" t-esc="p.summary"/>
                 <div t-if="p.variante_ids" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
                   <t t-foreach="p.variante_ids" t-as="v">
                     <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image"
                          t-att-alt="v.dimensions" t-att-title="v.dimensions"
-                         class="variant-thumb"
+                         class="variant-thumb" loading="lazy"
                          onclick="document.getElementById('lb-img').src=this.src; document.getElementById('lightbox').classList.add('open');"
                          style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid #e0d8ca;"/>
                   </t>
@@ -177,6 +290,14 @@
         <div id="lightbox" class="lightbox-overlay" onclick="this.classList.remove('open');">
           <img id="lb-img" src=""/>
         </div>
+        <script>
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+              var lb = document.getElementById('lightbox');
+              if (lb) lb.classList.remove('open');
+            }
+          });
+        </script>
 
         <t t-call="mi_sitio_web.site_footer"/>
       </div>
@@ -187,6 +308,8 @@
 <!-- ============ /producto/<id> ============ -->
 <template id="producto_detalle_template" name="Mi Sitio - Ficha de producto">
   <t t-call="website.layout">
+    <t t-set="title"><t t-esc="producto.name"/> — HORES Cartotécnica</t>
+    <t t-set="website_meta_description"><t t-esc="producto.summary or producto.description or producto.name"/></t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -230,12 +353,12 @@
             </div>
           </div>
 
-          <div t-if="producto.variante_ids" style="margin-top:56px;">
+          <div t-if="producto.variante_ids" class="reveal" style="margin-top:56px;">
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:24px; margin:0 0 20px; color:#241d17;">Variantes disponibles</h2>
             <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
               <t t-foreach="producto.variante_ids" t-as="v">
-                <div style="border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#ffffff;">
-                  <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image" t-att-alt="v.dimensions" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;"/>
+                <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#ffffff;">
+                  <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image" t-att-alt="v.dimensions" loading="lazy" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;"/>
                   <div style="padding:12px 14px;">
                     <div style="font-size:13px; font-weight:600; color:#241d17;" t-esc="v.code"/>
                     <div style="font-size:12.5px; color:#8a7a67;" t-esc="v.dimensions"/>
@@ -256,6 +379,8 @@
 <!-- ============ /calidad ============ -->
 <template id="calidad_template" name="Mi Sitio - Calidad">
   <t t-call="website.layout">
+    <t t-set="title">Calidad y certificaciones — HORES Cartotécnica</t>
+    <t t-set="website_meta_description">Gestión de inocuidad certificada ISO 22000:2018. Moldes de papel aptos para contacto directo con alimentos, con control de calidad en cada etapa de producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f5f6f6;">
@@ -285,8 +410,8 @@
         </section>
 
         <!-- Métricas -->
-        <section style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
-          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e7e9eb; border-radius:14px; overflow:hidden; background:#fff;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
+          <div class="hc-card" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e7e9eb; border-radius:14px; overflow:hidden; background:#fff;">
             <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
               <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Gestión de inocuidad certificada (2018)</div>
@@ -307,7 +432,7 @@
         </section>
 
         <!-- Inocuidad alimentaria -->
-        <section style="max-width:1200px; margin:0 auto; padding:48px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:48px 28px;">
           <div style="display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center;">
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Inocuidad alimentaria</div>
@@ -316,22 +441,22 @@
               <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0;">La gestión de inocuidad certificada ISO 22000:2018 ordena todos nuestros procesos: desde la recepción de insumos hasta el despacho del producto terminado.</p>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Materia prima apta</h3>
                 <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Insumos habilitados para contacto con alimentos.</p>
               </div>
-              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Higiene en planta</h3>
                 <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Procedimientos de limpieza y manipulación documentados.</p>
               </div>
-              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Control por lote</h3>
                 <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Verificación de medidas y materiales en cada producción.</p>
               </div>
-              <div style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Trazabilidad</h3>
                 <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Registro desde la recepción hasta el despacho.</p>
@@ -341,7 +466,7 @@
         </section>
 
         <!-- Proceso -->
-        <section style="background:#ffffff; border-top:1px solid #e7e9eb; border-bottom:1px solid #e7e9eb;">
+        <section class="reveal" style="background:#ffffff; border-top:1px solid #e7e9eb; border-bottom:1px solid #e7e9eb;">
           <div style="max-width:1200px; margin:0 auto; padding:60px 28px;">
             <div style="max-width:44em; margin-bottom:38px;">
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestro proceso</div>
@@ -374,26 +499,26 @@
         </section>
 
         <!-- Certificaciones -->
-        <section style="max-width:1200px; margin:0 auto; padding:60px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:60px 28px;">
           <div style="max-width:44em; margin-bottom:30px;">
             <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Certificaciones</div>
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Documentación disponible</h2>
             <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
-            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Certificado ISO 22000:2018</div>
               <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Sistema de gestión de inocuidad de los alimentos vigente.</p>
               <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
             </div>
-            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Aptitud sanitaria</div>
               <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Documentación que acredita el uso en contacto con alimentos.</p>
               <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
             </div>
-            <div style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Fichas técnicas</div>
               <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Especificaciones de cada producto: medidas, gramaje y material.</p>
@@ -422,6 +547,8 @@
 <!-- ============ /compromiso ============ -->
 <template id="compromiso_template" name="Mi Sitio - Compromiso">
   <t t-call="website.layout">
+    <t t-set="title">Compromiso ambiental — HORES Cartotécnica</t>
+    <t t-set="website_meta_description">Trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap de papel para minimizar el impacto ambiental de nuestra producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -431,6 +558,7 @@
         <section style="position:relative; overflow:hidden; background:#1f2e1c;">
           <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Naturaleza — compromiso ambiental HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5;"/>
           <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(18,28,16,.9) 0%, rgba(18,28,16,.64) 60%, rgba(18,28,16,.4) 100%);"></div>
+          <div class="hc-hero-grid"></div>
           <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:34px 28px 78px;">
             <div style="font-size:13px; color:#d5e3c8; margin-bottom:16px;"><a href="/mi-sitio" style="color:#d5e3c8;">Inicio</a> <span style="opacity:.6;">/</span> Compromiso</div>
             <div style="max-width:40rem;">
@@ -444,25 +572,25 @@
         </section>
 
         <!-- Intro -->
-        <section style="max-width:1000px; margin:0 auto; padding:64px 28px 20px; text-align:center;">
+        <section class="reveal" style="max-width:1000px; margin:0 auto; padding:64px 28px 20px; text-align:center;">
           <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(26px,3vw,34px); line-height:1.2; margin:0 0 18px; color:#1c2124;">Producimos pensando en las próximas generaciones</h2>
           <p style="font-size:17px; line-height:1.65; color:#5a4f44; margin:0;">La industria del papel se basa en un recurso natural, renovable y biodegradable. Asumimos la responsabilidad de gestionarlo con criterio: elegimos proveedores comprometidos con el manejo responsable de los bosques, optimizamos nuestros procesos para generar menos desperdicio y recuperamos el papel como recurso.</p>
         </section>
 
         <!-- Pilares -->
-        <section style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
-            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
               <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🌳</div>
               <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Bosques responsables</h3>
               <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Proveedores comprometidos con una adecuada administración de los bosques y la reposición de la materia prima.</p>
             </div>
-            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
               <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">♻️</div>
               <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Menos desperdicio</h3>
               <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Ingeniería de procesos y diseño de envases eficientes para minimizar el scrap de material.</p>
             </div>
-            <div style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
               <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🔄</div>
               <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Materia prima secundaria</h3>
               <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Recuperamos el scrap de papel y lo revalorizamos como recurso, cerrando el ciclo.</p>
@@ -471,7 +599,7 @@
         </section>
 
         <!-- Bosques responsables -->
-        <section style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
           <div style="display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center;">
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:14px;">Bosques responsables</div>
@@ -480,13 +608,13 @@
               <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0;">El papel es, además, uno de los materiales más reciclados y biodegradables, lo que reduce su huella respecto de otras alternativas de envase.</p>
             </div>
             <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e8e3d9; box-shadow:0 20px 50px rgba(30,40,30,.08);">
-              <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Bosque — administración responsable" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+              <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Bosque — administración responsable" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
             </div>
           </div>
         </section>
 
         <!-- Economía circular -->
-        <section style="background:#20301f; color:#e7ecdf;">
+        <section class="reveal" style="background:#20301f; color:#e7ecdf;">
           <div style="max-width:1200px; margin:0 auto; padding:64px 28px;">
             <div style="max-width:44em; margin-bottom:38px;">
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:10px;">Menos desperdicio</div>
@@ -519,48 +647,48 @@
         </section>
 
         <!-- Compromisos -->
-        <section style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
           <div style="max-width:44em; margin-bottom:30px;">
             <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:10px;">Nuestros compromisos</div>
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Cómo lo llevamos a la práctica</h2>
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Materia prima renovable</h3>
                 <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Valorizamos el papel como recurso natural y renovable.</p>
               </div>
             </div>
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Proveedores responsables</h3>
                 <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Selección con criterio de manejo forestal adecuado.</p>
               </div>
             </div>
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Eficiencia de material</h3>
                 <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Diseños que reducen el desperdicio en origen.</p>
               </div>
             </div>
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Gestión del scrap</h3>
                 <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Separación y revalorización del recorte de papel.</p>
               </div>
             </div>
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Envases reciclables</h3>
                 <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Productos pensados para su reciclado posterior.</p>
               </div>
             </div>
-            <div style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
+            <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Mejora continua</h3>
@@ -590,24 +718,242 @@
 <!-- ============ /historia ============ -->
 <template id="historia_template" name="Mi Sitio - Historia">
   <t t-call="website.layout">
+    <t t-set="title">Nuestra historia — HORES Cartotécnica</t>
+    <t t-set="website_meta_description">Más de 40 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
-      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
-        <t t-call="mi_sitio_web.site_header"/>
+      <style>
+        .historia-page {
+          --h-bg:#f6f4ef; --h-card:#ffffff; --h-border:#e8e3d9;
+          --h-text:#241d17; --h-text2:#5a4f44; --h-accent:#c26a1e;
+          background:var(--h-bg); color:var(--h-text);
+          font-family:'Archivo', system-ui, sans-serif;
+        }
+        .historia-page[data-theme="dark"] {
+          --h-bg:#1a1510; --h-card:#241d17; --h-border:rgba(255,255,255,.09);
+          --h-text:#f5f1ea; --h-text2:#b9ac9a; --h-accent:#e08a34;
+        }
+        .historia-page * { box-sizing:border-box; }
+        .historia-page h1, .historia-page h2, .historia-page h3 { font-family:'Source Serif 4',serif; }
+        .historia-page .h-card {
+          background:var(--h-card); border:1px solid var(--h-border); border-radius:14px;
+          box-shadow:0 2px 8px rgba(0,0,0,.05), 0 10px 26px rgba(0,0,0,.06);
+          transition:background .3s ease, border-color .3s ease, transform .25s ease, box-shadow .25s ease;
+        }
+        .historia-page .h-card:hover { transform:translateY(-3px); }
+        .historia-page .h-bar-track { background:var(--h-border); border-radius:20px; overflow:hidden; height:9px; }
+        .historia-page .h-bar-fill { background:var(--h-accent); height:100%; border-radius:20px; }
+        @media (max-width:900px) {
+          .historia-page .h-grid-4 { grid-template-columns:repeat(2,1fr) !important; }
+          .historia-page .h-grid-3 { grid-template-columns:repeat(2,1fr) !important; }
+          .historia-page .h-grid-2 { grid-template-columns:1fr !important; }
+        }
+      </style>
 
-        <section style="max-width:840px; margin:0 auto; padding:70px 28px;">
-          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Nuestra historia</div>
-          <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 30px; color:#241d17;">+40 años fabricando moldes de papel</h1>
+      <div class="historia-page" data-theme="light">
 
-          <div style="display:flex; flex-direction:column; gap:30px; font-size:16px; line-height:1.7; color:#5a4f44;">
-            <p>Cartotécnica Hores nació en Bell Ville, Córdoba, con el objetivo de desarrollar y fabricar envases de papel para la industria alimentaria. A lo largo de más de cuatro décadas, la empresa se especializó en moldes para panificación: pan dulce, budín, rosca, bizcochuelo y pan de pascua.</p>
-            <p>Con el correr de los años, la planta incorporó tecnología de producción para sostener altos volúmenes sin resignar calidad, y amplió su alcance comercial a toda la región de Latinoamérica.</p>
-            <p>Hoy, Hores trabaja bajo un sistema de gestión de inocuidad certificado ISO 22000:2018, y continúa invirtiendo en investigación y desarrollo para ofrecer moldes personalizados según las necesidades de cada cliente.</p>
+        <!-- 1. Topbar -->
+        <header style="position:sticky; top:0; z-index:30; background:var(--h-card); border-bottom:1px solid var(--h-border); backdrop-filter:blur(8px);">
+          <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+            <a href="/mi-sitio" style="display:flex; align-items:center; gap:8px; color:var(--h-text2); font-size:13px; font-weight:600;">← Volver a inicio</a>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:34px; width:auto;"/>
+              <div>
+                <div style="font-weight:700; font-size:14px; color:var(--h-text); line-height:1.2;">HORES Cartotécnica</div>
+                <div style="font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--h-accent);">Nuestra historia</div>
+              </div>
+            </div>
+            <button id="historia-theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" style="background:var(--h-bg); border:1px solid var(--h-border); color:var(--h-text); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;">🌙</button>
+          </div>
+        </header>
+
+        <!-- 2. Hero -->
+        <section style="position:relative; overflow:hidden; background:linear-gradient(160deg,#241d17 0%,#1a1510 100%); padding:90px 28px 74px;">
+          <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size:42px 42px; opacity:.5;"></div>
+          <div style="position:relative; z-index:1; max-width:840px; margin:0 auto; text-align:center;">
+            <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:20px;">
+              <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Nuestra historia <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span>
+            </div>
+            <h1 style="font-weight:700; font-size:clamp(32px,4.4vw,50px); line-height:1.1; margin:0 0 18px; color:#fff;">Más de 40 años construyendo <span style="color:#e08a34;">confianza</span></h1>
+            <p style="font-size:17px; line-height:1.6; color:#dcd2c4; max-width:36em; margin:0 auto;">Desde Bell Ville, Córdoba, hasta el resto de la región: así fuimos creciendo, molde a molde.</p>
           </div>
         </section>
 
-        <t t-call="mi_sitio_web.site_footer"/>
+        <!-- 3. Stats rápidas -->
+        <section style="max-width:1200px; margin:0 auto; padding:0 28px;">
+          <div class="h-grid-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:-34px; position:relative; z-index:2;">
+            <t t-foreach="stats" t-as="s">
+              <div class="h-card" style="text-align:center; padding:22px 14px;">
+                <div style="font-size:24px; margin-bottom:8px;" t-esc="s['icon']"/>
+                <div style="font-weight:700; font-size:26px; color:var(--h-accent);" t-esc="s['value']"/>
+                <div style="font-size:12.5px; color:var(--h-text2);" t-esc="s['label']"/>
+              </div>
+            </t>
+          </div>
+        </section>
+
+        <div style="max-width:1200px; margin:0 auto; padding:80px 28px; display:flex; flex-direction:column; gap:96px;">
+
+          <!-- 4. Timeline -->
+          <div class="reveal">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Recorrido</div>
+            <h2 style="font-weight:700; font-size:28px; margin:0 0 34px; color:var(--h-text);">Nuestro camino</h2>
+            <div style="position:relative; padding-left:34px; border-left:2px solid var(--h-border); max-width:760px;">
+              <t t-foreach="timeline" t-as="hito">
+                <div style="position:relative; padding-bottom:34px;">
+                  <span t-attf-style="position:absolute; left:-42px; top:3px; width:15px; height:15px; border-radius:50%; border:3px solid var(--h-card); background:#{'var(--h-accent)' if hito_last else 'var(--h-border)'};"/>
+                  <div t-attf-style="font-weight:700; font-size:15px; margin-bottom:4px; color:#{'var(--h-accent)' if hito_last else 'var(--h-text2)'};" t-esc="hito['year']"/>
+                  <div style="font-weight:600; font-size:17px; margin-bottom:6px; color:var(--h-text);" t-esc="hito['title']"/>
+                  <p style="font-size:14.5px; line-height:1.6; color:var(--h-text2); margin:0; font-weight:300;" t-esc="hito['text']"/>
+                </div>
+              </t>
+            </div>
+          </div>
+
+          <!-- 5. Misión / Visión -->
+          <div class="reveal h-grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+            <t t-foreach="mision_vision" t-as="mv">
+              <div class="h-card" style="padding:32px;">
+                <div style="font-size:28px; margin-bottom:14px;" t-esc="mv['icon']"/>
+                <h3 style="font-size:20px; font-weight:600; margin:0 0 10px; color:var(--h-text);" t-esc="mv['title']"/>
+                <p style="font-size:15px; line-height:1.65; color:var(--h-text2); margin:0; font-weight:300;" t-esc="mv['text']"/>
+              </div>
+            </t>
+          </div>
+
+          <!-- 6. Valores -->
+          <div class="reveal">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Cómo trabajamos</div>
+            <h2 style="font-weight:700; font-size:28px; margin:0 0 26px; color:var(--h-text);">Nuestros valores</h2>
+            <div class="h-grid-3" style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px;">
+              <t t-foreach="valores" t-as="v">
+                <div class="h-card" style="padding:26px;">
+                  <div style="font-size:24px; margin-bottom:12px;" t-esc="v['icon']"/>
+                  <h3 style="font-size:16.5px; font-weight:600; margin:0 0 7px; color:var(--h-text);" t-esc="v['title']"/>
+                  <p style="font-size:14px; line-height:1.55; color:var(--h-text2); margin:0; font-weight:300;" t-esc="v['text']"/>
+                </div>
+              </t>
+            </div>
+          </div>
+
+          <!-- 7. Sectores / líneas de producto -->
+          <div class="reveal h-grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;">
+            <div>
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Producción</div>
+              <h2 style="font-weight:700; font-size:26px; margin:0 0 22px; color:var(--h-text);">Nuestras líneas de producto</h2>
+              <div style="display:flex; flex-direction:column; gap:18px;">
+                <t t-foreach="sectores" t-as="sec">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px; color:var(--h-text);">
+                      <span t-esc="sec['label']"/>
+                      <span t-out="str(sec['pct']) + '%'"/>
+                    </div>
+                    <div class="h-bar-track">
+                      <div class="h-bar-fill" t-attf-style="width:#{sec['pct']}%;"></div>
+                    </div>
+                  </div>
+                </t>
+              </div>
+            </div>
+            <div class="h-card" style="padding:30px;">
+              <h3 style="font-size:17px; font-weight:600; margin:0 0 16px; color:var(--h-text);">Por qué nos eligen</h3>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <t t-foreach="sectores_bullets" t-as="b">
+                  <div style="display:flex; align-items:flex-start; gap:10px;">
+                    <span style="color:var(--h-accent); font-weight:700; flex-shrink:0;">✓</span>
+                    <span style="font-size:14px; line-height:1.5; color:var(--h-text2); font-weight:300;" t-esc="b"/>
+                  </div>
+                </t>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Clientes destacados -->
+          <div class="reveal">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Confían en nosotros</div>
+            <h2 style="font-weight:700; font-size:28px; margin:0 0 8px; color:var(--h-text);">Clientes destacados</h2>
+            <p style="font-size:13.5px; color:var(--h-text2); margin:0 0 26px; font-style:italic;">Ejemplos ilustrativos — se reemplazan por clientes reales antes de publicar.</p>
+            <div class="h-grid-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+              <t t-foreach="clientes" t-as="c">
+                <div class="h-card" style="padding:20px; display:flex; align-items:center; gap:12px;">
+                  <div style="width:42px; height:42px; flex-shrink:0; border-radius:10px; background:var(--h-accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;" t-esc="c['iniciales']"/>
+                  <div>
+                    <div style="font-size:13.5px; font-weight:600; color:var(--h-text); line-height:1.3;" t-esc="c['nombre']"/>
+                    <div style="font-size:12px; color:var(--h-text2);" t-esc="c['sector']"/>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+
+          <!-- 9. Presencia geográfica -->
+          <div class="reveal">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Alcance regional</div>
+            <h2 style="font-weight:700; font-size:28px; margin:0 0 26px; color:var(--h-text);">Presencia geográfica</h2>
+            <div class="h-grid-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+              <t t-foreach="paises" t-as="pais">
+                <div class="h-card" style="padding:18px; display:flex; align-items:center; gap:12px;">
+                  <img t-attf-src="https://flagcdn.com/w40/#{pais['codigo']}.png" t-att-alt="pais['nombre']" loading="lazy" style="width:30px; height:22px; object-fit:cover; border-radius:3px; flex-shrink:0;"/>
+                  <div>
+                    <div style="font-size:14px; font-weight:600; color:var(--h-text);" t-esc="pais['nombre']"/>
+                    <div style="font-size:11px; color:var(--h-text2); text-transform:uppercase; letter-spacing:.04em;" t-esc="pais['etiqueta']"/>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+
+          <!-- 10. Objetivos -->
+          <div class="reveal">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--h-accent); margin-bottom:10px;">Mirando adelante</div>
+            <h2 style="font-weight:700; font-size:28px; margin:0 0 26px; color:var(--h-text);">Objetivos</h2>
+            <div class="h-grid-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px;">
+              <t t-foreach="objetivos" t-as="o">
+                <div class="h-card" style="padding:24px;">
+                  <div style="font-size:24px; margin-bottom:12px;" t-esc="o['icon']"/>
+                  <h3 style="font-size:15.5px; font-weight:600; margin:0 0 7px; color:var(--h-text);" t-esc="o['title']"/>
+                  <p style="font-size:13.5px; line-height:1.55; color:var(--h-text2); margin:0; font-weight:300;" t-esc="o['text']"/>
+                </div>
+              </t>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 11. Footer simple -->
+        <footer style="border-top:1px solid var(--h-border); padding:34px 28px;">
+          <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:32px; width:auto;"/>
+              <span style="font-size:13.5px; color:var(--h-text2);">Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
+            </div>
+            <a href="/mi-sitio" style="font-size:13px; font-weight:600; color:var(--h-accent);">Volver al sitio →</a>
+          </div>
+        </footer>
       </div>
+
+      <script>
+        (function () {
+          var root = document.querySelector('.historia-page');
+          if (!root) return;
+
+          var toggle = document.getElementById('historia-theme-toggle');
+          if (toggle) {
+            var saved = null;
+            try { saved = localStorage.getItem('historia-theme'); } catch (e) {}
+            if (saved === 'dark') {
+              root.setAttribute('data-theme', 'dark');
+              toggle.textContent = '☀️';
+            }
+            toggle.addEventListener('click', function () {
+              var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+              root.setAttribute('data-theme', next);
+              toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+              try { localStorage.setItem('historia-theme', next); } catch (e) {}
+            });
+          }
+        })();
+      </script>
     </div>
   </t>
 </template>

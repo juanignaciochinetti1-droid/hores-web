@@ -3,6 +3,8 @@
     <template id="home_template" name="Mi Sitio - Home">
         <t t-call="website.layout">
             <t t-set="pageName" t-value="'home_hores'"/>
+            <t t-set="title">HORES Cartotécnica — Moldes de papel para panificación</t>
+            <t t-set="website_meta_description">Fabricamos moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Aptos para contacto alimentario, gestión de calidad certificada ISO 22000:2018. Bell Ville, Córdoba.</t>
             <div id="wrap" class="oe_structure oe_empty">
 
 <t t-call="mi_sitio_web.head_assets"/>
@@ -16,7 +18,31 @@
 
   <!-- Hero -->
   <section id="top" style="position:relative; min-height:calc(100vh - 140px); display:flex; align-items:center; overflow:hidden; background:#241d17;">
-    <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+    <t t-if="productos">
+      <style>
+        @keyframes heroSlide {
+          <t t-foreach="hero_slides" t-as="hs">
+            <t t-esc="hs['start_pct']"/>% { transform: translateX(-<t t-esc="hs['shift_pct']"/>%); }
+            <t t-esc="hs['hold_end_pct']"/>% { transform: translateX(-<t t-esc="hs['shift_pct']"/>%); }
+          </t>
+          100% { transform: translateX(-<t t-esc="hero_shift_pct"/>%); }
+        }
+      </style>
+      <div style="position:absolute; inset:0; overflow:hidden;">
+        <div t-attf-style="display:flex; height:100%; width:#{hero_track_width_pct}%; animation:heroSlide #{hero_total_seconds}s ease infinite;">
+          <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea"
+               t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
+          <t t-foreach="productos" t-as="p">
+            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-attf-alt="Molde #{p.name} — HORES Cartotécnica"
+                 t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
+          </t>
+          <!-- Duplicado de la primera foto: el loop cierra acá, invisible -->
+          <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt=""
+               t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
+        </div>
+      </div>
+    </t>
+    <img t-else="" src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
     <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,15,11,.88) 0%, rgba(20,15,11,.66) 42%, rgba(20,15,11,.34) 100%);"></div>
 
     <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:80px 28px; width:100%;">
@@ -40,7 +66,7 @@
   </section>
 
   <!-- Qué hacemos -->
-  <section id="empresa" style="background:#ffffff; border-top:1px solid #e8e3d9; border-bottom:1px solid #e8e3d9;">
+  <section id="empresa" class="reveal" style="background:#ffffff; border-top:1px solid #e8e3d9; border-bottom:1px solid #e8e3d9;">
     <div style="max-width:1200px; margin:0 auto; padding:54px 28px;">
       <div style="margin-bottom:36px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
         <div style="max-width:52em;">
@@ -69,7 +95,7 @@
   </section>
 
   <!-- Productos -->
-  <section id="productos" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+  <section id="productos" class="reveal" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
     <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:30px;">
       <div style="max-width:40em;">
         <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestros productos</div>
@@ -80,12 +106,12 @@
 
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
       <t t-foreach="productos" t-as="p">
-        <a t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
-          <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; background:#efe6d8; margin-bottom:16px;">
-            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name + ' — molde de papel HORES'" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
-            <span t-if="p.is_custom" style="position:absolute; right:11px; top:11px; width:8px; height:8px; border-radius:50%; background:#c26a1e; box-shadow:0 0 0 3px rgba(255,255,255,.85);" title="Personalizable"></span>
+        <a class="hc-product-card" t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
+          <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8; margin-bottom:16px;">
+            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name + ' — molde de papel HORES'" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
           </div>
-          <span style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
+          <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
           <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 12px;" t-esc="p.summary"/>
           <span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica →</span>
         </a>
@@ -94,7 +120,7 @@
   </section>
 
   <!-- Calidad -->
-  <section id="calidad" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
+  <section id="calidad" class="reveal" style="max-width:1200px; margin:0 auto; padding:64px 28px;">
     <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; align-items:center;">
       <div>
         <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Calidad y certificaciones</div>
@@ -103,19 +129,19 @@
         <a href="/calidad" style="display:inline-flex; align-items:center; gap:8px; color:#c26a1e; font-weight:600; font-size:15px;">Ver calidad y certificaciones →</a>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-        <div style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
+        <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Gestión de inocuidad certificada</div>
         </div>
-        <div style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
+        <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">Apto</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Contacto directo con alimentos</div>
         </div>
-        <div style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
+        <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">Latam</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Comercialización regional</div>
         </div>
-        <div style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
+        <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">+40 años</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Experiencia fabricando</div>
         </div>
@@ -124,7 +150,7 @@
   </section>
 
   <!-- Sustentabilidad -->
-  <section id="sustentabilidad" style="background:#20301f; color:#e7ecdf;">
+  <section id="sustentabilidad" class="reveal" style="background:#20301f; color:#e7ecdf;">
     <div style="max-width:1200px; margin:0 auto; padding:52px 28px;">
       <div style="display:grid; grid-template-columns:1.15fr 1fr; gap:44px; align-items:center;">
         <div>
@@ -148,14 +174,14 @@
           <a href="/compromiso" style="display:inline-flex; align-items:center; gap:9px; background:#a9c48f; color:#1a2718; padding:13px 24px; border-radius:9px; font-weight:600; font-size:15px;">Conocé nuestro compromiso →</a>
         </div>
         <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #3a4a37;">
-          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental HORES" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" style="background:#ffffff; border-top:1px solid #e8e3d9;">
+  <section id="faq" class="reveal" style="background:#ffffff; border-top:1px solid #e8e3d9;">
     <div style="max-width:840px; margin:0 auto; padding:64px 28px;">
       <div style="text-align:center; margin-bottom:34px;">
         <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Preguntas frecuentes</div>
@@ -224,6 +250,9 @@
         </div>
       </div>
       <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px;">
+        <div t-if="contacto_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:18px;">
+          Completá nombre, email y mensaje antes de enviar — algún campo obligatorio quedó vacío.
+        </div>
         <form action="/mi-sitio/contacto" method="post">
           <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">

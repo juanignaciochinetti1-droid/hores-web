@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Nuestras páginas (Home, Compras, Calidad, etc.) son renderizadas por
+        controladores propios sin un "main_object"/"seo_object" detrás, así
+        que el mecanismo estándar de Open Graph de website (basado en el
+        mixin website.seo.metadata de un registro) no aplica acá. En vez de
+        eso, extendemos el <head> del layout para leer directamente las
+        variables title/meta_description que el propio layout ya calculó
+        (nuestros t-set de título/descripción por página), y las repetimos
+        como og:title / og:description / og:image con una imagen genérica
+        de la empresa como respaldo.
+    -->
+    <template id="og_meta_extra" inherit_id="website.layout">
+        <xpath expr="//head/meta[last()]" position="after">
+            <meta property="og:type" content="website"/>
+            <meta property="og:site_name" content="HORES Cartotécnica"/>
+            <meta property="og:title" t-att-content="title"/>
+            <meta t-if="meta_description" property="og:description" t-att-content="meta_description"/>
+            <meta t-attf-property="og:image" t-attf-content="#{request.httprequest.host_url.rstrip('/')}/mi_sitio_web/static/src/img/logo_hores.png"/>
+            <meta name="twitter:card" content="summary"/>
+        </xpath>
+    </template>
+</odoo>
