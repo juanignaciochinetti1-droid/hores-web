@@ -91,13 +91,58 @@ tener suficiente especificidad sobre el CSS base de Odoo.
 | `.hc-badge-custom` | Badge "Personalizable" (esquina superior derecha de la foto) | Tarjetas de producto con `is_custom=True` |
 | `.hc-empty-state` | Caja con borde punteado para estados vacíos | Categoría sin productos publicados |
 | `.hc-hero-grid` | Patrón de grilla sutil superpuesto sobre fondos oscuros | Hero de Compromiso |
+| `.hc-back-to-top` | Botón circular flotante "volver arriba", aparece después de 400px de scroll | Todas las páginas (posición inline por instancia: izquierda en las que tienen WhatsApp a la derecha, derecha en Historia que tiene el toggle de tema a la izquierda) |
 
 Botones "con pinta de botón" (cualquier `<a>` con `border-radius` en su
 estilo inline) levantan y se aclaran al hover automáticamente vía selector
 de atributo (`a[style*="border-radius"]:hover`) — no hace falta agregarles
 una clase para eso.
 
+## Responsive
+
+El sitio se construyó originalmente **sin ningún breakpoint** fuera de
+Historia — las grillas (`grid-template-columns:repeat(3,1fr)`, etc.) eran
+fijas y se veían apretadas en celular. Se agregó una capa de responsive
+global en `head_assets`, con dos quiebres:
+
+- **≤900px**: grillas de 3-4 columnas pasan a 2; grillas de 2 columnas con
+  proporciones (`.9fr 1.1fr`, `1.05fr .95fr`, etc.) pasan a 1 columna
+  (apiladas).
+- **≤560px**: todo colapsa a 1 columna.
+
+Como son estilos **inline** (no clases), el CSS global los pisa apuntando
+por contenido del atributo `style` (`[style*="grid-template-columns:..."]`)
+con `!important` — mismo truco que ya se usaba para el hover de botones.
+Si se agrega una grilla nueva con una proporción de columnas que no está en
+esa lista, no se va a volver responsive sola — hay que sumar su selector en
+`head_assets` (buscar el comentario "Responsive:" en el `<style>`).
+
+**Pendiente de un pase más fino:** esto resuelve que nada quede roto/
+apretado, pero no es un rediseño mobile-first — el header (`site_header`)
+no tiene menú hamburguesa, solo hace `flex-wrap` de los links cuando no
+entran. Funciona, pero no es lo más prolijo. Si se quiere pulir más, ese es
+el siguiente paso.
+
+## Animaciones puntuales
+
+- **Contadores animados** (`/historia`, franja de stats): cada número
+  (`+40`, `+500`, etc.) cuenta desde 0 hasta el valor real la primera vez
+  que entra en pantalla (`IntersectionObserver` + `requestAnimationFrame`,
+  ~1.2s). El valor real vive en `data-target` sobre el mismo elemento que
+  ya lo muestra por `t-esc` — si JS no corre, se ve el número final fijo,
+  no queda en 0.
+
 ## Íconos
 
 Emoji Unicode directo en el HTML/Python (`🎯`, `📦`, `✓`, etc.), sin
 librería de íconos SVG. Consistente en todo el sitio.
+
+## Ojo con XML al escribir JS inline
+
+Los `<script>` van dentro de archivos **XML** (vistas QWeb), no HTML — a
+diferencia de un `.html` suelto, acá `&&`, `<`, `>` sueltos dentro de un
+`<script>` rompen el parseo del archivo entero (hay que escribirlos como
+`&amp;&amp;`, `&lt;`, `&gt;`). Ya pasó una vez (contador animado con
+`if (a && b)` y `if (x < 1)` sin escapar) — el módulo no cargaba hasta
+corregirlo. Antes de dar un cambio con JS por terminado, correr un upgrade
+real del módulo (no alcanza con "se ve bien en el editor").
