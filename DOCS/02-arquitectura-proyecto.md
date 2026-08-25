@@ -19,7 +19,8 @@ custom_addons/mi_sitio_web/
     │                          # Compras, Categoría, Producto, Calidad,
     │                          # Compromiso, Historia
     ├── producto_views.xml     # vistas de backend (admin) del catálogo
-    └── seo_templates.xml      # Open Graph, extiende website.layout
+    ├── seo_templates.xml      # Open Graph, extiende website.layout
+    └── error_templates.xml    # página 404 propia, extiende http_routing.404
 ```
 
 ## Modelos de datos
@@ -74,6 +75,23 @@ corrigió).
 > tocar el header, confirmar primero si el pedido es sobre el header en sí
 > o sobre otra sección visualmente cercana (ya pasó una vez que un pedido
 > sobre el fondo de una sección se interpretó mal como el header).
+
+## Página 404 propia
+
+`error_templates.xml` reemplaza la 404 genérica de Odoo por una con la
+identidad del sitio. **Ojo si se vuelve a tocar**: Odoo tiene *dos*
+plantillas de 404 distintas —
+
+- `website.page_404` → solo se renderiza si quien mira la página está
+  **logueado como diseñador del sitio**.
+- `http_routing.404` → lo que ve **cualquier visitante público**, o sea el
+  99.9% de los casos reales.
+
+La primera vez se sobreescribió `website.page_404` por error de lectura de
+la documentación de Odoo y no cambiaba nada para un visitante real — el
+override correcto (y el que está hoy) apunta a `http_routing.404`.
+Verificado con `curl` sin sesión contra una URL cualquiera, no solo contra
+nuestras propias rutas.
 
 ## Migración de datos
 

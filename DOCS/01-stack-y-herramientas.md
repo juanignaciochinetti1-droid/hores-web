@@ -58,6 +58,37 @@
   reales, usar las apps nativas de Odoo (Ventas, Facturación, Portal de
   cliente) en vez de programarlas a mano.
 
+## Imágenes estáticas (`static/src/img/`)
+
+Estas imágenes (fondos de hero, logo) se sirven **tal cual**, sin el
+redimensionado automático que sí aplica Odoo a los campos `Image` de los
+modelos (`producto.image`, que ya tiene `max_width`/`max_height`). Si se
+agrega una foto nueva a `static/src/img/`, hay que optimizarla a mano
+*antes* de copiarla ahí — Odoo no lo hace solo.
+
+Ya se detectó y corrigió una vez (25/08/2026): dos fotos pesaban 2.75MB y
+4.88MB (venían directo de cámara/generador de imágenes a resolución
+completa, mostradas de fondo a un tamaño mucho menor). Se resolvieron con
+Pillow (`pip install Pillow`, no viene instalado por defecto):
+
+```python
+from PIL import Image
+im = Image.open(path)
+w, h = im.size
+if max(w, h) > max_side:               # max_side: 1400-1600px para fotos, 500px para el logo
+    ratio = max_side / max(w, h)
+    im = im.resize((round(w*ratio), round(h*ratio)), Image.LANCZOS)
+im.save(path, 'JPEG', quality=80, optimize=True, progressive=True)  # PNG: 'PNG', optimize=True
+```
+
+Resultado: 2.75MB→228KB, 4.88MB→561KB, logo 186KB→82KB — sin pérdida de
+calidad visible al tamaño que se muestran en el sitio. **Los originales sin
+tocar quedan a salvo en `disenos/hores/uploads/`** — nunca hace falta
+preocuparse por perder la fuente, esa carpeta es la copia maestra.
+
+Si se suma una foto nueva grande, repetir este paso antes de copiarla a
+`static/src/img/`.
+
 ## Dónde está cada cosa
 
 | Qué | Dónde |
