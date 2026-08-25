@@ -752,24 +752,15 @@
 
       <div class="historia-page" data-theme="light">
 
-        <!-- 1. Topbar -->
-        <header style="position:sticky; top:0; z-index:30; background:var(--h-card); border-bottom:1px solid var(--h-border); backdrop-filter:blur(8px);">
-          <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-            <a href="/mi-sitio" style="display:flex; align-items:center; gap:8px; color:var(--h-text2); font-size:13px; font-weight:600;">← Volver a inicio</a>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:34px; width:auto;"/>
-              <div>
-                <div style="font-weight:700; font-size:14px; color:var(--h-text); line-height:1.2;">HORES Cartotécnica</div>
-                <div style="font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--h-accent);">Nuestra historia</div>
-              </div>
-            </div>
-            <button id="historia-theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" style="background:var(--h-bg); border:1px solid var(--h-border); color:var(--h-text); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;">🌙</button>
-          </div>
-        </header>
+        <!-- 1. Header compartido del sitio (igual en todas las páginas) -->
+        <t t-call="mi_sitio_web.site_header"/>
 
-        <!-- 2. Hero -->
-        <section style="position:relative; overflow:hidden; background:linear-gradient(160deg,#241d17 0%,#1a1510 100%); padding:90px 28px 74px;">
-          <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size:42px 42px; opacity:.5;"></div>
+        <!-- Toggle de tema, flotante — específico de esta página -->
+        <button id="historia-theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro"
+                style="position:fixed; left:22px; bottom:22px; z-index:60; background:var(--h-card); border:1px solid var(--h-border); color:var(--h-text); width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:18px; box-shadow:0 6px 16px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center;">🌙</button>
+
+        <!-- 2. Hero + 3. Stats rápidas: misma foto de fondo, sin corte entre ambas -->
+        <section style="position:relative; overflow:hidden; padding:90px 28px 64px; background:linear-gradient(rgba(28,22,17,.68),rgba(28,22,17,.68)), url('/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg'); background-size:cover; background-position:center;">
           <div style="position:relative; z-index:1; max-width:840px; margin:0 auto; text-align:center;">
             <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:20px;">
               <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Nuestra historia <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span>
@@ -777,14 +768,10 @@
             <h1 style="font-weight:700; font-size:clamp(32px,4.4vw,50px); line-height:1.1; margin:0 0 18px; color:#fff;">Más de 40 años construyendo <span style="color:#e08a34;">confianza</span></h1>
             <p style="font-size:17px; line-height:1.6; color:#dcd2c4; max-width:36em; margin:0 auto;">Desde Bell Ville, Córdoba, hasta el resto de la región: así fuimos creciendo, molde a molde.</p>
           </div>
-        </section>
-
-        <!-- 3. Stats rápidas -->
-        <section style="max-width:1200px; margin:0 auto; padding:0 28px;">
-          <div class="h-grid-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:-34px; position:relative; z-index:2;">
+          <div class="h-grid-4" style="max-width:1200px; margin:44px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:14px; position:relative; z-index:2;">
             <t t-foreach="stats" t-as="s">
-              <div class="h-card" style="text-align:center; padding:22px 14px;">
-                <div style="font-size:24px; margin-bottom:8px;" t-esc="s['icon']"/>
+              <div class="h-card" style="text-align:center; padding:24px 14px;">
+                <div style="width:46px; height:46px; margin:0 auto 12px; border-radius:50%; background:#f6ede1; display:flex; align-items:center; justify-content:center; font-size:20px;" t-esc="s['icon']"/>
                 <div style="font-weight:700; font-size:26px; color:var(--h-accent);" t-esc="s['value']"/>
                 <div style="font-size:12.5px; color:var(--h-text2);" t-esc="s['label']"/>
               </div>

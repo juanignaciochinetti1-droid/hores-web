@@ -9,9 +9,13 @@ class MiSitioWebProducto(models.Model):
     _name = 'mi_sitio_web.producto'
     _description = 'Producto del catálogo del sitio web'
     _order = 'sequence, id'
-    _sql_constraints = [
-        ('code_unique', 'unique(code)', 'Ya existe un producto con ese código.'),
-    ]
+    # '_sql_constraints' quedó deprecado en esta versión de Odoo (y, peor,
+    # dejó de aplicarse en la base: verificado creando un duplicado, no lo
+    # rechazó). El reemplazo es un atributo models.Constraint por restricción.
+    _code_unique = models.Constraint(
+        'unique(code)',
+        'Ya existe un producto con ese código.',
+    )
 
     name = fields.Char(string='Nombre', required=True)
     code = fields.Char(string='Código')

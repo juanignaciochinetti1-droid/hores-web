@@ -142,7 +142,7 @@ class MiSitioWeb(http.Controller):
     def categoria(self, slug, **kwargs):
         categoria = request.env['mi_sitio_web.categoria'].sudo().search([('slug', '=', slug)], limit=1)
         if not categoria:
-            return request.not_found()
+            raise request.not_found()
         productos = categoria.producto_ids.filtered('is_published')
         return request.render('mi_sitio_web.categoria_template', {
             'categoria': categoria,
@@ -153,7 +153,7 @@ class MiSitioWeb(http.Controller):
     def producto_detalle(self, producto_id, **kwargs):
         producto = request.env['mi_sitio_web.producto'].sudo().browse(producto_id)
         if not producto.exists() or not producto.is_published:
-            return request.not_found()
+            raise request.not_found()
         return request.render('mi_sitio_web.producto_detalle_template', {
             'producto': producto,
         })
