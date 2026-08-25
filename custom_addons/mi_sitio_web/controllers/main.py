@@ -1,5 +1,11 @@
+import re
+
 from odoo import http
 from odoo.http import request
+
+EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+NOMBRE_MAX_LEN = 200
+MENSAJE_MAX_LEN = 5000
 
 # ---------------------------------------------------------------------------
 # Contenido de ejemplo para /historia — NO son datos reales confirmados de
@@ -188,9 +194,20 @@ class MiSitioWeb(http.Controller):
         email = (post.get('email') or '').strip()
         mensaje = (post.get('mensaje') or '').strip()
 
-        # Validación server-side: el atributo required del HTML no protege
-        # contra un POST directo (curl, bot) con campos vacíos.
-        if not nombre or not email or not mensaje:
+        # Honeypot anti-bot: campo oculto por CSS que un usuario real nunca
+        # completa, pero que los bots de spam suelen rellenar igual que
+        # cualquier otro input. Si viene con algo, fingimos éxito (no le
+        # damos pistas al bot) sin crear el Lead.
+        if (post.get('sitio_web') or '').strip():
+            return request.redirect('/mi-sitio/gracias')
+
+        # Validación server-side: el atributo required/type=email del HTML
+        # no protege contra un POST directo (curl, bot) con campos vacíos,
+        # mal formados o absurdamente largos.
+        if (not nombre or not email or not mensaje
+                or not EMAIL_RE.match(email)
+                or len(nombre) > NOMBRE_MAX_LEN
+                or len(mensaje) > MENSAJE_MAX_LEN):
             return request.redirect('/mi-sitio?contacto_error=1#contacto')
 
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)

@@ -251,14 +251,18 @@
       </div>
       <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px;">
         <div t-if="contacto_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:18px;">
-          Completá nombre, email y mensaje antes de enviar — algún campo obligatorio quedó vacío.
+          Revisá el formulario: completá nombre, email y mensaje, con un email válido.
         </div>
         <form action="/mi-sitio/contacto" method="post">
           <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <!-- Honeypot anti-bot: invisible para una persona, un bot que
+               autocompleta todos los inputs suele caer en la trampa. -->
+          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
+                 style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true"/>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
             <label style="display:block;">
               <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Nombre*</span>
-              <input required="required" name="nombre" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
+              <input required="required" name="nombre" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
             </label>
             <label style="display:block;">
               <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Empresa</span>
@@ -271,7 +275,7 @@
           </label>
           <label style="display:block; margin-top:16px;">
             <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Mensaje*</span>
-            <textarea required="required" rows="4" name="mensaje" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
+            <textarea required="required" rows="4" name="mensaje" maxlength="5000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
           </label>
           <button type="submit" style="margin-top:20px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer;">Enviar consulta</button>
         </form>
