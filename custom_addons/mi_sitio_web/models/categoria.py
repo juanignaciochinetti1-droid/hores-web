@@ -18,7 +18,12 @@ class MiSitioWebCategoria(models.Model):
         'Ya existe una categoría con ese slug (se usa en la URL).',
     )
 
-    name = fields.Char(string='Nombre', required=True)
+    # translate=True: el nombre tiene un valor propio por idioma activo del
+    # sitio (es_AR/en_US/pt_BR); el slug NO se traduce a propósito, tiene
+    # que quedar igual en las tres versiones porque la URL /categoria/<slug>
+    # es la misma sin importar el idioma (Odoo antepone /en o /pt, no
+    # cambia el resto del path).
+    name = fields.Char(string='Nombre', required=True, translate=True)
     slug = fields.Char(string='Slug (URL)', required=True)
     sequence = fields.Integer(string='Orden', default=10)
     producto_ids = fields.One2many('mi_sitio_web.producto', 'category_id', string='Productos')

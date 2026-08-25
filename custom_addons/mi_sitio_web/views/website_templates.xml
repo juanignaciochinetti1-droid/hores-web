@@ -33,7 +33,7 @@
           <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea"
                t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
           <t t-foreach="productos" t-as="p">
-            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-attf-alt="Molde #{p.name} — HORES Cartotécnica"
+            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-attf-alt="#{p.name} — HORES Cartotécnica"
                  t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
           </t>
           <!-- Duplicado de la primera foto: el loop cierra acá, invisible -->

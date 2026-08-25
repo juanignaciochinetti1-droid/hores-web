@@ -7,18 +7,23 @@ sitio "terminado" o de compartir la URL con un cliente/público real.
 
 Viven como constantes en `custom_addons/mi_sitio_web/controllers/main.py`
 (arriba del todo, antes de la clase del controlador), a propósito, para que
-reemplazarlos sea editar una lista y nada más:
+reemplazarlos sea editar una lista y nada más. Desde que el sitio es
+multi-idioma, cada dato existe **tres veces** — una por idioma, dentro de
+`_HISTORIA_ES` / `_HISTORIA_EN` / `_HISTORIA_PT` (ver
+[idiomas](06-idiomas.md)) — así que al reemplazar por datos reales hay que
+tocar los 3 diccionarios, no solo el de español:
 
-| Constante | Estado |
+| Clave (dentro de cada diccionario `_HISTORIA_*`) | Estado |
 |---|---|
-| `HISTORIA_STATS` | +40 años (consistente con el resto del sitio), pero +500 moldes/año, +150 clientes y 6 países son ejemplo |
-| `HISTORIA_TIMELINE` | 7 hitos con años de ejemplo (ajustados para no contradecir el "+40 años" del resto del sitio, pero inventados) |
-| `HISTORIA_CLIENTES` | **A propósito anonimizados** — no se pusieron marcas reales (Arcor, Unilever, etc. aparecían en el prototipo original y se descartaron por riesgo de publicidad engañosa si no son clientes reales verificados) |
-| `HISTORIA_PAISES` | Lista de ejemplo de países de exportación |
-| `HISTORIA_SECTORES` | Reemplaza un desglose por industria (farmacéutica/cosmética) que no correspondía al negocio real — ahora son las 4 categorías reales del catálogo, pero los porcentajes son estimados |
+| `stats` | +40 años (consistente con el resto del sitio), pero +500 moldes/año, +150 clientes y 6 países son ejemplo |
+| `timeline` | 7 hitos con años de ejemplo (ajustados para no contradecir el "+40 años" del resto del sitio, pero inventados) |
+| `clientes` | **A propósito anonimizados** — no se pusieron marcas reales (Arcor, Unilever, etc. aparecían en el prototipo original y se descartaron por riesgo de publicidad engañosa si no son clientes reales verificados) |
+| `paises` | Lista de ejemplo de países de exportación |
+| `sectores` | Reemplaza un desglose por industria (farmacéutica/cosmética) que no correspondía al negocio real — ahora son las 4 categorías reales del catálogo, pero los porcentajes son estimados |
 
 **Antes de publicar:** confirmar con el cliente cuáles de estos datos son
-reales, y actualizar las constantes correspondientes.
+reales, y actualizar los 3 diccionarios correspondientes (español, inglés
+y portugués).
 
 ## Otras cosas pendientes / decisiones tomadas a propósito
 
@@ -35,6 +40,9 @@ reales, y actualizar las constantes correspondientes.
   ver [arquitectura](02-arquitectura-proyecto.md).
 - **Reviews/testimonios y postulaciones de CV**: existían en el prototipo
   original (`hores-web`) pero no se migraron a este sitio.
+- **Mensaje de WhatsApp** (`producto.whatsapp_url`): queda siempre en
+  español sin importar el idioma de la página — ver
+  [idiomas](06-idiomas.md#qué-falta--gaps-conocidos).
 
 ## Credenciales / seguridad
 

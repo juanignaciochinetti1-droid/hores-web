@@ -17,11 +17,13 @@ class MiSitioWebProducto(models.Model):
         'Ya existe un producto con ese código.',
     )
 
-    name = fields.Char(string='Nombre', required=True)
+    # translate=True en name/summary/description: cada idioma activo del
+    # sitio guarda su propio texto (code no se traduce, es un identificador).
+    name = fields.Char(string='Nombre', required=True, translate=True)
     code = fields.Char(string='Código')
     category_id = fields.Many2one('mi_sitio_web.categoria', string='Categoría', required=True)
-    summary = fields.Char(string='Resumen breve')
-    description = fields.Text(string='Descripción completa')
+    summary = fields.Char(string='Resumen breve', translate=True)
+    description = fields.Text(string='Descripción completa', translate=True)
     image = fields.Image(string='Imagen', max_width=1024, max_height=1024)
     is_custom = fields.Boolean(string='Personalizable')
     is_published = fields.Boolean(string='Publicado en el sitio', default=True)
@@ -49,8 +51,8 @@ class MiSitioWebProductoSpec(models.Model):
     _order = 'sequence, id'
 
     producto_id = fields.Many2one('mi_sitio_web.producto', required=True, ondelete='cascade')
-    label = fields.Char(string='Campo', required=True)
-    value = fields.Char(string='Valor', required=True)
+    label = fields.Char(string='Campo', required=True, translate=True)
+    value = fields.Char(string='Valor', required=True, translate=True)
     sequence = fields.Integer(default=10)
 
 
@@ -60,7 +62,7 @@ class MiSitioWebProductoFeature(models.Model):
     _order = 'sequence, id'
 
     producto_id = fields.Many2one('mi_sitio_web.producto', required=True, ondelete='cascade')
-    name = fields.Char(string='Característica', required=True)
+    name = fields.Char(string='Característica', required=True, translate=True)
     sequence = fields.Integer(default=10)
 
 

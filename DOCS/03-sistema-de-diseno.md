@@ -92,6 +92,7 @@ tener suficiente especificidad sobre el CSS base de Odoo.
 | `.hc-empty-state` | Caja con borde punteado para estados vacíos | Categoría sin productos publicados |
 | `.hc-hero-grid` | Patrón de grilla sutil superpuesto sobre fondos oscuros | Hero de Compromiso |
 | `.hc-back-to-top` | Botón circular flotante "volver arriba", aparece después de 400px de scroll | Todas las páginas (posición inline por instancia: izquierda en las que tienen WhatsApp a la derecha, derecha en Historia que tiene el toggle de tema a la izquierda) |
+| `.hc-lang-selector` / `.hc-lang-btn` / `.hc-lang-menu` | Selector de idioma del header (reusa `portal.language_selector` de Odoo, restyleado) | `site_header`, en todas las páginas — ver [idiomas](06-idiomas.md) |
 
 Botones "con pinta de botón" (cualquier `<a>` con `border-radius` en su
 estilo inline) levantan y se aclaran al hover automáticamente vía selector

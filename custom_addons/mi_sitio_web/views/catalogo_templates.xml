@@ -114,6 +114,28 @@
     transition: opacity .25s ease, visibility .25s ease, transform .25s ease;
   }
   #wrap.oe_structure .hc-back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+
+  /* Selector de idioma del header — reusa el template estándar de Odoo
+     (portal.language_selector) pero con la estética propia del sitio en
+     vez de las clases default de Bootstrap. */
+  #wrap.oe_structure .hc-lang-selector { position: relative; }
+  #wrap.oe_structure .hc-lang-btn {
+    display: flex; align-items: center; gap: 5px; background: #ffffff;
+    border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
+    border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
+    font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+  }
+  #wrap.oe_structure .hc-lang-btn:hover { border-color: #c26a1e; color: #c26a1e; }
+  #wrap.oe_structure .hc-lang-menu {
+    background: #ffffff; border: 1px solid #e8e3d9; border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(36,29,23,.14); padding: 6px; min-width: 160px;
+  }
+  #wrap.oe_structure .hc-lang-menu .dropdown-item {
+    display: block; padding: 8px 12px; border-radius: 6px; font-size: 13px;
+    font-weight: 500; letter-spacing: normal; text-transform: none; color: #5a4f44;
+  }
+  #wrap.oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
+  #wrap.oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -176,6 +198,11 @@
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
         <a href="/compromiso" style="color:#5a4f44;">Compromiso</a>
         <a href="/mi-sitio#faq" style="color:#5a4f44;">FAQ</a>
+        <t t-call="portal.language_selector">
+          <t t-set="_div_classes" t-value="'hc-lang-selector'"/>
+          <t t-set="_btn_class" t-value="'hc-lang-btn'"/>
+          <t t-set="_dropdown_menu_class" t-value="'hc-lang-menu'"/>
+        </t>
         <a href="/mi-sitio#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;">Contacto</a>
       </nav>
     </div>

@@ -57,6 +57,9 @@ corrigió).
 | `/mi-sitio/contacto` (POST) | — | Crea un `crm.lead`; valida server-side; redirige (patrón Post/Redirect/Get) |
 | `/mi-sitio/gracias` | Página de agradecimiento | Destino del redirect anterior |
 
+Todas las rutas admiten prefijo de idioma (`/en/...`, `/pt/...`) porque
+usan `website=True` — ver [idiomas](06-idiomas.md).
+
 ## Plantillas compartidas (`catalogo_templates.xml`)
 
 - **`head_assets`** — se llama una vez en cada página (`<t

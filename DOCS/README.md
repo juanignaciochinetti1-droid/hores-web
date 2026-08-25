@@ -11,6 +11,7 @@ a él en unos meses) no tenga que reconstruir el contexto desde cero.
 3. [Sistema de diseño](03-sistema-de-diseno.md) — colores, tipografía, componentes reusables
 4. [Pendientes y datos de ejemplo](04-pendientes-y-datos-de-ejemplo.md) — qué es real y qué falta reemplazar
 5. [Validaciones](05-validaciones.md) — qué se valida en modelos, seguridad y el formulario de contacto
+6. [Idiomas](06-idiomas.md) — español/inglés/portugués, cómo está traducido cada tipo de contenido
 
 ## Resumen de una línea
 

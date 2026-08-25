@@ -47,6 +47,13 @@
 - Banderas de países (`/historia`): imágenes de **flagcdn.com** (CDN
   externo, sin librería).
 
+## Idiomas
+
+Sitio multi-idioma: **español (default) / inglés / portugués (Brasil)**,
+con selector en el header (`/en/...`, `/pt/...`). Ver
+[idiomas](06-idiomas.md) para el detalle de cómo está armado y un gotcha
+importante de Odoo si se vuelve a tocar una traducción.
+
 ## Integraciones de Odoo que usa el sitio
 
 - **CRM** (`crm.lead`): el formulario de contacto crea un Lead.
