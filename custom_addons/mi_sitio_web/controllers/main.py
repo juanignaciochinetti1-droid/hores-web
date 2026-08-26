@@ -260,6 +260,21 @@ def _historia_data(lang):
     return HISTORIA_POR_IDIOMA.get(lang, _HISTORIA_ES)
 
 
+def _redirect(path):
+    """Redirige preservando el idioma activo (/en/..., /pt/...).
+
+    request.redirect() con una ruta relativa como '/mi-sitio/gracias' NO
+    antepone el prefijo de idioma por si solo -- siempre devuelve al
+    visitante a la version en espanol de esa URL, sin importar en que
+    idioma estaba navegando (bug real: un visitante llenando el formulario
+    de pedido en /en/producto/7 quedaba en la version en espanol de la
+    pagina despues de enviarlo, con o sin error). ir.http._url_for()
+    antepone el prefijo correcto segun el idioma activo del request antes
+    de redirigir. Usar esto en vez de request.redirect() directo para
+    cualquier destino relativo que el visitante vaya a ver."""
+    return request.redirect(request.env['ir.http']._url_for(path))
+
+
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
@@ -364,7 +379,7 @@ class MiSitioWeb(http.Controller):
         # cualquier otro input. Si viene con algo, fingimos éxito (no le
         # damos pistas al bot) sin crear el Lead.
         if (post.get('sitio_web') or '').strip():
-            return request.redirect('/mi-sitio/gracias')
+            return _redirect('/mi-sitio/gracias')
 
         # Validación server-side: el atributo required/type=email del HTML
         # no protege contra un POST directo (curl, bot) con campos vacíos,
@@ -373,7 +388,7 @@ class MiSitioWeb(http.Controller):
                 or not EMAIL_RE.match(email)
                 or len(nombre) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
-            return request.redirect('/mi-sitio?contacto_error=1#contacto')
+            return _redirect('/mi-sitio?contacto_error=1#contacto')
 
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
 
@@ -389,7 +404,7 @@ class MiSitioWeb(http.Controller):
         # Patrón Post/Redirect/Get: si el visitante refresca la página de
         # agradecimiento, el navegador repite el GET en vez de reenviar el
         # formulario y duplicar el Lead.
-        return request.redirect('/mi-sitio/gracias')
+        return _redirect('/mi-sitio/gracias')
 
     @http.route('/mi-sitio/gracias', type='http', auth='public', website=True)
     def contacto_gracias(self, **kwargs):
@@ -410,7 +425,7 @@ class MiSitioWeb(http.Controller):
 
         # Honeypot anti-bot, mismo patrón que el formulario de contacto.
         if (post.get('sitio_web') or '').strip():
-            return request.redirect('/mi-sitio/pedido/gracias')
+            return _redirect('/mi-sitio/pedido/gracias')
 
         producto_id_raw = (post.get('producto_id') or '').strip()
         if not producto_id_raw.isdigit():
@@ -426,10 +441,10 @@ class MiSitioWeb(http.Controller):
         variante_id_raw = (post.get('variante_id') or '').strip()
         if variante_id_raw:
             if not variante_id_raw.isdigit():
-                return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+                return _redirect('/producto/%d?pedido_error=1' % producto.id)
             variante = variante.browse(int(variante_id_raw))
             if not variante.exists() or variante.producto_id.id != producto.id:
-                return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+                return _redirect('/producto/%d?pedido_error=1' % producto.id)
 
         try:
             cantidad = int(post.get('cantidad') or 0)
@@ -445,7 +460,7 @@ class MiSitioWeb(http.Controller):
                 or len(mensaje) > MENSAJE_MAX_LEN
                 or cantidad <= 0 or cantidad > CANTIDAD_MAX
                 or (producto.variante_ids and not variante)):
-            return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+            return _redirect('/producto/%d?pedido_error=1' % producto.id)
 
         partner = request.env['res.partner'].sudo().search([('email', '=', email)], limit=1)
         if not partner:
@@ -483,7 +498,7 @@ class MiSitioWeb(http.Controller):
         })
 
         # Patrón Post/Redirect/Get, igual que en /mi-sitio/contacto.
-        return request.redirect('/mi-sitio/pedido/gracias')
+        return _redirect('/mi-sitio/pedido/gracias')
 
     @http.route('/mi-sitio/pedido/gracias', type='http', auth='public', website=True)
     def pedido_gracias(self, **kwargs):

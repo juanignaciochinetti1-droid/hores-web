@@ -131,6 +131,39 @@ Si en el futuro se traduce un campo o vista nuevos, seguir este mismo
 orden — o el sitio en español puede quedar mostrando otro idioma sin que
 sea evidente hasta que alguien lo visita sin el prefijo `/en`/`/pt`.
 
+## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
+
+Encontrado y corregido el 26/08/2026, al agregar el formulario de
+"Solicitar pedido" ([pedidos](07-pedidos.md)).
+
+Odoo reescribe automáticamente los `href`/`action` **de la página
+renderizada** para que apunten a la versión con el prefijo de idioma
+correcto (por eso un link `href="/historia"` en el código sale como
+`href="/en/historia"` cuando la página se sirve en inglés, sin que haya
+que hacer nada especial). Pero esa reescritura automática es parte del
+post-procesado del HTML — **no** se aplica al header `Location` de una
+redirección HTTP armada a mano con `request.redirect('/algo')`. Ese string
+sale exactamente como se escribió, sin importar en qué idioma esté
+navegando el visitante.
+
+Efecto real: un visitante llenando el popup de pedido en `/en/producto/7`
+(o el formulario de contacto en `/pt/mi-sitio`) enviaba el formulario
+correctamente a la URL en inglés/portugués (el `action=` del form sí se
+reescribe solo, es parte del HTML), pero la redirección de vuelta —tanto
+la de éxito como la de error de validación— lo mandaba a la versión en
+**español** de la página siguiente, cortando el idioma justo en la
+confirmación final.
+
+**Solución**: un helper `_redirect(path)` en `controllers/main.py` que
+envuelve `request.redirect()` pasando el path por
+`request.env['ir.http']._url_for(path)` primero — ese es el mismo método
+que Odoo usa internamente para la reescritura automática de links, así que
+antepone el prefijo correcto (o ninguno, si el idioma activo es el
+default) antes de redirigir. **Todo redirect a una URL relativa que el
+visitante vaya a ver tiene que pasar por este helper, no por
+`request.redirect()` directo** — si se agrega una ruta nueva con su propio
+redirect, usar `_redirect()` o va a reproducirse este mismo bug.
+
 ## Qué falta / gaps conocidos
 
 - El mensaje que arma `producto.whatsapp_url` ("Hola, quiero consultar
