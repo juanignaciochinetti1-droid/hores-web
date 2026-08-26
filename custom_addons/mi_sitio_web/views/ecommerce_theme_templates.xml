@@ -25,8 +25,25 @@
             <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
             <style>
                 /* Variables de Bootstrap 5: la mayoría de los componentes
-                   nativos (botones, links, focus) las consumen en cascada. */
+                   nativos (botones, links, focus) las consumen en cascada.
+                   OJO: el Bootstrap que compila esta versión de Odoo NO usa
+                   el prefijo "bs-" en el nombre de las variables (--primary,
+                   --body-bg, --link-color...), a pesar de que la
+                   documentación pública de Bootstrap 5 sí lo usa. Se
+                   confirmó abriendo el bundle compilado
+                   (web.assets_frontend.min.css) y viendo el nombre real de
+                   la variable que consume la regla de fondo del body. Se
+                   dejan las dos versiones (con y sin prefijo) para no
+                   depender de esto si Odoo cambia de convención en otro
+                   bundle. */
                 :root {
+                    --primary: #c26a1e;
+                    --body-bg: #f6f4ef;
+                    --body-color: #241d17;
+                    --body-font-family: 'Archivo', system-ui, sans-serif;
+                    --link-color: #c26a1e;
+                    --link-hover-color: #a85a19;
+                    --border-color: #e8e3d9;
                     --bs-primary: #c26a1e;
                     --bs-primary-rgb: 194, 106, 30;
                     --bs-body-bg: #f6f4ef;
@@ -36,6 +53,20 @@
                     --bs-link-color-rgb: 194, 106, 30;
                     --bs-link-hover-color: #a85a19;
                     --bs-border-color: #e8e3d9;
+                }
+                /* El franjón blanco que quedaba a los costados en pantallas
+                   anchas (contenedor de 1200px centrado, con blanco puro
+                   alrededor) no era la etiqueta html (esa ya se pinta bien
+                   con la variable de arriba) — es la etiqueta body, que
+                   tiene su propio fondo opaco por encima y tapa lo que
+                   pinte html detrás. El nombre de variable equivocado (ver
+                   comentario de arriba) hacía que body terminara blanco en
+                   vez de crema. Se pinta directo, con !important, para no
+                   depender de que la variable se resuelva bien en cualquier
+                   contexto — se aplica a toda página, no solo a las de
+                   eCommerce, porque el bug es del body en general. */
+                html, body {
+                    background-color: #f6f4ef !important;
                 }
                 /* Refuerzo directo (algunos componentes de website_sale usan
                    colores compilados en el CSS, no solo las variables de
@@ -90,20 +121,112 @@
                 .oe_website_sale .bg-light {
                     background-color: #efe6d8 !important;
                 }
-                /* Panel de "Resumen de la orden" / carrito / totales: mismo
-                   look que las tarjetas del resto del sitio (.hc-card). */
-                .oe_website_sale .o_website_sale_checkout_container,
-                .oe_website_sale #cart_products,
+                /* A pedido explícito (26/08/2026): en el carrito/checkout no
+                   se muestra nada de precios ni el código de descuento —
+                   los productos migrados todavía no tienen precio real
+                   cargado (ver DOCS/07-pedidos.md) y el pedido se coordina
+                   por fuera (WhatsApp/mail), no por cobro online. Se
+                   esconde con CSS (no se borra del template) para que el
+                   día que haya precios reales sea un cambio de una línea,
+                   no reescribir el override. */
+                .oe_website_sale [name="website_sale_cart_line_price"],
+                .oe_website_sale [name="website_sale_cart_summary_line_price"] {
+                    display: none !important;
+                }
+                /* .o_cart_total es la tarjeta de "Entrega / Subtotal /
+                   Impuestos / Total" del resumen — el formulario de código
+                   de descuento (.coupon_form) vive adentro tuyo, como una
+                   fila más de la misma tabla, así que ocultando este
+                   contenedor se van los dos juntos. */
+                .oe_website_sale .o_cart_total {
+                    display: none !important;
+                }
+                /* Mismo total, versión resumen para mobile (franja pegada
+                   abajo en los pasos de dirección/pago). */
+                .oe_website_sale #amount_total_summary {
+                    display: none !important;
+                }
+                /* El catálogo (/shop) y el carrito/checkout usan .container
+                   de Bootstrap. .oe_website_sale.container (las dos clases
+                   juntas) apunta solo a esos contenedores nativos de
+                   eCommerce, no a .container en general (nav, footer).
+                   Mismo tope que el resto del sitio (ver sistema de
+                   diseño) para que no quede más ancho que el resto de las
+                   páginas — subirlo más (se probó 1600px) no achicaba en
+                   los hechos el espacio vacío de los costados en un
+                   monitor ancho, solo estiraba de más la tarjeta del
+                   pedido (ver regla de #shop_cart más abajo). */
+                .oe_website_sale.container {
+                    max-width: 1200px !important;
+                }
+                /* Fila con la tarjeta del pedido (izquierda) y la de
+                   totales (derecha), en el paso "Orden" del checkout: el
+                   grid nativo de Bootstrap las deja con anchos que
+                   dependen del ancho del contenedor (se estiran de más en
+                   monitores anchos). Se las pasa a un ancho fijo cómodo de
+                   leer, centradas como conjunto — así el espacio que sobra
+                   en un monitor ancho queda repartido parejo alrededor del
+                   conjunto en vez de estirar el contenido. :has() solo
+                   engancha esta fila puntual (la que tiene la tarjeta del
+                   pedido adentro), no las filas de Dirección/Pago. */
+                .oe_website_sale .row:has(> .oe_cart) {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 32px;
+                }
                 .oe_website_sale .oe_cart {
+                    flex: 1 1 620px;
+                    max-width: 680px;
+                    width: auto !important;
+                }
+                .oe_website_sale .o_wsale_shorter_cart_summary {
+                    flex: 1 1 340px;
+                    max-width: 380px;
+                    width: auto !important;
+                    margin-left: 0 !important;
+                }
+                /* Panel de "Resumen de la orden": mismo look que las
+                   tarjetas del resto del sitio (fondo blanco, borde,
+                   sombra sutil — como .hc-card), en vez de flotar
+                   directo sobre el fondo crema. */
+                .oe_website_sale #shop_cart {
+                    background-color: #ffffff;
+                    border: 1px solid #e8e3d9;
                     border-radius: 14px;
+                    padding: 26px 28px;
+                    box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
+                }
+                .oe_website_sale .o_cart_product {
+                    border-bottom: 1px solid #e8e3d9;
+                    padding-bottom: 20px !important;
+                    margin-bottom: 20px;
+                }
+                .oe_website_sale .o_cart_product:last-child {
+                    border-bottom: none;
+                    padding-bottom: 0 !important;
+                    margin-bottom: 0;
                 }
                 .oe_website_sale .card,
                 .oe_website_sale .bg-white.rounded {
                     box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
                 }
-                /* Pasos del checkout (Orden / Dirección / Pago) */
-                .oe_website_sale .o_wizard .o_wizard_step_active,
-                .oe_website_sale .o_wizard a.text-action {
+                /* Panel de totales (Entrega/Subtotal/Total): mismo acento
+                   naranja arriba que usa el footer del sitio. */
+                .oe_website_sale .o_total_card {
+                    border-top: 3px solid #c26a1e !important;
+                }
+                /* Pasos del checkout (Orden / Dirección / Pago): el paso
+                   activo es un div con clase fw-bold, los ya recorridos
+                   son links comunes — ninguno trae una clase de color
+                   propia. */
+                .oe_website_sale .o_wizard a {
+                    color: #8a7a67;
+                }
+                .oe_website_sale .o_wizard a:hover {
+                    color: #c26a1e;
+                }
+                .oe_website_sale .o_wizard .fw-bold {
                     color: #c26a1e !important;
                 }
                 /* Selector de cantidad (+/-) e input de código de descuento */

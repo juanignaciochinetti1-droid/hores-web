@@ -139,6 +139,16 @@ botones, etc.) de `#wrap.oe_structure X` a `.oe_structure X` — tanto
 cambio simple cubre las dos sin tener que duplicar reglas — ver
 [sistema de diseño](03-sistema-de-diseno.md).
 
+**Segunda barra de placeholder, aparte** (encontrada el 26/08/2026, con un
+screenshot del checkout): además del `#footer` de arriba, Odoo tiene una
+región *distinta* — `.o_footer_copyright`, fuera de `#footer` — con una
+segunda línea de placeholder ("Derechos reservados © Nombre de la
+empresa", de `website.footer_copyright_company_name`). Como
+`site_footer` ya trae su propia línea de copyright real, esta segunda
+barra se **oculta** (`display:none` vía `position="attributes"`) en vez
+de completarla con datos reales — mostrar el mismo copyright dos veces
+con estilos distintos hubiera quedado peor, no mejor.
+
 **Gotcha de Odoo confirmado de nuevo acá**: agregar un archivo XML *nuevo*
 al `data` del manifest y correr `button_immediate_upgrade` **no alcanza**
 — la vista no se crea hasta reiniciar el contenedor primero (mismo

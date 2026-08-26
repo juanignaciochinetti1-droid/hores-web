@@ -158,10 +158,26 @@ estas páginas no pasan por ese template) y un bloque de CSS que:
   botones primarios en naranja (`#c26a1e`), links, precios
   (`.oe_currency_value`), bordes de tarjetas.
 - Suma bordes redondeados + sombra sutil a los paneles (mismo trato que
-  `.hc-card` en el resto del sitio), color de acento en los pasos del
-  checkout ("Orden / Dirección / Pago", `.o_wizard`), y estilo a los
-  inputs (selector de cantidad `+`/`-`, código de descuento, foco naranja
-  en los campos).
+  `.hc-card` en el resto del sitio: `#shop_cart`, el panel de "Resumen de
+  la orden"), separadores entre líneas de pedido, acento naranja arriba
+  del panel de totales (`.o_total_card`, 3px, mismo look que el borde
+  superior del footer), color de acento en los pasos del checkout
+  ("Orden / Dirección / Pago", `.o_wizard`), y estilo a los inputs
+  (selector de cantidad `+`/`-`, código de descuento, foco naranja en los
+  campos). Ver `views/ecommerce_theme_templates.xml` — cada regla nueva
+  quedó comentada con la clase real de `website_sale` a la que apunta.
+- Achica el ancho del contenedor de `/shop` y del carrito/checkout al
+  mismo tope que el resto del sitio (`max-width:1200px`, ver
+  [sistema de diseño](03-sistema-de-diseno.md)) y, en el paso "Orden" del
+  checkout puntualmente, fija un ancho cómodo de lectura para la tarjeta
+  del pedido (`.oe_cart`, hasta 680px) y la de totales
+  (`.o_wsale_shorter_cart_summary`, hasta 380px), centradas como conjunto
+  con `.row:has(> .oe_cart)`. Se probó primero solo subir el tope del
+  contenedor (a 1600px) para achicar el espacio vacío de los costados en
+  monitores anchos, pero esas dos tarjetas no tienen ancho propio en el
+  grid nativo de `website_sale` — crecen con el contenedor, así que el
+  único efecto real fue estirar de más la tarjeta del pedido sin resolver
+  el espacio vacío. Fijar su ancho evita eso.
 
 Esto aplica sobre `website.layout`, o sea **todas** las páginas del
 sitio — en las nuestras no cambia nada visible (ya fijamos estos mismos
@@ -171,11 +187,81 @@ reconstrucción del layout: el header/nav de `/shop` sigue siendo el de
 Odoo, no el nuestro — si más adelante se quiere ese nivel de detalle, es
 un paso siguiente natural y más grande.
 
+**Bug real: franjas blancas a los costados en pantallas anchas, aunque el
+fondo "crema" estaba bien puesto** (encontrado el 26/08/2026). Se probó
+primero pintar el fondo directo sobre la etiqueta `html` (asumiendo que
+Odoo fuerza el `body` a transparente para poder mostrar una imagen de
+fondo configurable) — la etiqueta `html` efectivamente quedaba bien
+pintada, **pero el problema seguía viéndose igual**. Diagnóstico real
+(confirmado renderizando la página con Chrome headless y leyendo el color
+de píxel exacto en los costados: daba `rgb(255,255,255)`, blanco puro, no
+el crema `rgb(246,244,239)` esperado — la caché del navegador quedó
+descartada como causa desde el principio de esta vuelta):
+
+- El Bootstrap 5 que compila **esta versión de Odoo** define sus
+  variables CSS **sin el prefijo `bs-`** (`--body-bg`, `--primary`,
+  `--link-color`...), a diferencia de lo que documenta públicamente
+  Bootstrap 5 (`--bs-body-bg`, etc.). Se confirmó abriendo el bundle
+  compilado real (`web.assets_frontend.min.css`) y viendo el nombre de
+  variable que consume la regla `body{background-color: var(--body-bg)}`.
+- El CSS de este módulo redefinía `--bs-body-bg` — una variable que
+  **no existe** en este build, así que no hacía nada — y `--body-bg`
+  seguía valiendo `#FFFFFF` (el blanco de fábrica de Odoo).
+- El `<body>` tiene su propio fondo **opaco**, pintado por encima de
+  `<html>` — aunque `<html>` estuviera bien pintado de crema, `<body>`
+  blanco lo tapaba por completo. Por eso el primer intento (solo
+  `html`) no cambiaba nada visible.
+
+Arreglo definitivo en `ecommerce_theme_templates.xml`: se agregaron las
+variables con el nombre real (sin prefijo) junto a las `--bs-*` (por si
+algún otro bundle sí las usa), y se pinta `html, body` directo con
+`!important` en vez de depender de que la variable se resuelva bien en
+cualquier contexto. Verificado con captura real (no solo mirando el HTML
+servido) y lectura de píxel exacta en los costados: `rgb(246,244,239)`
+en todo el ancho, sin franja blanca.
+
 > Además de la paleta, se corrigió acá mismo un bug que hacía que estas
 > páginas (y en realidad todo el sitio) mostraran el footer de placeholder
 > que trae Odoo por defecto, con datos inventados de una empresa que no
 > existe — ver
 > [arquitectura](02-arquitectura-proyecto.md#footer-único-en-todo-el-sitio).
+
+## Sin precios ni pago online en el carrito (a pedido explícito, 26/08/2026)
+
+El carrito y las 3 pantallas del checkout (Orden / Dirección / Pago) ya no
+muestran ningún precio, ni el campo de código de descuento — coherente con
+que los 30 productos migrados todavía están en `list_price = 0` (ver
+arriba) y con que el pedido se termina de coordinar por fuera (WhatsApp /
+mail), no con un cobro online real.
+
+- **Ocultos por CSS** en `ecommerce_theme_templates.xml` (no se tocó
+  ningún template de `website_sale` — si el día de mañana se cargan
+  precios reales y se quiere volver a mostrarlos, es borrar estas reglas,
+  nada más):
+  - `[name="website_sale_cart_line_price"]` — precio de cada línea en
+    `/shop/cart`.
+  - `[name="website_sale_cart_summary_line_price"]` — mismo precio, en el
+    mini-resumen que aparece en los pasos de Dirección/Pago.
+  - `.o_cart_total` — la tarjeta completa de Entrega/Subtotal/Impuestos/
+    Total. El formulario de código de descuento (`.coupon_form`) vive
+    *adentro* de este mismo contenedor como una fila más de la tabla, así
+    que se esconde solo con la misma regla.
+  - `#amount_total_summary` — el total que aparece en la barra resumen de
+    mobile (pegada abajo) en los pasos de Dirección/Pago.
+- **Texto del botón**: "Finalizar compra" (paso Orden → Dirección) ahora
+  dice **"Realizar pedido"**. A diferencia de todo lo anterior, este texto
+  **no es texto fijo de un template** — sale de un campo de datos
+  (`website.checkout.step.main_button_label`, un registro por paso y por
+  sitio) referenciado con `t-field`, así que no hay xpath que lo cambie:
+  se actualizó por RPC el registro del paso `/shop/checkout` del sitio
+  real (`website_id=1`, id interno 6 — **no** el genérico `website_id=False`
+  ni el del sitio de prueba `website_id=2`), en los 3 idiomas ("Realizar
+  pedido" / "Place order" / "Fazer pedido"). El resto de los botones del
+  wizard ("Confirmar" en Dirección→Pago y en Pago) no se tocó — no fue
+  parte del pedido.
+
+Verificado con Chrome headless + captura real en los 3 pasos del wizard
+(no solo el HTML servido), en los 3 idiomas.
 
 Como no hay pago online, el único método disponible en el checkout es
 **"Transferencia bancaria"** (Wire Transfer) — el cliente confirma el

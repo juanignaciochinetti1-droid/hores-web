@@ -31,5 +31,16 @@
                 <t t-call="mi_sitio_web.site_footer"/>
             </div>
         </xpath>
+        <!-- Barra aparte de "Derechos reservados © Nombre de la empresa"
+             (website.footer_copyright_company_name, placeholder de fábrica,
+             nunca se completó) — es una región DISTINTA de #footer, así
+             que el reemplazo de arriba no la toca. site_footer ya tiene su
+             propia línea de copyright real ("© 2026 HORES Cartotécnica —
+             ..."), así que esta barra queda redundante — se oculta en vez
+             de completarla con datos reales, para no repetir el mismo
+             texto dos veces. -->
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="attributes">
+            <attribute name="style">display:none;</attribute>
+        </xpath>
     </template>
 </odoo>
