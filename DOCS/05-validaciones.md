@@ -62,34 +62,25 @@ generaba pero nada lo leía (bug ya corregido, ver commits previos).
 - **No hay rate-limiting** (ej: máximo N envíos por IP por hora) — Odoo no
   trae uno genérico para controladores custom; si hace falta, se
   implementaría a mano (guardar intentos en `ir.config_parameter` o una
-  tabla propia). Esto aplica también al formulario de pedidos, más abajo.
+  tabla propia).
 
-## Formulario de "Solicitar pedido" (`POST /mi-sitio/pedido`)
+## Carrito y checkout (eCommerce)
 
-Mismo patrón que el formulario de contacto (honeypot, CSRF, validación
-server-side, PRG), aplicado a la creación de un presupuesto real en Ventas
-— ver [pedidos](07-pedidos.md) para el detalle de qué registra en Odoo.
+No hay validaciones propias acá — "Agregar al carrito" en
+`/producto/<id>` llama directo a la ruta nativa `/shop/cart/add` de
+`website_sale` (ver [pedidos](07-pedidos.md)), y todo el checkout
+(dirección, método de envío, pago) usa las validaciones nativas de Odoo,
+sin código propio de por medio. El único control del lado nuestro es que
+el botón "Agregar al carrito" no aparece si el producto está en
+`disponibilidad = 'sin_stock'`, o si no tiene un `sale_product_id`
+cargado — ambos chequeados en la plantilla (QWeb `t-if`), no en un
+controlador.
 
-| Validación | Detalle |
-|---|---|
-| `producto_id` | Tiene que ser un ID numérico de un producto existente y publicado — si no, `404` (mismo criterio que `/producto/<id>`), no un error de formulario |
-| `variante_id` (opcional) | Si viene, tiene que ser un ID numérico de una variante que **pertenezca al producto** enviado — una variante de otro producto se rechaza igual que si no existiera |
-| Variante obligatoria condicional | Si el producto tiene variantes cargadas, **no** se puede dejar sin elegir una — pedir "un tamaño cualquiera" no tiene sentido para fabricación |
-| `cantidad` | Entero, > 0 y ≤ 100.000 (`CANTIDAD_MAX`, límite defensivo contra valores absurdos, no una regla de negocio real) |
-| `nombre`, `email` | Igual que el formulario de contacto: obligatorios, formato de email validado, `nombre` ≤ 200 |
-| `empresa`, `telefono` | Opcionales, con longitud máxima (200 y 40 caracteres) |
-| `mensaje` (notas) | Opcional, ≤ 5000 caracteres |
-| Anti-bot (honeypot) | Mismo campo oculto `sitio_web`, mismo comportamiento: finge éxito sin crear nada |
-| CSRF | Token estándar de Odoo, igual que el contacto |
-
-Si cualquier validación falla, redirige a `/producto/<id>?pedido_error=1`
-— la ficha del producto lee ese parámetro y abre el popup de "Solicitar
-pedido" ya abierto, con el banner de error arriba del formulario (no hace
-falta un anchor: el popup es `position:fixed`, se ve entre a la altura de
-scroll que esté). Probado contra el servidor real: envío válido con
-variante (crea `sale.order` + `res.partner`), sin variante en un producto
-que la requiere (rechaza), honeypot lleno (finge éxito, no crea nada),
-`producto_id` inexistente (404).
+> Antes hubo un formulario propio de "Solicitar pedido" (`POST
+> /mi-sitio/pedido`) con su propia validación server-side (honeypot,
+> CSRF, variante obligatoria, límites de longitud) — se sacó al conectar
+> el carrito real de eCommerce (26/08/2026). Si hace falta consultar cómo
+> era, está en el historial de la sesión, no en el código actual.
 
 ## Cómo probar las validaciones
 

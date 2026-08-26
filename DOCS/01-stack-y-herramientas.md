@@ -60,13 +60,15 @@ importante de Odoo si se vuelve a tocar una traducción.
 - **Sitio Web** (`website`): el módulo depende de `website` para
   aprovechar el layout base, el sistema de rutas HTTP y el manejo de
   imágenes (`/web/image/<model>/<id>/<field>`).
-- **Ventas** (`sale`): el formulario "Solicitar pedido" crea un
-  presupuesto real (`sale.order`) — ver [pedidos](07-pedidos.md). Se
-  instaló como dependencia del módulo (antes no estaba instalado).
+- **eCommerce** (`website_sale`) + **Ventas** (`sale`) + **`payment_custom`**
+  (proveedor de pago "Transferencia bancaria", sin pago online real):
+  carrito y checkout nativos de Odoo, conectados desde la ficha de cada
+  producto ("Agregar al carrito") — ver [pedidos](07-pedidos.md). Instalados
+  como dependencia del módulo (antes no estaban).
 - **Portal/Facturación**: decisión tomada de *no* reconstruir estos con
   código propio — si en algún momento se necesita portal de cliente o
   facturas reales, usar las apps nativas de Odoo en vez de programarlas a
-  mano (misma lógica ya aplicada para Ventas).
+  mano (misma lógica ya aplicada para Ventas/eCommerce).
 
 ## Imágenes estáticas (`static/src/img/`)
 

@@ -12,7 +12,7 @@ a él en unos meses) no tenga que reconstruir el contexto desde cero.
 4. [Pendientes y datos de ejemplo](04-pendientes-y-datos-de-ejemplo.md) — qué es real y qué falta reemplazar
 5. [Validaciones](05-validaciones.md) — qué se valida en modelos, seguridad y el formulario de contacto
 6. [Idiomas](06-idiomas.md) — español/inglés/portugués, cómo está traducido cada tipo de contenido
-7. [Pedidos](07-pedidos.md) — popup de "Solicitar pedido", integración con Ventas (sale.order) y badges de disponibilidad
+7. [Pedidos](07-pedidos.md) — carrito y checkout (eCommerce/website_sale), catálogo puente y badges de disponibilidad
 
 ## Resumen de una línea
 

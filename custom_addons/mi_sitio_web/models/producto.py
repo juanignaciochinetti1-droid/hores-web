@@ -31,10 +31,8 @@ class MiSitioWebProducto(models.Model):
 
     # Estado de disponibilidad manual: lo carga el equipo a mano en el
     # backend (no hay integración con Inventario/stock real). El sitio lo
-    # usa para el badge de cada producto y para el filtro de "Disponibilidad"
-    # en /compras y /categoria/<slug>. 'sin_stock' NO bloquea el formulario
-    # de "Solicitar pedido" — se sigue pudiendo dejar la solicitud, cambia
-    # el texto para que quede claro que hay que esperar.
+    # usa para el badge de cada producto, y para bloquear "Agregar al
+    # carrito" cuando está en 'sin_stock' — ver DOCS/07-pedidos.md.
     disponibilidad = fields.Selection(
         [
             ('disponible', 'Disponible'),
@@ -43,6 +41,14 @@ class MiSitioWebProducto(models.Model):
         ],
         string='Disponibilidad', required=True, default='disponible',
     )
+
+    # Producto real de Odoo (product.product) que representa a este
+    # producto del catálogo en el carrito/checkout de eCommerce. Solo se
+    # usa cuando el producto NO tiene variante_ids — si las tiene, cada
+    # variante de tamaño tiene su propio sale_product_id (ver más abajo),
+    # porque cada tamaño puede tener un precio distinto. Se arma con un
+    # script de sincronización, no a mano — ver DOCS/07-pedidos.md.
+    sale_product_id = fields.Many2one('product.product', string='Producto de venta (Odoo)')
 
     spec_ids = fields.One2many('mi_sitio_web.producto.spec', 'producto_id', string='Especificaciones')
     feature_ids = fields.One2many('mi_sitio_web.producto.feature', 'producto_id', string='Características')
@@ -92,3 +98,7 @@ class MiSitioWebProductoVariante(models.Model):
     dimensions = fields.Char(string='Dimensiones')
     image = fields.Image(string='Imagen', max_width=800, max_height=800)
     sequence = fields.Integer(default=10)
+
+    # Ver mi_sitio_web.producto.sale_product_id — acá es por tamaño, no por
+    # producto, porque cada variante puede tener su propio precio de venta.
+    sale_product_id = fields.Many2one('product.product', string='Producto de venta (Odoo)')

@@ -4,11 +4,9 @@
 
 ```
 custom_addons/mi_sitio_web/
-├── __manifest__.py          # depende de: website, crm, sale
+├── __manifest__.py          # depende de: website, crm, sale, website_sale, payment_custom
 ├── controllers/
 │   └── main.py               # todas las rutas HTTP del sitio
-├── data/
-│   └── pedido_producto_data.xml  # producto "puente" para sale.order.line
 ├── models/
 │   ├── categoria.py          # mi_sitio_web.categoria
 │   └── producto.py           # mi_sitio_web.producto (+ spec/feature/variante)
@@ -16,13 +14,16 @@ custom_addons/mi_sitio_web/
 │   └── ir.model.access.csv   # permisos: usuarios internos r/w, público solo r
 ├── static/src/img/           # imágenes que usa el sitio (copiadas de disenos/)
 └── views/
-    ├── website_templates.xml  # Home + páginas de "gracias" (contacto y pedido)
+    ├── website_templates.xml  # Home + página de "gracias" del contacto
     ├── catalogo_templates.xml # head_assets, header/footer compartidos,
-    │                          # Compras, Categoría, Producto, Calidad,
-    │                          # Compromiso, Historia
+    │                          # Compras, Categoría, Producto (+ "Agregar
+    │                          # al carrito"), Calidad, Compromiso, Historia
     ├── producto_views.xml     # vistas de backend (admin) del catálogo
     ├── seo_templates.xml      # Open Graph, extiende website.layout
-    └── error_templates.xml    # página 404 propia, extiende http_routing.404
+    ├── error_templates.xml    # página 404 propia, extiende http_routing.404
+    └── ecommerce_theme_templates.xml  # paleta del sitio en /shop, carrito,
+                               # checkout (nativos de website_sale) — ver
+                               # DOCS/07-pedidos.md
 ```
 
 ## Modelos de datos
@@ -33,14 +34,16 @@ custom_addons/mi_sitio_web/
   (obligatorio), `summary`, `description`, `image`, `is_custom`
   (personalizable), `is_published`, `disponibilidad`
   (`disponible`/`a_pedido`/`sin_stock`, manual — ver
-  [pedidos](07-pedidos.md)), `sequence`, más un campo calculado
-  `whatsapp_url` (arma el link de WhatsApp con el nombre del producto
-  URL-encodeado).
+  [pedidos](07-pedidos.md)), `sale_product_id` (puente a un
+  `product.product` real de Odoo, para el carrito — solo si el producto no
+  tiene variantes), `sequence`, más un campo calculado `whatsapp_url`
+  (arma el link de WhatsApp con el nombre del producto URL-encodeado).
   - `spec_ids` → `mi_sitio_web.producto.spec` (ficha técnica: label/value)
   - `feature_ids` → `mi_sitio_web.producto.feature` (lista de
     características)
   - `variante_ids` → `mi_sitio_web.producto.variante` (tamaños, cada uno
-    con su propia imagen)
+    con su propia imagen y su propio `sale_product_id` — ver
+    [pedidos](07-pedidos.md))
 
 Las restricciones de unicidad (`code`, `slug`) usan `models.Constraint`
 (no `_sql_constraints`, que quedó deprecado y dejó de aplicarse de verdad
@@ -60,11 +63,18 @@ corrigió).
 | `/historia` | Historia de la empresa | Única página con datos "hardcodeados" como constantes en el controlador (ver doc de pendientes) y toggle de tema |
 | `/mi-sitio/contacto` (POST) | — | Crea un `crm.lead`; valida server-side; redirige (patrón Post/Redirect/Get) |
 | `/mi-sitio/gracias` | Página de agradecimiento | Destino del redirect anterior |
-| `/mi-sitio/pedido` (POST) | — | Crea un `sale.order` (presupuesto) real; valida server-side; PRG — ver [pedidos](07-pedidos.md) |
-| `/mi-sitio/pedido/gracias` | Página de agradecimiento del pedido | Destino del redirect anterior |
 
 Todas las rutas admiten prefijo de idioma (`/en/...`, `/pt/...`) porque
 usan `website=True` — ver [idiomas](06-idiomas.md).
+
+**Carrito y checkout no son rutas propias** — `/shop`, `/shop/cart`,
+`/shop/checkout`, etc. son nativas de `website_sale`. "Agregar al
+carrito" desde `/producto/<id>` llama directo a la ruta nativa
+`/shop/cart/add` por JS (`fetch`), sin pasar por ningún controlador
+propio. La única ruta propia relacionada es
+`GET /mi-sitio/carrito/lineas` (JSON, `{"cantidad": N}`), que usa el JS
+del botón para actualizar el numerito del carrito del header con la
+cantidad de **pedidos**, no de unidades — ver [pedidos](07-pedidos.md).
 
 ## Plantillas compartidas (`catalogo_templates.xml`)
 
@@ -76,7 +86,16 @@ usan `website=True` — ver [idiomas](06-idiomas.md).
   email) + nav (Empresa/Historia/Productos/Calidad/Compromiso/FAQ/
   Contacto). Se usa en todas las páginas **excepto** que se decida lo
   contrario explícitamente (ver nota abajo).
-- **`site_footer`** — footer + botón flotante de WhatsApp.
+- **`site_footer`** — footer + botón flotante de WhatsApp. **No se llama a
+  mano en cada página** — se inyecta una sola vez, automáticamente, en la
+  región `#footer` de `website.layout` (`views/footer_override_templates.xml`),
+  así que aparece en TODAS las páginas del sitio (las nuestras y las
+  nativas de `/shop`) sin que cada plantilla tenga que pedirlo. Ver
+  "Footer único en todo el sitio" más abajo — es importante si se agrega
+  una página nueva: no hace falta (ni hay que) llamar a `site_footer` a
+  mano, ya sale solo. La excepción es Historia, que tiene su propio
+  `<footer>` chico y por eso pone `<t t-set="no_footer" t-value="True"/>`
+  antes de `website.layout` para no duplicar.
 
 > **Nota sobre Historia:** en algún momento se probó darle a `/historia` un
 > header propio distinto; se revirtió a pedido — **todas las páginas usan
@@ -84,6 +103,49 @@ usan `website=True` — ver [idiomas](06-idiomas.md).
 > tocar el header, confirmar primero si el pedido es sobre el header en sí
 > o sobre otra sección visualmente cercana (ya pasó una vez que un pedido
 > sobre el fondo de una sección se interpretó mal como el header).
+
+## Footer único en todo el sitio
+
+Bug real encontrado el 26/08/2026 (a partir de un screenshot del checkout
+mostrando un footer con datos inventados de una empresa que no existe):
+**todas** las páginas del sitio —las nuestras y las nativas de
+`/shop`/carrito/checkout— mostraban el footer de placeholder que trae
+Odoo por defecto ("We are a team of passionate people...", "Useful Links"
+a `#`), **además** de (o en vez de) el nuestro.
+
+Causa: `website.layout` arma su propia región `<div id="footer">` con ese
+contenido de fábrica, **por fuera de `#wrap`** — es decir, por fuera de
+cualquier contenido que cada página nuestra pusiera en su cuerpo. Antes de
+esta corrección, cada una de nuestras plantillas llamaba a `site_footer` a
+mano *dentro* de `#wrap` (footer real, visible), pero la región `#footer`
+de Odoo se seguía renderizando igual, por debajo — duplicado, invisible a
+simple vista si nadie scrolleaba hasta el final. En las páginas nativas de
+eCommerce, que no tienen nada propio dentro de `#wrap`, ese placeholder
+era **lo único que se veía**.
+
+Arreglo (`views/footer_override_templates.xml`): un `<template
+inherit_id="website.layout">` con `position="replace"` sobre
+`//div[@id='footer']`, que pone `mi_sitio_web.site_footer` ahí en su
+lugar (respetando `no_footer`, la variable que Odoo ya usa para
+suprimirlo — la usa Historia). Se sacaron los `<t t-call="mi_sitio_web.site_footer"/>`
+que cada plantilla tenía metidos a mano dentro de `#wrap` — ahora sale
+solo, una sola vez, en cualquier página.
+
+Como el footer real vive ahora *fuera* de `#wrap.oe_structure`, hubo que
+aflojar el CSS scoping de `head_assets` (`.hc-back-to-top`, hover de
+botones, etc.) de `#wrap.oe_structure X` a `.oe_structure X` — tanto
+`#wrap` como la región `#footer` de Odoo tienen la clase `oe_structure`
+(es la convención de Odoo para marcar zonas editables), así que ese
+cambio simple cubre las dos sin tener que duplicar reglas — ver
+[sistema de diseño](03-sistema-de-diseno.md).
+
+**Gotcha de Odoo confirmado de nuevo acá**: agregar un archivo XML *nuevo*
+al `data` del manifest y correr `button_immediate_upgrade` **no alcanza**
+— la vista no se crea hasta reiniciar el contenedor primero (mismo
+comportamiento ya documentado para dependencias nuevas del manifest, ver
+[idiomas](06-idiomas.md) y [pedidos](07-pedidos.md)). Se verificó
+directo: la vista no existía en la base hasta reiniciar y recién ahí
+correr el upgrade.
 
 ## Página 404 propia
 

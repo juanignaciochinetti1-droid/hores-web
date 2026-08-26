@@ -36,7 +36,6 @@
                         </div>
                     </section>
 
-                    <t t-call="mi_sitio_web.site_footer"/>
                 </div>
             </div>
         </t>

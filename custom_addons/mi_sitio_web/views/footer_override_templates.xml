@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Bug real encontrado el 26/08/2026: TODAS las páginas del sitio
+        (las nuestras y las nativas de eCommerce) mostraban el footer
+        genérico de placeholder que trae Odoo por defecto ("We are a team
+        of passionate people...", "Useful Links" a #, etc.) — website.layout
+        arma su propia región <div id="footer"> con ese contenido de
+        fábrica, por fuera y ADEMÁS de cualquier footer que cada página
+        pusiera dentro de #wrap. En nuestras páginas quedaba duplicado
+        (nuestro footer real + el genérico debajo, invisible a simple
+        vista si nadie scrolleaba hasta el final); en las páginas nativas
+        de eCommerce (/shop, carrito, checkout) el genérico era lo ÚNICO
+        que se veía, con datos inventados de una empresa que no existe.
+
+        Esta vista reemplaza el contenido de esa región por
+        mi_sitio_web.site_footer — un solo footer real en todo el sitio,
+        en vez de mantener uno "para las páginas nuestras" (dentro de
+        #wrap) y otro "para las nativas" (en #footer). Por eso también se
+        sacó el <t t-call="mi_sitio_web.site_footer"/> que cada página
+        nuestra tenía metido a mano dentro de #wrap — ver
+        DOCS/03-sistema-de-diseno.md.
+
+        priority alto para que gane por sobre las vistas "Default" que
+        website ya trae con el contenido de placeholder (misma región,
+        mismo xpath).
+    -->
+    <template id="footer_override" inherit_id="website.layout" priority="99">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-if="not no_footer">
+                <t t-call="mi_sitio_web.site_footer"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

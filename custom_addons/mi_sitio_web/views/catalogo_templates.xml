@@ -7,17 +7,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;family=Archivo:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&amp;display=swap" rel="stylesheet"/>
 <style>
-  #wrap.oe_structure * { box-sizing: border-box; }
-  #wrap.oe_structure { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
-  #wrap.oe_structure a { text-decoration: none; }
+  .oe_structure * { box-sizing: border-box; }
+  .oe_structure { font-family: 'Archivo', system-ui, sans-serif; color: #2b241d; background: #f6f4ef; }
+  .oe_structure a { text-decoration: none; }
 
   /* Transición suave en todos los links/botones del sitio */
-  #wrap.oe_structure a, #wrap.oe_structure button {
+  .oe_structure a, .oe_structure button {
     transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
   }
   /* Los links con pinta de botón (tienen border-radius inline) levantan
      un poco y se aclaran al hover; los links de texto plano quedan igual. */
-  #wrap.oe_structure a[style*="border-radius"]:hover, #wrap.oe_structure button:hover {
+  .oe_structure a[style*="border-radius"]:hover, .oe_structure button:hover {
     transform: translateY(-2px);
     filter: brightness(1.07);
     box-shadow: 0 8px 18px rgba(0,0,0,.14);
@@ -25,50 +25,50 @@
 
   /* Foco visible para navegación por teclado (accesibilidad) — los campos
      tenían outline:none sin ningún reemplazo, invisibles para teclado. */
-  #wrap.oe_structure a:focus-visible,
-  #wrap.oe_structure button:focus-visible,
-  #wrap.oe_structure input:focus-visible,
-  #wrap.oe_structure textarea:focus-visible {
+  .oe_structure a:focus-visible,
+  .oe_structure button:focus-visible,
+  .oe_structure input:focus-visible,
+  .oe_structure textarea:focus-visible {
     outline: 2.5px solid #c26a1e;
     outline-offset: 2px;
   }
-  #wrap.oe_structure input:focus, #wrap.oe_structure textarea:focus {
+  .oe_structure input:focus, .oe_structure textarea:focus {
     border-color: #c26a1e !important;
   }
 
   /* Scroll-reveal reutilizable: cualquier elemento con class="reveal" */
-  #wrap.oe_structure .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-  #wrap.oe_structure .reveal.is-visible { opacity: 1; transform: none; }
+  .oe_structure .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .oe_structure .reveal.is-visible { opacity: 1; transform: none; }
 
   /* Tarjeta con sombra + lift al hover, reusable en todo el sitio */
-  #wrap.oe_structure .hc-card {
+  .oe_structure .hc-card {
     box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
     transition: transform .25s ease, box-shadow .25s ease;
   }
-  #wrap.oe_structure .hc-card:hover {
+  .oe_structure .hc-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(36,29,23,.08), 0 18px 34px rgba(36,29,23,.1);
   }
 
   /* Tarjeta de producto: zoom de imagen + lift al hover */
-  #wrap.oe_structure .hc-product-card .hc-product-thumb { overflow: hidden; }
-  #wrap.oe_structure .hc-product-card .hc-product-thumb img { transition: transform .45s ease; }
-  #wrap.oe_structure .hc-product-card:hover .hc-product-thumb img { transform: scale(1.06); }
-  #wrap.oe_structure .hc-product-name { display: block; transition: color .2s ease; }
-  #wrap.oe_structure .hc-product-card:hover .hc-product-name { color: #c26a1e; }
+  .oe_structure .hc-product-card .hc-product-thumb { overflow: hidden; }
+  .oe_structure .hc-product-card .hc-product-thumb img { transition: transform .45s ease; }
+  .oe_structure .hc-product-card:hover .hc-product-thumb img { transform: scale(1.06); }
+  .oe_structure .hc-product-name { display: block; transition: color .2s ease; }
+  .oe_structure .hc-product-card:hover .hc-product-name { color: #c26a1e; }
 
   /* Badge "Personalizable" con texto, en vez del punto chico */
-  #wrap.oe_structure .hc-badge-custom {
+  .oe_structure .hc-badge-custom {
     position: absolute; right: 10px; top: 10px; background: #c26a1e; color: #fff;
     font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
     padding: 4px 9px; border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.18);
   }
 
   /* Empty state cuidado (categoría sin productos, etc.) */
-  #wrap.oe_structure .hc-empty-state { text-align: center; padding: 60px 28px; border: 1.5px dashed #d9ccb9; border-radius: 16px; background: #fffdf9; }
+  .oe_structure .hc-empty-state { text-align: center; padding: 60px 28px; border: 1.5px dashed #d9ccb9; border-radius: 16px; background: #fffdf9; }
 
   /* Grid pattern sutil reusable para heros oscuros */
-  #wrap.oe_structure .hc-hero-grid {
+  .oe_structure .hc-hero-grid {
     position: absolute; inset: 0; pointer-events: none;
     background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
     background-size: 42px 42px; opacity: .5;
@@ -80,32 +80,32 @@
      se apunta por contenido del atributo style (mismo truco que ya se usa
      para el hover de botones) y se fuerza con !important. */
   @media (max-width: 900px) {
-    #wrap.oe_structure [style*="grid-template-columns:repeat(4,1fr)"],
-    #wrap.oe_structure [style*="grid-template-columns:repeat(3,1fr)"] {
+    .oe_structure [style*="grid-template-columns:repeat(4,1fr)"],
+    .oe_structure [style*="grid-template-columns:repeat(3,1fr)"] {
       grid-template-columns: repeat(2, 1fr) !important;
     }
-    #wrap.oe_structure [style*="grid-template-columns:1fr 1fr"],
-    #wrap.oe_structure [style*="grid-template-columns:1.05fr .95fr"],
-    #wrap.oe_structure [style*="grid-template-columns:.95fr 1.05fr"],
-    #wrap.oe_structure [style*="grid-template-columns:1.15fr 1fr"],
-    #wrap.oe_structure [style*="grid-template-columns:.9fr 1.1fr"],
-    #wrap.oe_structure [style*="grid-template-columns:.85fr 1.15fr"],
-    #wrap.oe_structure [style*="grid-template-columns:.8fr 1.2fr"],
-    #wrap.oe_structure [style*="grid-template-columns:1.5fr 1fr 1fr"] {
+    .oe_structure [style*="grid-template-columns:1fr 1fr"],
+    .oe_structure [style*="grid-template-columns:1.05fr .95fr"],
+    .oe_structure [style*="grid-template-columns:.95fr 1.05fr"],
+    .oe_structure [style*="grid-template-columns:1.15fr 1fr"],
+    .oe_structure [style*="grid-template-columns:.9fr 1.1fr"],
+    .oe_structure [style*="grid-template-columns:.85fr 1.15fr"],
+    .oe_structure [style*="grid-template-columns:.8fr 1.2fr"],
+    .oe_structure [style*="grid-template-columns:1.5fr 1fr 1fr"] {
       grid-template-columns: 1fr !important;
     }
   }
   @media (max-width: 560px) {
-    #wrap.oe_structure [style*="grid-template-columns:repeat(4,1fr)"],
-    #wrap.oe_structure [style*="grid-template-columns:repeat(3,1fr)"],
-    #wrap.oe_structure [style*="grid-template-columns:repeat(2,1fr)"] {
+    .oe_structure [style*="grid-template-columns:repeat(4,1fr)"],
+    .oe_structure [style*="grid-template-columns:repeat(3,1fr)"],
+    .oe_structure [style*="grid-template-columns:repeat(2,1fr)"] {
       grid-template-columns: 1fr !important;
     }
   }
 
   /* Botón "volver arriba" — cualquier página puede sumarlo con
      class="hc-back-to-top"; aparece solo después de scrollear. */
-  #wrap.oe_structure .hc-back-to-top {
+  .oe_structure .hc-back-to-top {
     position: fixed; z-index: 55; width: 44px; height: 44px; border-radius: 50%;
     background: #241d17; color: #fff; border: none; cursor: pointer; font-size: 18px;
     display: flex; align-items: center; justify-content: center;
@@ -113,41 +113,29 @@
     opacity: 0; visibility: hidden; transform: translateY(8px);
     transition: opacity .25s ease, visibility .25s ease, transform .25s ease;
   }
-  #wrap.oe_structure .hc-back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+  .oe_structure .hc-back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
 
   /* Selector de idioma del header — reusa el template estándar de Odoo
      (portal.language_selector) pero con la estética propia del sitio en
      vez de las clases default de Bootstrap. */
-  #wrap.oe_structure .hc-lang-selector { position: relative; }
-  #wrap.oe_structure .hc-lang-btn {
+  .oe_structure .hc-lang-selector { position: relative; }
+  .oe_structure .hc-lang-btn {
     display: flex; align-items: center; gap: 5px; background: #ffffff;
     border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
     border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
     font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
   }
-  #wrap.oe_structure .hc-lang-btn:hover { border-color: #c26a1e; color: #c26a1e; }
-  #wrap.oe_structure .hc-lang-menu {
+  .oe_structure .hc-lang-btn:hover { border-color: #c26a1e; color: #c26a1e; }
+  .oe_structure .hc-lang-menu {
     background: #ffffff; border: 1px solid #e8e3d9; border-radius: 10px;
     box-shadow: 0 10px 26px rgba(36,29,23,.14); padding: 6px; min-width: 160px;
   }
-  #wrap.oe_structure .hc-lang-menu .dropdown-item {
+  .oe_structure .hc-lang-menu .dropdown-item {
     display: block; padding: 8px 12px; border-radius: 6px; font-size: 13px;
     font-weight: 500; letter-spacing: normal; text-transform: none; color: #5a4f44;
   }
-  #wrap.oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
-  #wrap.oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
-
-  /* Popup de "Solicitar pedido" (ficha de producto): overlay + panel
-     chico, reusable si algún día hace falta otro popup con formulario. */
-  #wrap.oe_structure .hc-modal-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(20,15,11,.55);
-    z-index: 100; align-items: center; justify-content: center; padding: 20px;
-  }
-  #wrap.oe_structure .hc-modal-overlay.open { display: flex; }
-  #wrap.oe_structure .hc-modal-panel {
-    background: #ffffff; border-radius: 16px; padding: 26px; max-width: 440px;
-    width: 100%; max-height: 90vh; overflow-y: auto; position: relative;
-  }
+  .oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
+  .oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -215,6 +203,14 @@
           <t t-set="_btn_class" t-value="'hc-lang-btn'"/>
           <t t-set="_dropdown_menu_class" t-value="'hc-lang-menu'"/>
         </t>
+        <!-- El numerito muestra la cantidad de PEDIDOS (líneas del
+             carrito), no la suma de unidades: pedir 20 moldes en una sola
+             línea marca "1", no "20" — ver /mi-sitio/carrito/lineas. -->
+        <t t-set="carrito_lineas" t-value="len(request.cart.order_line.filtered(lambda l: not l.display_type)) if request.cart else 0"/>
+        <a href="/shop/cart" aria-label="Carrito" style="position:relative; display:flex; align-items:center; color:#5a4f44; font-size:19px;">
+          🛒
+          <span class="hc-cart-badge" t-attf-style="position:absolute; top:-7px; right:-11px; background:#c26a1e; color:#fff; font-size:10.5px; font-weight:700; border-radius:50%; min-width:16px; height:16px; align-items:center; justify-content:center; padding:0 3px; font-family:'Archivo',sans-serif; letter-spacing:normal; text-transform:none; display:#{'flex' if carrito_lineas else 'none'};" t-esc="carrito_lineas"/>
+        </a>
         <a href="/mi-sitio#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;">Contacto</a>
       </nav>
     </div>
@@ -307,7 +303,6 @@
           </div>
         </section>
 
-        <t t-call="mi_sitio_web.site_footer"/>
       </div>
       <script>
         (function () {
@@ -401,7 +396,6 @@
           });
         </script>
 
-        <t t-call="mi_sitio_web.site_footer"/>
       </div>
     </div>
   </t>
@@ -433,16 +427,43 @@
               <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:34px; margin:0 0 14px; color:#241d17;" t-esc="producto.name"/>
               <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 24px;" t-esc="producto.description or producto.summary"/>
 
-              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px;">
+              <div style="margin-bottom:22px;">
                 <a t-att-href="producto.whatsapp_url"
                    target="_blank" rel="noopener"
                    style="display:inline-flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">
                   Consultar por WhatsApp
                 </a>
-                <button type="button" id="pedido-open-btn" style="display:inline-flex; align-items:center; gap:10px; background:#c26a1e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px; border:none; cursor:pointer; font-family:'Archivo',sans-serif;">
-                  <t t-if="producto.disponibilidad == 'sin_stock'">Avisame cuando esté disponible</t>
-                  <t t-else="">Solicitar pedido</t>
-                </button>
+              </div>
+
+              <!-- "Agregar al carrito": conectado al carrito real de
+                   eCommerce (website_sale), no a un formulario propio —
+                   ver DOCS/07-pedidos.md. Solo se muestra si hay al menos
+                   una variante (o el producto, si no tiene variantes) ya
+                   vinculada a un producto de venta real de Odoo. -->
+              <div t-if="producto.disponibilidad == 'sin_stock'" style="background:#f6e2df; color:#8a4a44; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:26px; max-width:420px;">
+                Sin stock por el momento. Escribinos por WhatsApp y te avisamos apenas esté disponible.
+              </div>
+              <div t-elif="producto.sale_product_id or producto.variante_ids.filtered('sale_product_id')" id="add-to-cart-block" style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:20px; margin-bottom:26px; max-width:420px;">
+                <p t-if="producto.disponibilidad == 'a_pedido'" style="font-size:13px; color:#8a7a67; margin:0 0 14px;">Este molde se fabrica a pedido — puede demorar unos días en producción.</p>
+                <form id="add-to-cart-form" t-att-data-product-id="producto.sale_product_id.id" t-att-data-tmpl-id="producto.sale_product_id.product_tmpl_id.id">
+                  <label t-if="producto.variante_ids" style="display:block; margin-bottom:12px;">
+                    <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Tamaño*</span>
+                    <select name="variante" required="required" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;">
+                      <option value="">Elegí un tamaño</option>
+                      <t t-foreach="producto.variante_ids" t-as="v">
+                        <option t-if="v.sale_product_id" t-att-value="v.id" t-att-data-product-id="v.sale_product_id.id" t-att-data-tmpl-id="v.sale_product_id.product_tmpl_id.id" t-esc="' / '.join(filter(None, [v.code, v.dimensions, v.weight]))"/>
+                      </t>
+                    </select>
+                  </label>
+                  <div style="display:flex; gap:12px; align-items:flex-end;">
+                    <label style="display:block; flex-shrink:0;">
+                      <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Cantidad</span>
+                      <input type="number" name="cantidad" value="1" min="1" max="100000" style="width:80px; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+                    </label>
+                    <button type="submit" style="flex:1; background:#c26a1e; color:#fff; border:none; padding:12px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;">Agregar al carrito</button>
+                  </div>
+                  <p id="add-to-cart-msg" style="display:none; font-size:13px; margin:10px 0 0;"></p>
+                </form>
               </div>
 
               <div t-if="producto.feature_ids" style="margin-bottom:26px;">
@@ -482,82 +503,84 @@
 
         </section>
 
-        <!-- Popup de "Solicitar pedido": se abre con el botón de arriba
-             (id="pedido-open-btn"), o directo si viene de un envío
-             rechazado (?pedido_error=1, ver /mi-sitio/pedido). -->
-        <div id="pedido-modal-overlay" t-attf-class="hc-modal-overlay #{'open' if pedido_error else ''}" onclick="if (event.target === this) this.classList.remove('open');">
-          <div class="hc-modal-panel" onclick="event.stopPropagation();">
-            <button type="button" onclick="document.getElementById('pedido-modal-overlay').classList.remove('open');" aria-label="Cerrar" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:19px; line-height:1; color:#8a7a67; cursor:pointer; padding:4px;">✕</button>
-            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:21px; margin:0 0 8px; color:#241d17; padding-right:22px;">Solicitar pedido</h2>
-            <p t-if="producto.disponibilidad == 'sin_stock'" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">No tenemos stock de este molde por el momento. Dejanos tus datos y te avisamos apenas esté disponible.</p>
-            <p t-elif="producto.disponibilidad == 'a_pedido'" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">Este molde se fabrica a pedido — puede demorar unos días en producción.</p>
-            <p t-else="" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">Elegí el tamaño y la cantidad que necesitás — te confirmamos el pedido a la brevedad.</p>
-
-            <div t-if="pedido_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:14px;">
-              Revisá el formulario: completá los datos obligatorios (y el tamaño, si corresponde) con un email válido.
-            </div>
-
-            <form action="/mi-sitio/pedido" method="post">
-              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-              <input type="hidden" name="producto_id" t-att-value="producto.id"/>
-              <!-- Honeypot anti-bot: mismo patrón que /mi-sitio/contacto. -->
-              <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
-                     style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true"/>
-
-              <label t-if="producto.variante_ids" style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Tamaño*</span>
-                <select required="required" name="variante_id" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;">
-                  <option value="">Elegí un tamaño</option>
-                  <t t-foreach="producto.variante_ids" t-as="v">
-                    <option t-att-value="v.id" t-esc="' / '.join(filter(None, [v.code, v.dimensions, v.weight]))"/>
-                  </t>
-                </select>
-              </label>
-              <label style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Cantidad*</span>
-                <input required="required" type="number" name="cantidad" min="1" max="100000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
-              </label>
-              <label style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Nombre*</span>
-                <input required="required" name="nombre" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
-              </label>
-              <label style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Email*</span>
-                <input required="required" type="email" name="email" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
-              </label>
-              <label style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Empresa</span>
-                <input name="empresa" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
-              </label>
-              <label style="display:block; margin-bottom:12px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Teléfono</span>
-                <input name="telefono" maxlength="40" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
-              </label>
-              <label style="display:block; margin-bottom:16px;">
-                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Notas</span>
-                <textarea rows="2" name="mensaje" maxlength="5000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none; resize:vertical;"></textarea>
-              </label>
-              <button type="submit" style="width:100%; background:#c26a1e; color:#fff; border:none; padding:14px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;">
-                <t t-if="producto.disponibilidad == 'sin_stock'">Avisame cuando esté disponible</t>
-                <t t-else="">Solicitar pedido</t>
-              </button>
-            </form>
-          </div>
-        </div>
+        <!-- "Agregar al carrito": llama directo a /shop/cart/add (jsonrpc,
+             nativo de website_sale) con fetch — sin depender del JS propio
+             de Odoo, que no sabemos si queda cargado igual en cada
+             versión. Actualiza el contador del carrito en el header
+             (".hc-cart-badge", ver site_header) sin recargar la página. -->
         <script>
           document.addEventListener('DOMContentLoaded', function () {
-            var openBtn = document.getElementById('pedido-open-btn');
-            var overlay = document.getElementById('pedido-modal-overlay');
-            if (openBtn &amp;&amp; overlay) {
-              openBtn.addEventListener('click', function () { overlay.classList.add('open'); });
+            var form = document.getElementById('add-to-cart-form');
+            if (!form) return;
+            var msg = document.getElementById('add-to-cart-msg');
+            var select = form.querySelector('select[name="variante"]');
+
+            function mostrarMensaje(texto, ok) {
+              if (!msg) return;
+              msg.textContent = texto;
+              msg.style.color = ok ? '#2f7d33' : '#9c2b1f';
+              msg.style.display = '';
             }
-            document.addEventListener('keydown', function (e) {
-              if (e.key === 'Escape' &amp;&amp; overlay) overlay.classList.remove('open');
+
+            form.addEventListener('submit', function (e) {
+              e.preventDefault();
+              var productId = select ? (select.selectedOptions[0] &amp;&amp; select.selectedOptions[0].getAttribute('data-product-id')) : form.getAttribute('data-product-id');
+              var tmplId = select ? (select.selectedOptions[0] &amp;&amp; select.selectedOptions[0].getAttribute('data-tmpl-id')) : form.getAttribute('data-tmpl-id');
+              if (!productId || !tmplId) {
+                mostrarMensaje('Elegí un tamaño antes de agregar al carrito.', false);
+                return;
+              }
+              var cantidadInput = form.querySelector('input[name="cantidad"]');
+              var cantidad = parseInt(cantidadInput ? cantidadInput.value : '1', 10);
+              if (!cantidad || cantidad &lt; 1) cantidad = 1;
+
+              var boton = form.querySelector('button[type="submit"]');
+              if (boton) boton.disabled = true;
+
+              fetch('/shop/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  jsonrpc: '2.0',
+                  method: 'call',
+                  params: {
+                    product_template_id: parseInt(tmplId, 10),
+                    product_id: parseInt(productId, 10),
+                    quantity: cantidad,
+                  },
+                }),
+              })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                  if (boton) boton.disabled = false;
+                  if (!data || data.error || !data.result) {
+                    mostrarMensaje('No pudimos agregarlo al carrito. Probá de nuevo.', false);
+                    return;
+                  }
+                  mostrarMensaje('Agregado al carrito.', true);
+                  // El numerito del carrito cuenta PEDIDOS (líneas), no
+                  // unidades — data.result.cart_quantity es la suma de
+                  // cantidades, no sirve acá. Se pide aparte la cantidad
+                  // de líneas real.
+                  return fetch('/mi-sitio/carrito/lineas');
+                })
+                .then(function (r) { return r &amp;&amp; r.json(); })
+                .then(function (data) {
+                  if (!data) return;
+                  var badge = document.querySelector('.hc-cart-badge');
+                  if (badge) {
+                    badge.textContent = data.cantidad;
+                    badge.style.display = data.cantidad ? '' : 'none';
+                  }
+                })
+                .catch(function () {
+                  if (boton) boton.disabled = false;
+                  mostrarMensaje('No pudimos agregarlo al carrito. Probá de nuevo.', false);
+                });
             });
           });
         </script>
 
-        <t t-call="mi_sitio_web.site_footer"/>
       </div>
     </div>
   </t>
@@ -725,7 +748,6 @@
           </div>
         </section>
 
-        <t t-call="mi_sitio_web.site_footer"/>
       </div>
     </div>
   </t>
@@ -896,7 +918,6 @@
           </div>
         </section>
 
-        <t t-call="mi_sitio_web.site_footer"/>
       </div>
     </div>
   </t>
@@ -905,6 +926,10 @@
 <!-- ============ /historia ============ -->
 <template id="historia_template" name="Mi Sitio - Historia">
   <t t-call="website.layout">
+    <!-- Historia tiene su propio <footer> chico (abajo, con el toggle de
+         tema claro/oscuro) — se suprime el footer compartido para no
+         mostrar los dos. -->
+    <t t-set="no_footer" t-value="True"/>
     <t t-set="title">Nuestra historia — HORES Cartotécnica</t>
     <t t-set="website_meta_description">Más de 40 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
     <div id="wrap" class="oe_structure oe_empty">

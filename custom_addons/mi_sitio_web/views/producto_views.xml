@@ -57,6 +57,12 @@
                             <field name="sequence"/>
                         </group>
                     </group>
+                    <!-- Solo aplica si el producto NO tiene variantes (ver
+                         pestaña Variantes) — con variantes, el producto de
+                         venta/precio se carga por tamaño, no acá. -->
+                    <group invisible="variante_ids">
+                        <field name="sale_product_id" string="Producto de venta (eCommerce)"/>
+                    </group>
                     <field name="description" placeholder="Descripción completa..."/>
                     <notebook>
                         <page string="Especificaciones técnicas">
@@ -84,6 +90,7 @@
                                     <field name="weight"/>
                                     <field name="dimensions"/>
                                     <field name="image" widget="image"/>
+                                    <field name="sale_product_id" string="Producto de venta"/>
                                 </list>
                             </field>
                         </page>

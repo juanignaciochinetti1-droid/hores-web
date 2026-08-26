@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Paleta de colores del sitio aplicada a las páginas nativas de
+        eCommerce (/shop, /shop/cart, /shop/checkout, etc.) — esas páginas
+        las arma website_sale con sus propias plantillas (header/nav
+        default de Odoo, no nuestro site_header), así que no pasan por
+        mi_sitio_web.head_assets. Para que combinen visualmente con el
+        resto del sitio sin reescribir esas plantillas nativas (riesgo de
+        romper el buscador/carrito propios de website_sale, que dependen
+        de esa estructura), se sobreescribe acá el fondo, tipografías,
+        botones y links vía CSS — inheredado de website.layout, así que
+        aplica a TODAS las páginas (incluidas las nuestras, pero ahí no
+        cambia nada visible: ya fijamos estos mismos colores a mano con
+        estilos inline, que tienen más especificidad que estas reglas).
+
+        Ver DOCS/07-pedidos.md — el header/nav en sí sigue siendo el
+        default de Odoo, no el nuestro; esto es solo paleta de colores y
+        tipografía, no una reconstrucción completa de esas pantallas.
+    -->
+    <template id="ecommerce_theme" inherit_id="website.layout">
+        <xpath expr="//head/meta[last()]" position="after">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
+            <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+            <style>
+                /* Variables de Bootstrap 5: la mayoría de los componentes
+                   nativos (botones, links, focus) las consumen en cascada. */
+                :root {
+                    --bs-primary: #c26a1e;
+                    --bs-primary-rgb: 194, 106, 30;
+                    --bs-body-bg: #f6f4ef;
+                    --bs-body-color: #241d17;
+                    --bs-body-font-family: 'Archivo', system-ui, sans-serif;
+                    --bs-link-color: #c26a1e;
+                    --bs-link-color-rgb: 194, 106, 30;
+                    --bs-link-hover-color: #a85a19;
+                    --bs-border-color: #e8e3d9;
+                }
+                /* Refuerzo directo (algunos componentes de website_sale usan
+                   colores compilados en el CSS, no solo las variables de
+                   arriba) — limitado a las páginas de eCommerce por el
+                   selector .oe_website_sale (el contenedor que arma
+                   website_sale en /shop, /shop/cart, /shop/checkout), para
+                   no pisar nuestras propias páginas por las dudas. La
+                   etiqueta body de estas páginas no tiene clase propia,
+                   por eso no se puede apuntar por "body.algo" acá. */
+                .oe_website_sale {
+                    background-color: #f6f4ef;
+                }
+                .oe_website_sale, .oe_website_sale .oe_currency_value {
+                    color: #241d17;
+                    font-family: 'Archivo', system-ui, sans-serif;
+                }
+                .oe_website_sale h1, .oe_website_sale h2, .oe_website_sale h3,
+                .oe_website_sale h4, .oe_website_sale h5 {
+                    font-family: 'Source Serif 4', serif;
+                    color: #241d17;
+                }
+                .oe_website_sale .btn-primary,
+                .oe_website_sale .o_wsale_product_btn_primary {
+                    background-color: #c26a1e !important;
+                    border-color: #c26a1e !important;
+                }
+                .oe_website_sale .btn-primary:hover,
+                .oe_website_sale .o_wsale_product_btn_primary:hover {
+                    background-color: #a85a19 !important;
+                    border-color: #a85a19 !important;
+                }
+                .oe_website_sale .btn-outline-primary {
+                    color: #c26a1e !important;
+                    border-color: #c26a1e !important;
+                }
+                .oe_website_sale .btn-outline-primary:hover {
+                    background-color: #c26a1e !important;
+                    color: #fff !important;
+                }
+                .oe_website_sale a:not(.btn) {
+                    color: #c26a1e;
+                }
+                .oe_website_sale .oe_currency_value,
+                .oe_website_sale .o_wsale_products_item_price {
+                    color: #c26a1e;
+                }
+                .oe_website_sale .card,
+                .oe_website_sale .oe_product_cart {
+                    border-color: #e8e3d9 !important;
+                    border-radius: 12px !important;
+                }
+                .oe_website_sale .bg-light {
+                    background-color: #efe6d8 !important;
+                }
+                /* Panel de "Resumen de la orden" / carrito / totales: mismo
+                   look que las tarjetas del resto del sitio (.hc-card). */
+                .oe_website_sale .o_website_sale_checkout_container,
+                .oe_website_sale #cart_products,
+                .oe_website_sale .oe_cart {
+                    border-radius: 14px;
+                }
+                .oe_website_sale .card,
+                .oe_website_sale .bg-white.rounded {
+                    box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
+                }
+                /* Pasos del checkout (Orden / Dirección / Pago) */
+                .oe_website_sale .o_wizard .o_wizard_step_active,
+                .oe_website_sale .o_wizard a.text-action {
+                    color: #c26a1e !important;
+                }
+                /* Selector de cantidad (+/-) e input de código de descuento */
+                .oe_website_sale .input-group .btn {
+                    border-color: #d9ccb9 !important;
+                    color: #5a4f44 !important;
+                }
+                .oe_website_sale .input-group .btn:hover {
+                    background-color: #f6f4ef !important;
+                    color: #c26a1e !important;
+                }
+                .oe_website_sale .form-control,
+                .oe_website_sale .input-group input {
+                    border-color: #d9ccb9 !important;
+                }
+                .oe_website_sale .form-control:focus {
+                    border-color: #c26a1e !important;
+                    box-shadow: 0 0 0 .2rem rgba(194,106,30,.15) !important;
+                }
+            </style>
+        </xpath>
+    </template>
+</odoo>

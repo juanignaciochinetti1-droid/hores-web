@@ -284,7 +284,6 @@
     </div>
   </section>
 
-  <t t-call="mi_sitio_web.site_footer"/>
 
 </div>
             </div>
@@ -303,15 +302,4 @@
         </t>
     </template>
 
-    <template id="pedido_gracias_template" name="Mi Sitio - Pedido recibido">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure oe_empty">
-                <section style="max-width:640px; margin:0 auto; padding:100px 28px; text-align:center; font-family:'Archivo',system-ui,sans-serif;">
-                    <div style="font-family:'Source Serif 4',serif; font-size:28px; font-weight:700; color:#2f7d33; margin-bottom:12px;">¡Recibimos tu pedido!</div>
-                    <p style="font-size:16px; color:#5a4f44; margin:0 0 28px;">Lo vamos a revisar y te contactamos a la brevedad para confirmarlo.</p>
-                    <a href="/compras" style="display:inline-block; background:#c26a1e; color:#fff; padding:13px 24px; border-radius:9px; font-weight:600; font-size:15px;">Volver al catálogo</a>
-                </section>
-            </div>
-        </t>
-    </template>
 </odoo>

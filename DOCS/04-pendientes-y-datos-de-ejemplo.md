@@ -43,9 +43,13 @@ y portugués).
 - **Mensaje de WhatsApp** (`producto.whatsapp_url`): queda siempre en
   español sin importar el idioma de la página — ver
   [idiomas](06-idiomas.md#qué-falta--gaps-conocidos).
-- **Pedidos**: sin precios públicos, sin portal de cliente, sin pago
-  online — decisiones tomadas a propósito, ver
-  [pedidos](07-pedidos.md#qué-falta--decisiones-pendientes).
+- **eCommerce (carrito/checkout)**: conectado y funcionando, pero **todos
+  los productos están a $0** — falta cargar precios reales, y la empresa
+  está mal configurada en dólares (USD) en vez de pesos (ARS), bloqueado
+  por apuntes contables existentes. Sin pago online (transferencia manual
+  a propósito) ni portal de cliente. Ver
+  [pedidos](07-pedidos.md#qué-falta--decisiones-pendientes) para el
+  detalle completo.
 
 ## Credenciales / seguridad
 

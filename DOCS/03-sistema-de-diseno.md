@@ -80,8 +80,14 @@ contenido):
 
 Estas son las únicas clases CSS reusables del proyecto — todo lo demás es
 estilo inline. Viven en el `<style>` de `head_assets`
-(`catalogo_templates.xml`), con selector `#wrap.oe_structure .clase` para
-tener suficiente especificidad sobre el CSS base de Odoo.
+(`catalogo_templates.xml`), con selector `.oe_structure .clase` para tener
+suficiente especificidad sobre el CSS base de Odoo. Antes del 26/08/2026
+era `#wrap.oe_structure .clase` (más específico), pero `site_footer` pasó
+a vivir en la región `#footer` de Odoo en vez de dentro de `#wrap` (ver
+[arquitectura](02-arquitectura-proyecto.md#footer-único-en-todo-el-sitio))
+— `#wrap` y `#footer` comparten la clase `oe_structure`, así que aflojar
+el selector a solo `.oe_structure` cubre las dos regiones sin duplicar
+reglas.
 
 | Clase | Qué hace | Dónde se usa |
 |---|---|---|
@@ -93,7 +99,7 @@ tener suficiente especificidad sobre el CSS base de Odoo.
 | `.hc-hero-grid` | Patrón de grilla sutil superpuesto sobre fondos oscuros | Hero de Compromiso |
 | `.hc-back-to-top` | Botón circular flotante "volver arriba", aparece después de 400px de scroll | Todas las páginas (posición inline por instancia: izquierda en las que tienen WhatsApp a la derecha, derecha en Historia que tiene el toggle de tema a la izquierda) |
 | `.hc-lang-selector` / `.hc-lang-btn` / `.hc-lang-menu` | Selector de idioma del header (reusa `portal.language_selector` de Odoo, restyleado) | `site_header`, en todas las páginas — ver [idiomas](06-idiomas.md) |
-| `.hc-modal-overlay` (+ `.open`) / `.hc-modal-panel` | Popup genérico: overlay a pantalla completa + panel chico centrado, oculto por default (`display:none`, se muestra agregando la clase `open`) | Popup de "Solicitar pedido" en `/producto/<id>` — ver [pedidos](07-pedidos.md) |
+| `.hc-cart-badge` | Numerito del carrito sobre el ícono 🛒 del header, se actualiza por JS al agregar un producto sin recargar la página | `site_header`, en todas las páginas — ver [pedidos](07-pedidos.md) |
 
 Botones "con pinta de botón" (cualquier `<a>` con `border-radius` en su
 estilo inline) levantan y se aclaran al hover automáticamente vía selector
