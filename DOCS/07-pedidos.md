@@ -98,8 +98,18 @@ de Odoo, no de un cliente real.
 ## Cómo funciona "Agregar al carrito"
 
 En `/producto/<id>`, si el producto (o alguna de sus variantes) tiene
-`sale_product_id` cargado, aparece un bloque con selector de tamaño (si
-corresponde), cantidad y el botón. El click llama directo a
+`sale_product_id` cargado, arriba aparece un botón "Agregar al carrito" al
+lado del de "Consultar por WhatsApp" (mismo ancho, misma fila — a pedido
+explícito, 26/08/2026). El formulario en sí (selector de tamaño si
+corresponde, cantidad, y un botón "Confirmar") arranca **oculto** — el
+click en "Agregar al carrito" solo lo despliega (`#add-to-cart-toggle`,
+JS al final de `producto_detalle_template` en `catalogo_templates.xml`);
+recién el submit del form (botón "Confirmar") agrega de verdad. Si el
+producto está `sin_stock`, ese botón no se muestra — queda solo el de
+WhatsApp, a ancho completo, y el aviso de "Sin stock" reemplaza al
+formulario.
+
+El submit del formulario ("Confirmar") llama directo a
 `/shop/cart/add` — la ruta nativa de `website_sale`, que es **jsonrpc**
 (no un POST de formulario común, ver `odoo/odoo/http.py` — el tipo
 `jsonrpc` exige un body `{"jsonrpc":"2.0","method":"call","params":{...}}`
