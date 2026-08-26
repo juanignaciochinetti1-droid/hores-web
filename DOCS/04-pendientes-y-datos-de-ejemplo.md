@@ -43,6 +43,9 @@ y portugués).
 - **Mensaje de WhatsApp** (`producto.whatsapp_url`): queda siempre en
   español sin importar el idioma de la página — ver
   [idiomas](06-idiomas.md#qué-falta--gaps-conocidos).
+- **Pedidos**: sin precios públicos, sin portal de cliente, sin pago
+  online — decisiones tomadas a propósito, ver
+  [pedidos](07-pedidos.md#qué-falta--decisiones-pendientes).
 
 ## Credenciales / seguridad
 

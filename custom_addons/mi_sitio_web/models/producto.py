@@ -29,6 +29,21 @@ class MiSitioWebProducto(models.Model):
     is_published = fields.Boolean(string='Publicado en el sitio', default=True)
     sequence = fields.Integer(string='Orden', default=10)
 
+    # Estado de disponibilidad manual: lo carga el equipo a mano en el
+    # backend (no hay integración con Inventario/stock real). El sitio lo
+    # usa para el badge de cada producto y para el filtro de "Disponibilidad"
+    # en /compras y /categoria/<slug>. 'sin_stock' NO bloquea el formulario
+    # de "Solicitar pedido" — se sigue pudiendo dejar la solicitud, cambia
+    # el texto para que quede claro que hay que esperar.
+    disponibilidad = fields.Selection(
+        [
+            ('disponible', 'Disponible'),
+            ('a_pedido', 'A pedido'),
+            ('sin_stock', 'Sin stock'),
+        ],
+        string='Disponibilidad', required=True, default='disponible',
+    )
+
     spec_ids = fields.One2many('mi_sitio_web.producto.spec', 'producto_id', string='Especificaciones')
     feature_ids = fields.One2many('mi_sitio_web.producto.feature', 'producto_id', string='Características')
     variante_ids = fields.One2many('mi_sitio_web.producto.variante', 'producto_id', string='Variantes')

@@ -136,6 +136,18 @@
   }
   #wrap.oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
   #wrap.oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
+
+  /* Popup de "Solicitar pedido" (ficha de producto): overlay + panel
+     chico, reusable si algún día hace falta otro popup con formulario. */
+  #wrap.oe_structure .hc-modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(20,15,11,.55);
+    z-index: 100; align-items: center; justify-content: center; padding: 20px;
+  }
+  #wrap.oe_structure .hc-modal-overlay.open { display: flex; }
+  #wrap.oe_structure .hc-modal-panel {
+    background: #ffffff; border-radius: 16px; padding: 26px; max-width: 440px;
+    width: 100%; max-height: 90vh; overflow-y: auto; position: relative;
+  }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -283,6 +295,8 @@
                     <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
                   </div>
                   <span style="display:block; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:4px;" t-esc="p.category_id.name"/>
+                  <span t-if="p.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-bottom:6px;">A pedido</span>
+                  <span t-elif="p.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-bottom:6px;">Sin stock</span>
                   <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
                   <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 14px;" t-esc="p.summary"/>
                 </a>
@@ -338,7 +352,7 @@
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:14px 0 30px; color:#241d17;" t-esc="categoria.name if categoria else 'Categoría'"/>
         </section>
 
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:0 28px 70px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
           <div t-if="not productos" class="hc-empty-state">
             <div style="font-size:32px; margin-bottom:12px;">📦</div>
             <p style="color:#8a7a67; font-size:15px; margin:0 0 16px;">No hay productos publicados en esta categoría todavía.</p>
@@ -356,6 +370,8 @@
                 <a t-attf-href="/producto/#{p.id}" style="color:inherit;">
                   <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:24px; font-weight:600; color:#241d17;" t-esc="p.name"/>
                 </a>
+                <span t-if="p.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">A pedido</span>
+                <span t-elif="p.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">Sin stock</span>
                 <p style="font-size:15px; line-height:1.6; color:#5a4f44; margin:8px 0 18px;" t-esc="p.summary"/>
                 <div t-if="p.variante_ids" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
                   <t t-foreach="p.variante_ids" t-as="v">
@@ -411,14 +427,23 @@
             </div>
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:8px;" t-esc="producto.code"/>
+              <div t-if="producto.disponibilidad == 'disponible'" style="display:inline-block; background:#e7f0dc; color:#3f7d38; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">Disponible</div>
+              <div t-elif="producto.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">A pedido</div>
+              <div t-elif="producto.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">Sin stock</div>
               <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:34px; margin:0 0 14px; color:#241d17;" t-esc="producto.name"/>
               <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 24px;" t-esc="producto.description or producto.summary"/>
 
-              <a t-att-href="producto.whatsapp_url"
-                 target="_blank" rel="noopener"
-                 style="display:inline-flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px; margin-bottom:30px;">
-                Consultar por WhatsApp
-              </a>
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px;">
+                <a t-att-href="producto.whatsapp_url"
+                   target="_blank" rel="noopener"
+                   style="display:inline-flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">
+                  Consultar por WhatsApp
+                </a>
+                <button type="button" id="pedido-open-btn" style="display:inline-flex; align-items:center; gap:10px; background:#c26a1e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px; border:none; cursor:pointer; font-family:'Archivo',sans-serif;">
+                  <t t-if="producto.disponibilidad == 'sin_stock'">Avisame cuando esté disponible</t>
+                  <t t-else="">Solicitar pedido</t>
+                </button>
+              </div>
 
               <div t-if="producto.feature_ids" style="margin-bottom:26px;">
                 <div style="font-size:13px; font-weight:700; color:#241d17; margin-bottom:10px;">Características</div>
@@ -454,7 +479,83 @@
               </t>
             </div>
           </div>
+
         </section>
+
+        <!-- Popup de "Solicitar pedido": se abre con el botón de arriba
+             (id="pedido-open-btn"), o directo si viene de un envío
+             rechazado (?pedido_error=1, ver /mi-sitio/pedido). -->
+        <div id="pedido-modal-overlay" t-attf-class="hc-modal-overlay #{'open' if pedido_error else ''}" onclick="if (event.target === this) this.classList.remove('open');">
+          <div class="hc-modal-panel" onclick="event.stopPropagation();">
+            <button type="button" onclick="document.getElementById('pedido-modal-overlay').classList.remove('open');" aria-label="Cerrar" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:19px; line-height:1; color:#8a7a67; cursor:pointer; padding:4px;">✕</button>
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:21px; margin:0 0 8px; color:#241d17; padding-right:22px;">Solicitar pedido</h2>
+            <p t-if="producto.disponibilidad == 'sin_stock'" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">No tenemos stock de este molde por el momento. Dejanos tus datos y te avisamos apenas esté disponible.</p>
+            <p t-elif="producto.disponibilidad == 'a_pedido'" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">Este molde se fabrica a pedido — puede demorar unos días en producción.</p>
+            <p t-else="" style="font-size:13.5px; color:#5a4f44; margin:0 0 16px;">Elegí el tamaño y la cantidad que necesitás — te confirmamos el pedido a la brevedad.</p>
+
+            <div t-if="pedido_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:14px;">
+              Revisá el formulario: completá los datos obligatorios (y el tamaño, si corresponde) con un email válido.
+            </div>
+
+            <form action="/mi-sitio/pedido" method="post">
+              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+              <input type="hidden" name="producto_id" t-att-value="producto.id"/>
+              <!-- Honeypot anti-bot: mismo patrón que /mi-sitio/contacto. -->
+              <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
+                     style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true"/>
+
+              <label t-if="producto.variante_ids" style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Tamaño*</span>
+                <select required="required" name="variante_id" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;">
+                  <option value="">Elegí un tamaño</option>
+                  <t t-foreach="producto.variante_ids" t-as="v">
+                    <option t-att-value="v.id" t-esc="' / '.join(filter(None, [v.code, v.dimensions, v.weight]))"/>
+                  </t>
+                </select>
+              </label>
+              <label style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Cantidad*</span>
+                <input required="required" type="number" name="cantidad" min="1" max="100000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+              </label>
+              <label style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Nombre*</span>
+                <input required="required" name="nombre" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+              </label>
+              <label style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Email*</span>
+                <input required="required" type="email" name="email" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+              </label>
+              <label style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Empresa</span>
+                <input name="empresa" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+              </label>
+              <label style="display:block; margin-bottom:12px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Teléfono</span>
+                <input name="telefono" maxlength="40" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
+              </label>
+              <label style="display:block; margin-bottom:16px;">
+                <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Notas</span>
+                <textarea rows="2" name="mensaje" maxlength="5000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none; resize:vertical;"></textarea>
+              </label>
+              <button type="submit" style="width:100%; background:#c26a1e; color:#fff; border:none; padding:14px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;">
+                <t t-if="producto.disponibilidad == 'sin_stock'">Avisame cuando esté disponible</t>
+                <t t-else="">Solicitar pedido</t>
+              </button>
+            </form>
+          </div>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            var openBtn = document.getElementById('pedido-open-btn');
+            var overlay = document.getElementById('pedido-modal-overlay');
+            if (openBtn &amp;&amp; overlay) {
+              openBtn.addEventListener('click', function () { overlay.classList.add('open'); });
+            }
+            document.addEventListener('keydown', function (e) {
+              if (e.key === 'Escape' &amp;&amp; overlay) overlay.classList.remove('open');
+            });
+          });
+        </script>
 
         <t t-call="mi_sitio_web.site_footer"/>
       </div>

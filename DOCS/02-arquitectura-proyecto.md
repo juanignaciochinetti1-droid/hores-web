@@ -4,9 +4,11 @@
 
 ```
 custom_addons/mi_sitio_web/
-├── __manifest__.py          # depende de: website, crm
+├── __manifest__.py          # depende de: website, crm, sale
 ├── controllers/
 │   └── main.py               # todas las rutas HTTP del sitio
+├── data/
+│   └── pedido_producto_data.xml  # producto "puente" para sale.order.line
 ├── models/
 │   ├── categoria.py          # mi_sitio_web.categoria
 │   └── producto.py           # mi_sitio_web.producto (+ spec/feature/variante)
@@ -14,7 +16,7 @@ custom_addons/mi_sitio_web/
 │   └── ir.model.access.csv   # permisos: usuarios internos r/w, público solo r
 ├── static/src/img/           # imágenes que usa el sitio (copiadas de disenos/)
 └── views/
-    ├── website_templates.xml  # Home + página de "gracias" del contacto
+    ├── website_templates.xml  # Home + páginas de "gracias" (contacto y pedido)
     ├── catalogo_templates.xml # head_assets, header/footer compartidos,
     │                          # Compras, Categoría, Producto, Calidad,
     │                          # Compromiso, Historia
@@ -29,7 +31,9 @@ custom_addons/mi_sitio_web/
   `/categoria/<slug>`), `sequence`.
 - **`mi_sitio_web.producto`** — `name`, `code` (único), `category_id`
   (obligatorio), `summary`, `description`, `image`, `is_custom`
-  (personalizable), `is_published`, `sequence`, más un campo calculado
+  (personalizable), `is_published`, `disponibilidad`
+  (`disponible`/`a_pedido`/`sin_stock`, manual — ver
+  [pedidos](07-pedidos.md)), `sequence`, más un campo calculado
   `whatsapp_url` (arma el link de WhatsApp con el nombre del producto
   URL-encodeado).
   - `spec_ids` → `mi_sitio_web.producto.spec` (ficha técnica: label/value)
@@ -56,6 +60,8 @@ corrigió).
 | `/historia` | Historia de la empresa | Única página con datos "hardcodeados" como constantes en el controlador (ver doc de pendientes) y toggle de tema |
 | `/mi-sitio/contacto` (POST) | — | Crea un `crm.lead`; valida server-side; redirige (patrón Post/Redirect/Get) |
 | `/mi-sitio/gracias` | Página de agradecimiento | Destino del redirect anterior |
+| `/mi-sitio/pedido` (POST) | — | Crea un `sale.order` (presupuesto) real; valida server-side; PRG — ver [pedidos](07-pedidos.md) |
+| `/mi-sitio/pedido/gracias` | Página de agradecimiento del pedido | Destino del redirect anterior |
 
 Todas las rutas admiten prefijo de idioma (`/en/...`, `/pt/...`) porque
 usan `website=True` — ver [idiomas](06-idiomas.md).

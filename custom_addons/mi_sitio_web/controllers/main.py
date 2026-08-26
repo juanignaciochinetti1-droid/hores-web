@@ -6,6 +6,9 @@ from odoo.http import request
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 NOMBRE_MAX_LEN = 200
 MENSAJE_MAX_LEN = 5000
+EMPRESA_MAX_LEN = 200
+TELEFONO_MAX_LEN = 40
+CANTIDAD_MAX = 100000
 
 # ---------------------------------------------------------------------------
 # Contenido de ejemplo para /historia — NO son datos reales confirmados de
@@ -316,12 +319,13 @@ class MiSitioWeb(http.Controller):
         })
 
     @http.route('/producto/<int:producto_id>', type='http', auth='public', website=True, sitemap=True)
-    def producto_detalle(self, producto_id, **kwargs):
+    def producto_detalle(self, producto_id, pedido_error=None, **kwargs):
         producto = request.env['mi_sitio_web.producto'].sudo().browse(producto_id)
         if not producto.exists() or not producto.is_published:
             raise request.not_found()
         return request.render('mi_sitio_web.producto_detalle_template', {
             'producto': producto,
+            'pedido_error': bool(pedido_error),
         })
 
     @http.route('/calidad', type='http', auth='public', website=True, sitemap=True)
@@ -390,3 +394,97 @@ class MiSitioWeb(http.Controller):
     @http.route('/mi-sitio/gracias', type='http', auth='public', website=True)
     def contacto_gracias(self, **kwargs):
         return request.render('mi_sitio_web.contacto_gracias_template', {})
+
+    @http.route('/mi-sitio/pedido', type='http', auth='public',
+                website=True, methods=['POST'], csrf=True)
+    def pedido(self, **post):
+        # "Solicitar pedido": a diferencia del contacto general, esto crea
+        # un presupuesto real en Ventas (sale.order), no un Lead de CRM —
+        # ver DOCS/07-pedidos.md. No hay carrito ni pago online: cada envío
+        # es un pedido de UN producto (con su variante opcional).
+        nombre = (post.get('nombre') or '').strip()
+        empresa = (post.get('empresa') or '').strip()
+        email = (post.get('email') or '').strip()
+        telefono = (post.get('telefono') or '').strip()
+        mensaje = (post.get('mensaje') or '').strip()
+
+        # Honeypot anti-bot, mismo patrón que el formulario de contacto.
+        if (post.get('sitio_web') or '').strip():
+            return request.redirect('/mi-sitio/pedido/gracias')
+
+        producto_id_raw = (post.get('producto_id') or '').strip()
+        if not producto_id_raw.isdigit():
+            raise request.not_found()
+        producto = request.env['mi_sitio_web.producto'].sudo().browse(int(producto_id_raw))
+        if not producto.exists() or not producto.is_published:
+            raise request.not_found()
+
+        # Variante opcional (solo válida si el producto la tiene y le
+        # pertenece) — si el producto tiene variantes, elegir una es
+        # obligatorio: no tiene sentido un pedido de un tamaño ambiguo.
+        variante = request.env['mi_sitio_web.producto.variante'].sudo()
+        variante_id_raw = (post.get('variante_id') or '').strip()
+        if variante_id_raw:
+            if not variante_id_raw.isdigit():
+                return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+            variante = variante.browse(int(variante_id_raw))
+            if not variante.exists() or variante.producto_id.id != producto.id:
+                return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+
+        try:
+            cantidad = int(post.get('cantidad') or 0)
+        except ValueError:
+            cantidad = 0
+
+        # Validación server-side, igual que en /mi-sitio/contacto: el HTML
+        # (required, type=number/email) no protege contra un POST directo.
+        if (not nombre or not email or not EMAIL_RE.match(email)
+                or len(nombre) > NOMBRE_MAX_LEN
+                or len(empresa) > EMPRESA_MAX_LEN
+                or len(telefono) > TELEFONO_MAX_LEN
+                or len(mensaje) > MENSAJE_MAX_LEN
+                or cantidad <= 0 or cantidad > CANTIDAD_MAX
+                or (producto.variante_ids and not variante)):
+            return request.redirect('/producto/%d?pedido_error=1' % producto.id)
+
+        partner = request.env['res.partner'].sudo().search([('email', '=', email)], limit=1)
+        if not partner:
+            partner = request.env['res.partner'].sudo().create({
+                'name': nombre,
+                'email': email,
+                'phone': telefono or False,
+            })
+
+        detalle = producto.name
+        if variante:
+            detalle += ' — %s' % ' / '.join(filter(None, [variante.code, variante.dimensions, variante.weight]))
+
+        notas = []
+        if empresa:
+            notas.append('Empresa: %s' % empresa)
+        if telefono:
+            notas.append('Teléfono: %s' % telefono)
+        if mensaje:
+            notas.append('Mensaje: %s' % mensaje)
+
+        producto_generico = request.env.ref('mi_sitio_web.product_pedido_generico')
+        medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
+
+        request.env['sale.order'].sudo().create({
+            'partner_id': partner.id,
+            'client_order_ref': producto.code or False,
+            'medium_id': medium.id if medium else False,
+            'note': '\n'.join(notas) if notas else False,
+            'order_line': [(0, 0, {
+                'product_id': producto_generico.id,
+                'name': detalle,
+                'product_uom_qty': cantidad,
+            })],
+        })
+
+        # Patrón Post/Redirect/Get, igual que en /mi-sitio/contacto.
+        return request.redirect('/mi-sitio/pedido/gracias')
+
+    @http.route('/mi-sitio/pedido/gracias', type='http', auth='public', website=True)
+    def pedido_gracias(self, **kwargs):
+        return request.render('mi_sitio_web.pedido_gracias_template', {})
