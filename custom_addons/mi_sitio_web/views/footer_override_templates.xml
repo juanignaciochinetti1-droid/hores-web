@@ -42,5 +42,37 @@
         <xpath expr="//div[hasclass('o_footer_copyright')]" position="attributes">
             <attribute name="style">display:none;</attribute>
         </xpath>
+        <!-- Header genérico de Odoo en /shop, carrito y checkout (28/08/2026,
+             a pedido explícito: "sacar eso del sector del carrito") —
+             "Your Logo", teléfono de ejemplo, nav genérico, botón violeta
+             de fábrica. Sale de la ficha de la empresa en Odoo
+             (res.company), que nunca se completó con los datos reales de
+             HORES — no es solo un tema de color. En vez de completar esa
+             ficha (afecta otras partes del backend, como facturas — se
+             prefirió no tocarla sin confirmar antes) se saca directamente
+             esta barra en todo el flujo de compras (/shop, carrito,
+             checkout), para que no se vea. Con el header afuera, la
+             navegación queda en el footer (siempre visible, real, en
+             todas las páginas). No se toca en el resto del sitio — ahí ya
+             se suprime aparte, por cada plantilla, con no_header (ver
+             DOCS/02-arquitectura-proyecto.md#header-genérico-duplicado). -->
+        <xpath expr="//header[@id='top']" position="before">
+            <t t-if="request and request.httprequest.path.startswith('/shop')" t-set="no_header" t-value="True"/>
+        </xpath>
+        <!-- Botón "Volver al sitio" (28/08/2026, a pedido explícito) — con
+             el header nativo afuera (arriba), /shop/carrito/checkout se
+             quedaron sin ninguna forma de volver al sitio principal desde
+             arriba (solo quedaba el footer, al final de todo). Mismo
+             condicional que el de arriba, así que aparece exactamente en
+             las mismas páginas donde se sacó el header. Va como hermano
+             de <header>, así que se muestra sin importar si el header en
+             sí termina renderizando o no. -->
+        <xpath expr="//header[@id='top']" position="after">
+            <div t-if="request and request.httprequest.path.startswith('/shop')" style="width:100%; max-width:1200px; margin:0 auto; padding:18px 28px 0; box-sizing:border-box;">
+                <a href="/mi-sitio" class="hc-back-to-site-btn" style="display:inline-flex; align-items:center; gap:8px; background:#ffffff; border:1px solid #e8e3d9; color:#5a4f44; padding:9px 16px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:13.5px; text-decoration:none; box-shadow:0 2px 6px rgba(36,29,23,.06);">
+                    <span aria-hidden="true">←</span> Volver al sitio
+                </a>
+            </div>
+        </xpath>
     </template>
 </odoo>

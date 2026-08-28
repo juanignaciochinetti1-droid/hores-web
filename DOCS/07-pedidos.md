@@ -193,9 +193,17 @@ Esto aplica sobre `website.layout`, o sea **todas** las páginas del
 sitio — en las nuestras no cambia nada visible (ya fijamos estos mismos
 colores a mano con estilos inline, que ganan por especificidad sobre
 estas reglas). Es paleta de colores y tipografía, **no** una
-reconstrucción del layout: el header/nav de `/shop` sigue siendo el de
-Odoo, no el nuestro — si más adelante se quiere ese nivel de detalle, es
-un paso siguiente natural y más grande.
+reconstrucción del layout: la estructura de `/shop` (grid de productos,
+carrito, checkout) sigue siendo la de Odoo, no la nuestra.
+
+> **Actualización (28/08/2026)**: el header nativo de arriba (nav
+> genérico con "Your Logo", datos de ejemplo) se sacó directamente de
+> `/shop` y el carrito/checkout — no se recoloreó ni se reconstruyó con
+> el nuestro. Ver
+> [arquitectura](02-arquitectura-proyecto.md#header-genérico-duplicado-mismo-bug-que-el-footer-del-otro-lado)
+> para el detalle y el motivo (la ficha de la empresa en Odoo tiene datos
+> de ejemplo sin confirmar, no se tocó). La navegación en esas pantallas
+> queda en el footer.
 
 **Bug real: franjas blancas a los costados en pantallas anchas, aunque el
 fondo "crema" estaba bien puesto** (encontrado el 26/08/2026). Se probó
@@ -296,6 +304,86 @@ integración con Inventario real) sigue existiendo igual que antes:
   aviso invitando a escribir por WhatsApp.
 - **`a_pedido`** no bloquea — se agrega una aclaración arriba del
   formulario de que puede demorar en producción.
+
+## Filtro "Rango de precio" oculto en /shop
+
+Mismo motivo que ocultar los precios del carrito (ver arriba): con todos
+los productos en $0, el filtro de rango de precio de la barra lateral de
+`/shop` quedaba con mínimo y máximo iguales ($0,00–$0,00) — Odoo lo
+detecta solo y lo atenúa (`opacity-75 pe-none`, de fábrica, sin poder
+clickearlo), pero seguía ocupando lugar con pinta de roto. Se agregó
+`display:none` sobre `#o_wsale_price_range_option` en
+`ecommerce_theme_templates.xml` (a pedido explícito, 28/08/2026, con
+screenshot) — el id se repite dos veces en el HTML real (barra lateral
+de escritorio + cajón de filtros de mobile), un solo selector tapa las
+dos.
+
+## Cancelar o pedir un cambio en un pedido ya hecho
+
+Agregado el 28/08/2026, a pedido explícito. Decisión de alcance tomada
+con el usuario antes de programar (dos preguntas, ver historial de la
+sesión): lo hace **el cliente, desde el sitio, sin login** (no hay portal
+de cliente activado — ver "Qué falta" más abajo); y "editar" **no cambia
+el pedido solo** — el cliente escribe qué necesita, queda anotado para
+Ventas, y una persona lo aplica a mano. Coherente con que hoy todo el
+proceso ya es manual (sin pago online, sin stock automatizado).
+
+### Cómo se accede, sin login
+
+`sale.order` ya trae un campo `access_token` (viene de `portal.mixin`,
+es el mismo mecanismo que usa el portal nativo de Odoo para los links
+"ver mi cotización" en emails). En vez de heredar todo `CustomerPortal`,
+se implementó un chequeo propio y liviano en
+`controllers/main.py` (`_pedido_por_token(order_id, token)`): busca el
+pedido por id, compara el token con `hmac.compare_digest` (evita timing
+attacks) contra `order._portal_ensure_token()` (genera el token la
+primera vez que se pide, si no existe todavía), y devuelve un recordset
+vacío si no matchea — el controlador tira 404 en ese caso, sin filtrar
+si el id de pedido existe o no.
+
+El link (`/mi-sitio/pedido/<id>/gestionar?token=...`) se muestra en la
+página nativa de confirmación de compra (`/shop/confirmation`), inyectado
+vía `<template inherit_id="website_sale.confirmation">` en
+`views/pedido_gestion_templates.xml`. Se enganchó en
+`oe_structure_website_sale_confirmation_2` — un `<div>` vacío que la
+propia plantilla de Odoo deja como punto de inserción para bloques de
+website builder al final de esa página (su comentario en el arch dice
+literalmente "hooked using XPath on the oe_structure element ID"), así
+que no hizo falta un xpath más frágil apuntando a otra parte del layout.
+
+### Qué puede hacer el cliente en `/mi-sitio/pedido/<id>/gestionar`
+
+- **Cancelar pedido** (`POST .../cancelar`) — llama
+  `order.action_cancel()` directo, sin intermediarios.
+- **Pedir un cambio** (`POST .../cambio`) — un textarea libre; el texto
+  queda en el chatter del pedido (`order.message_post(...)`) **y** se le
+  crea una actividad "to-do" al vendedor asignado
+  (`order.activity_schedule(...)`), para que no dependa de que alguien
+  abra el chatter para enterarse.
+- Ninguna de las dos acciones queda disponible si `_pedido_gestionable()`
+  da `False`: el pedido ya está cancelado/hecho, **o ya tiene una factura
+  confirmada** (`account.move` en estado `posted`) — a partir de ahí el
+  cambio se coordina a mano por WhatsApp/email, no solo, porque
+  Administración ya lo procesó.
+
+**Ojo con el body de `message_post`**: un `str` común se trata como texto
+sin confiar y se escapa **entero** (las etiquetas HTML propias
+incluidas, no solo lo que escribe el cliente) — si no, cualquier
+`<script>` que alguien escriba en el textarea se ejecutaría en el
+chatter de Ventas. Se escapa a mano el mensaje del cliente
+(`html.escape`), se arma el HTML final por composición de strings (no
+con el operador `%%` de `Markup`, que re-escaparía lo ya escapado), y
+recién ahí se envuelve todo junto en `markupsafe.Markup(...)` **una sola
+vez**, al final.
+
+### Verificado con un pedido real de punta a punta
+
+Cancelar (confirmado `state` en `cancel` en la base), pedir un cambio
+(confirmado el mensaje en el chatter y la actividad creada, incluyendo
+un intento con `<script>alert(1)</script>` en el mensaje para confirmar
+que queda escapado y no se ejecuta), token inválido (404), y las 3
+plantillas del set (`pedido_gestionar_template`, el link en
+`/shop/confirmation`) traducidas a los 3 idiomas.
 
 ## Multi-idioma
 

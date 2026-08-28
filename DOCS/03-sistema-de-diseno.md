@@ -36,6 +36,25 @@ Definidos como CSS custom properties en `.historia-page`:
 }
 ```
 
+**Sombra de las `.h-card` reforzada (28/08/2026, a pedido explícito:
+"tiene que resaltar")**: `--h-card` (blanco) y `--h-bg` (crema) quedan muy
+cerca en luminosidad — con la sombra sutil original (`0 2px 8px`, `0 10px
+26px`, alpha .05/.06) las cards casi no se despegaban del fondo. Se le
+subió bastante el peso a la sombra (`0 6px 18px`, `0 20px 46px`, alpha
+.08/.10, y más todavía al hover) y el lift al hover (`-3px` → `-5px`). En
+tema oscuro las sombras negras se ven mucho menos sobre fondo oscuro, así
+que ahí se compensa subiendo el alpha en vez de aclarar el color
+(`.historia-page[data-theme="dark"] .h-card`) — ninguna sombra clara
+funciona bien sobre `--h-bg` oscuro.
+
+**Cards de stats del hero rediseñadas (mismo pedido, 28/08/2026)**: el
+número pasó de sans-serif 26px a `'Source Serif 4'` 32px (mismo criterio
+que el resto del sitio para "números destacados", ver más abajo), el
+ícono creció de 46px a 54px con un badge propio (gradiente radial sutil +
+borde `rgba(194,106,30,.18)` + sombra tenue, en vez de un círculo plano)
+que además escala levemente al hacer hover sobre la card
+(`.h-stat-icon`), y se le dio más aire al padding y al gap entre cards.
+
 Si se decide llevar el toggle de tema a todo el sitio, este es el punto de
 partida — pero es un trabajo grande (convertir cada color hardcodeado del
 resto de las páginas a variables), no una tarea chica. Se evaluó y se

@@ -23,6 +23,7 @@
         'views/error_templates.xml',
         'views/footer_override_templates.xml',
         'views/ecommerce_theme_templates.xml',
+        'views/pedido_gestion_templates.xml',
     ],
     'installable': True,
     'application': True,

@@ -131,6 +131,37 @@ Si en el futuro se traduce un campo o vista nuevos, seguir este mismo
 orden — o el sitio en español puede quedar mostrando otro idioma sin que
 sea evidente hasta que alguien lo visita sin el prefijo `/en`/`/pt`.
 
+### Gotcha #1b: la "clave" para `pt_BR` cambia después de escribir `en_US`
+
+Encontrado el 28/08/2026, traduciendo contenido real (ver
+[pendientes](04-pendientes-y-datos-de-ejemplo.md)). Al llamar
+`update_field_translations` tres veces seguidas con el **mismo texto en
+español** como clave (`{es_AR: {ES: ES}}`, después `{en_US: {ES: EN}}`,
+después `{pt_BR: {ES: PT}}`), la tercera llamada **no encuentra nada
+para reemplazar** y no hace nada (sin error, sin aviso) — el texto en
+portugués queda con el valor viejo.
+
+Motivo: `en_US` actúa como idioma "fuente" (ver gotcha de arriba). Una
+vez que la 2ª llamada le escribe un valor nuevo a `en_US`, ese pasa a
+ser el texto contra el que Odoo compara las claves de las llamadas
+siguientes — la clave en español ya no matchea nada.
+
+**Orden correcto**: escribir `es_AR` (clave = texto original en
+español), después `en_US` (misma clave, español → inglés), y para
+`pt_BR` usar como clave el texto en **inglés** recién escrito, no el
+español:
+
+```python
+update_field_translations(view_ids, 'arch_db', {'es_AR': {ES: ES}})
+update_field_translations(view_ids, 'arch_db', {'en_US': {ES: EN}})
+update_field_translations(view_ids, 'arch_db', {'pt_BR': {EN: PT}})  # clave = EN, no ES
+```
+
+Se puede confirmar si una traducción quedó bien pegada con
+`ir.ui.view.get_field_translations(view_id, 'arch_db')` — devuelve una
+lista con `{lang, source, value}` por término; si `value` está vacío o
+es el texto viejo, no se escribió.
+
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 
 Encontrado y corregido el 26/08/2026, al agregar el formulario de

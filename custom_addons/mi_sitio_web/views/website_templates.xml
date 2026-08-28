@@ -2,6 +2,13 @@
 <odoo>
     <template id="home_template" name="Mi Sitio - Home">
         <t t-call="website.layout">
+            <!-- Header genérico de Odoo ("Your Logo", nav de fábrica,
+                 teléfono/login de ejemplo) duplicado con nuestro propio
+                 site_header — mismo bug que el del footer duplicado (ver
+                 DOCS/02-arquitectura-proyecto.md#footer-único-en-todo-el-sitio),
+                 del lado del header. `no_header` ya lo chequea Odoo mismo
+                 (web.frontend_layout) — no hace falta un xpath propio. -->
+            <t t-set="no_header" t-value="True"/>
             <t t-set="pageName" t-value="'home_hores'"/>
             <t t-set="title">HORES Cartotécnica — Moldes de papel para panificación</t>
             <t t-set="website_meta_description">Fabricamos moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Aptos para contacto alimentario, gestión de calidad certificada ISO 22000:2018. Bell Ville, Córdoba.</t>
@@ -142,7 +149,7 @@
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Comercialización regional</div>
         </div>
         <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
-          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">+40 años</div>
+          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">+31 años</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Experiencia fabricando</div>
         </div>
       </div>

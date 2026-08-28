@@ -133,6 +133,18 @@
                 .oe_website_sale [name="website_sale_cart_summary_line_price"] {
                     display: none !important;
                 }
+                /* Filtro "Rango de precio" del costado de /shop (28/08/2026,
+                   a pedido explícito, con screenshot): con todos los
+                   productos en $0, el filtro queda min=max=$0,00 — Odoo
+                   mismo ya lo nota y lo deja atenuado/sin clickear
+                   (clases opacity-75 pe-none que trae de fábrica), pero
+                   seguía ocupando lugar en la página, con pinta de roto.
+                   Se esconde entero — el id se repite dos veces en el HTML
+                   (barra lateral de escritorio + cajón de filtros de
+                   mobile), así que el selector tapa las dos. */
+                .oe_website_sale #o_wsale_price_range_option {
+                    display: none !important;
+                }
                 /* .o_cart_total es la tarjeta de "Entrega / Subtotal /
                    Impuestos / Total" del resumen — el formulario de código
                    de descuento (.coupon_form) vive adentro tuyo, como una
@@ -145,6 +157,12 @@
                    abajo en los pasos de dirección/pago). */
                 .oe_website_sale #amount_total_summary {
                     display: none !important;
+                }
+                /* Botón "Volver al sitio" (ver footer_override_templates.xml
+                   — se agrega ahí, junto al no_header de /shop, no acá). */
+                .hc-back-to-site-btn:hover {
+                    border-color: #c26a1e;
+                    color: #c26a1e;
                 }
                 /* El catálogo (/shop) y el carrito/checkout usan .container
                    de Bootstrap. .oe_website_sale.container (las dos clases

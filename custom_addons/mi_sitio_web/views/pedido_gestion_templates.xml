@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Cancelar o pedir un cambio en un pedido ya hecho, sin login — a
+        pedido explícito (28/08/2026). El acceso es por link con token
+        (sale.order.access_token, el mismo mecanismo que usa el portal
+        nativo de Odoo para "ver mi cotización" en emails — ver
+        controllers/main.py, _pedido_por_token()), no por sesión.
+
+        "Cancelar" lo hace el sitio directo (sale.order.action_cancel()).
+        "Pedir un cambio" NO edita el pedido solo — deja un mensaje en el
+        chatter del pedido (lo ve Ventas en Odoo) más una actividad para
+        el vendedor asignado; el cambio en sí lo aplica una persona a
+        mano. Ver DOCS/07-pedidos.md.
+    -->
+    <template id="pedido_gestionar_template" name="Mi Sitio - Gestionar pedido">
+        <t t-call="website.layout">
+            <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+                 comentario largo en compras_template (catalogo_templates.xml). -->
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="title">Pedido <t t-esc="order.name"/> — HORES Cartotécnica</t>
+            <div id="wrap" class="oe_structure oe_empty">
+                <t t-call="mi_sitio_web.head_assets"/>
+                <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+                    <t t-call="mi_sitio_web.site_header"/>
+
+                    <section style="max-width:640px; margin:0 auto; padding:56px 28px 90px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:6px; flex-wrap:wrap;">
+                            <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0; color:#241d17;">Pedido <t t-esc="order.name"/></h1>
+                            <span t-if="order.state == 'cancel'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px;">Cancelado</span>
+                            <span t-elif="order.state in ('draft', 'sent')" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px;">Presupuesto</span>
+                            <span t-else="" style="display:inline-block; background:#e7f0dc; color:#3f7d38; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px;">Confirmado</span>
+                        </div>
+                        <p style="font-size:13.5px; color:#8a7a67; margin:0 0 28px;"><t t-esc="order.date_order.strftime('%d/%m/%Y')"/></p>
+
+                        <div t-if="ok == 'cancelado'" style="background:#e7f0dc; color:#3f7d38; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:24px;">Listo, cancelamos tu pedido.</div>
+                        <div t-if="ok == 'cambio'" style="background:#e7f0dc; color:#3f7d38; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:24px;">Recibimos tu pedido de cambio — te vamos a contactar a la brevedad.</div>
+
+                        <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:22px 24px; margin-bottom:26px;">
+                            <div style="font-size:12.5px; font-weight:700; color:#5a4f44; text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px;">Productos</div>
+                            <t t-foreach="order.order_line.filtered(lambda l: not l.display_type and not l.is_delivery)" t-as="linea">
+                                <div style="display:flex; justify-content:space-between; gap:14px; padding:9px 0; border-top:1px solid #e8e3d9;">
+                                    <span style="font-size:14.5px; color:#241d17;" t-esc="linea.product_id.name"/>
+                                    <span style="font-size:14.5px; color:#5a4f44; flex-shrink:0;" t-esc="int(linea.product_uom_qty)"/>
+                                </div>
+                            </t>
+                        </div>
+
+                        <div t-if="gestionable">
+                            <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:22px 24px; margin-bottom:18px;">
+                                <div style="font-size:15px; font-weight:600; color:#241d17; margin-bottom:6px;">¿Necesitás cambiar algo?</div>
+                                <p style="font-size:13.5px; color:#8a7a67; margin:0 0 14px;">Contale a Ventas qué querés modificar (cantidad, tamaño, sacar un producto) y te contactamos para confirmarlo.</p>
+                                <form t-attf-action="/mi-sitio/pedido/#{order.id}/cambio" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="token" t-att-value="token"/>
+                                    <textarea name="mensaje" required="required" rows="3" placeholder="Ej: quiero cambiar la cantidad de PD90X70 a 30 unidades" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; margin-bottom:12px; resize:vertical;"></textarea>
+                                    <button type="submit" style="background:#c26a1e; color:#fff; border:none; padding:11px 20px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14px; cursor:pointer;">Enviar pedido de cambio</button>
+                                </form>
+                            </div>
+
+                            <form t-attf-action="/mi-sitio/pedido/#{order.id}/cancelar" method="post" onsubmit="return confirm('¿Seguro que querés cancelar este pedido?');">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="token" t-att-value="token"/>
+                                <button type="submit" style="background:#ffffff; border:1px solid #e0a89a; color:#b23b3b; padding:11px 20px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14px; cursor:pointer;">Cancelar pedido</button>
+                            </form>
+                        </div>
+                        <div t-else="" style="background:#fff; border:1px solid #e8e3d9; border-radius:14px; padding:20px 24px; font-size:14px; color:#5a4f44;">
+                            <t t-if="order.state == 'cancel'">Este pedido ya está cancelado.</t>
+                            <t t-else="">Este pedido ya está en proceso — para cambiarlo o cancelarlo, escribinos por WhatsApp o a <a href="mailto:administracion@hores.com.ar" style="color:#c26a1e;">administracion@hores.com.ar</a>.</t>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Link a la página de arriba, agregado en la confirmación nativa de
+         website_sale (/shop/confirmation) — oe_structure_website_sale_confirmation_2
+         es un punto de inserción que la propia plantilla de Odoo deja
+         libre para esto (ver el comentario en su arch: "drag-and-drop
+         area... hooked using XPath on the oe_structure element ID"). -->
+    <template id="pedido_gestionar_link" inherit_id="website_sale.confirmation">
+        <xpath expr="//div[@id='oe_structure_website_sale_confirmation_2']" position="after">
+            <div style="max-width:100%; background:#fff8f1; border:1px solid #ecd9bf; border-radius:12px; padding:18px 20px; margin-top:22px; font-family:'Archivo',sans-serif;">
+                <p style="margin:0 0 10px; font-size:14px; color:#3a3f43;">¿Necesitás cancelar este pedido o pedir un cambio? Podés hacerlo sin crear una cuenta.</p>
+                <a t-attf-href="/mi-sitio/pedido/#{order.id}/gestionar?token=#{order._portal_ensure_token()}" style="display:inline-block; background:#c26a1e; color:#fff; padding:10px 18px; border-radius:9px; font-weight:600; font-size:13.5px; text-decoration:none;">Gestionar mi pedido</a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

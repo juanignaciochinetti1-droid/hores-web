@@ -21,8 +21,11 @@ custom_addons/mi_sitio_web/
     ├── producto_views.xml     # vistas de backend (admin) del catálogo
     ├── seo_templates.xml      # Open Graph, extiende website.layout
     ├── error_templates.xml    # página 404 propia, extiende http_routing.404
-    └── ecommerce_theme_templates.xml  # paleta del sitio en /shop, carrito,
-                               # checkout (nativos de website_sale) — ver
+    ├── ecommerce_theme_templates.xml  # paleta del sitio en /shop, carrito,
+    │                          # checkout (nativos de website_sale) — ver
+    │                          # DOCS/07-pedidos.md
+    └── pedido_gestion_templates.xml  # cancelar / pedir cambios en un
+                               # pedido ya hecho, sin login — ver
                                # DOCS/07-pedidos.md
 ```
 
@@ -56,7 +59,7 @@ corrigió).
 |---|---|---|
 | `/mi-sitio` | Home | Hero con slideshow de fotos, secciones ancla (#empresa, #productos, #calidad, #sustentabilidad, #faq, #contacto) |
 | `/compras` | Catálogo completo | Buscador instantáneo + filtro por categoría (links, no filtro en la misma página) |
-| `/categoria/<slug>` | Productos de una categoría | 404 si el slug no existe |
+| `/categoria/<slug>` | Productos de una categoría | 404 si el slug no existe; redirige derecho a `/producto/<id>` si la categoría tiene un solo producto publicado — ver más abajo |
 | `/producto/<id>` | Ficha de producto | 404 si no existe o no está publicado |
 | `/calidad` | Calidad y certificaciones | Contenido estático |
 | `/compromiso` | Compromiso ambiental | Contenido estático |
@@ -75,6 +78,12 @@ propio. La única ruta propia relacionada es
 `GET /mi-sitio/carrito/lineas` (JSON, `{"cantidad": N}`), que usa el JS
 del botón para actualizar el numerito del carrito del header con la
 cantidad de **pedidos**, no de unidades — ver [pedidos](07-pedidos.md).
+
+**Gestionar un pedido ya hecho** (sin login, por link con token — ver
+[pedidos](07-pedidos.md#cancelar-o-pedir-un-cambio-en-un-pedido-ya-hecho)):
+`GET /mi-sitio/pedido/<id>/gestionar`,
+`POST /mi-sitio/pedido/<id>/cancelar`,
+`POST /mi-sitio/pedido/<id>/cambio`.
 
 ## Plantillas compartidas (`catalogo_templates.xml`)
 
@@ -157,6 +166,71 @@ comportamiento ya documentado para dependencias nuevas del manifest, ver
 directo: la vista no existía en la base hasta reiniciar y recién ahí
 correr el upgrade.
 
+## Header genérico duplicado (mismo bug que el footer, del otro lado)
+
+Encontrado el 28/08/2026: **todas** nuestras páginas (Home, Compras,
+Categoría, Producto, Calidad, Compromiso, Historia, 404) mostraban, por
+encima de nuestro propio `site_header`, una barra de Odoo con datos de
+fábrica — "Your Logo", nav genérico ("Tienda"/"Contáctanos"), teléfono de
+ejemplo (`+1 555-555-5556`), selector de idioma y "Inicia sesión". Mismo
+mecanismo que el bug del footer (ver más arriba): `website.layout` arma
+esa barra (`<header id="top">`, definida en `web.frontend_layout`) *por
+fuera* de `#wrap`, así que se sumaba a la nuestra en vez de reemplazarla.
+
+A diferencia del footer, acá **no hizo falta un `<template
+inherit_id="website.layout">` propio** — Odoo ya expone una variable que
+esa misma vista chequea (`<header t-if="not no_header" id="top">`, igual
+que `no_footer`), así que alcanza con `<t t-set="no_header"
+t-value="True"/>` al principio de cada `t-call="website.layout"` nuestro.
+Se agregó en las 7 plantillas de arriba (en Historia, junto al
+`no_footer` que ya tenía por su footer propio).
+
+**Ojo si se agrega una página nueva**: a diferencia de `site_footer` (que
+sale solo en todas las páginas por el override de `#footer`), el header
+**no** se resuelve solo — cada plantilla nueva que llame a
+`site_header` tiene que poner `no_header` a mano, si no le va a aparecer
+la barra genérica de Odoo arriba de la nuestra otra vez.
+
+**Actualización (28/08/2026)**: en `/shop`, `/shop/cart` y el checkout de
+`website_sale` este header **se saca directamente** (a pedido explícito,
+"sacar eso del sector del carrito" — venía de un screenshot del
+carrito), en vez de recolorearlo o completar los datos de la empresa que
+usa (`res.company` sigue teniendo "YourCompany", teléfono y logo de
+ejemplo — no se tocó esa ficha porque afecta otras partes del backend,
+como facturas, y no estaba confirmado). Como esas páginas no llaman a
+`site_header` (son nativas, no nuestras), sacar el header nativo las deja
+sin ningún nav arriba — la navegación en esas pantallas queda en el
+footer, que ya es real y está siempre visible. A diferencia de nuestras
+páginas (que ponen `no_header` a mano, una por una), acá se resuelve en
+un solo lugar: `views/footer_override_templates.xml` agrega un `<t
+t-set="no_header" t-value="True"/>` condicionado a
+`request.httprequest.path.startswith('/shop')`, así que cubre toda la
+familia de rutas de compras sin tocar cada plantilla nativa de
+`website_sale` una por una. `contacto_gracias_template` (la página de
+agradecimiento del formulario de contacto) no se tocó — nunca llamó a
+`site_header`, así que no hay nada duplicado ahí, solo un header genérico
+solo; no era
+parte de lo reportado.
+
+**Botón "Volver al sitio" (mismo día, a pedido explícito)**: al sacar el
+header nativo, esas páginas se quedaron sin ninguna forma de volver al
+sitio principal salvo bajar hasta el footer. Se agregó un botón chico
+("← Volver al sitio" → `/mi-sitio`) justo donde iba el header, con el
+mismo condicional (`request.httprequest.path.startswith('/shop')`) — vive
+como hermano de `<header id="top">` en el mismo xpath, así que se
+muestra sin importar si el header en sí termina renderizando.
+
+Gotcha encontrado al implementarlo: el `<div>` del botón, sin un `width`
+explícito, quedaba angosto (se achicaba al ancho de su contenido, ~200px)
+en vez de estirarse — `#wrapwrap` es `display:flex; flex-flow:column
+nowrap`, y ahí el `align-items:stretch` por defecto no se estaba
+aplicando como se esperaba, así que el `max-width:1200px; margin:0 auto`
+terminaba centrando una caja angosta en vez de una de 1200px (el botón se
+veía centrado en toda la pantalla en vez de pegado a la izquierda). Se
+solucionó agregando `width:100%` explícito junto al `max-width` — no
+alcanza con confiar en que un hijo de un contenedor flex en columna se
+estire solo.
+
 ## Página 404 propia
 
 `error_templates.xml` reemplaza la 404 genérica de Odoo por una con la
@@ -173,6 +247,55 @@ la documentación de Odoo y no cambiaba nada para un visitante real — el
 override correcto (y el que está hoy) apunta a `http_routing.404`.
 Verificado con `curl` sin sesión contra una URL cualquiera, no solo contra
 nuestras propias rutas.
+
+## Página de categoría (`/categoria/<slug>`) simplificada
+
+A pedido explícito (28/08/2026, con un screenshot): se sacó la fila de
+miniaturas de variantes (imagen chica por cada tamaño, con lightbox al
+hacer click) que aparecía debajo de la descripción de cada producto en
+esta página — "es una vista innecesaria". Cada producto en la lista ya
+tiene un link "Ver ficha técnica completa →" a `/producto/<id>`, que
+muestra las variantes reales (con su nombre/medida, no solo una imagen
+suelta) — la fila de miniaturas duplicaba esa información sin agregar
+contexto.
+
+Se sacó junto con toda su infraestructura (quedaba código muerto si no):
+el CSS `.lightbox-overlay`/`.variant-thumb`, el `<div id="lightbox">` y
+el script de la tecla Escape — nada de eso se usa en ningún otro lado del
+archivo. `/compras` (el catálogo completo) no tenía este mismo bloque, así
+que no hizo falta tocarlo ahí.
+
+**Segunda vuelta, mismo día**: con un screenshot de la página entera (no
+solo la fila de miniaturas), pidieron sacar la sección completa por estar
+"de más". Antes de hacerlo se revisaron las 4 categorías reales: 3 tienen
+un solo producto publicado (como Pan Dulce, la del screenshot — ahí la
+página de categoría no agrega nada sobre ir directo a la ficha), pero
+**Rosca/Bizcochuelo tiene 2** — sacar la página entera para todas hubiera
+roto la única forma de ver esos dos agrupados aparte del catálogo
+completo. Se confirmó el alcance con el usuario antes de tocar nada.
+
+Solución (`controllers/main.py`, ruta `/categoria/<slug>`): si la
+categoría tiene **un solo** producto publicado, la ruta redirige derecho
+a `/producto/<id>` (con `_redirect()`, preserva el idioma activo) en vez
+de renderizar `categoria_template`. Con más de uno, se comporta igual que
+antes. Esto resuelve TODOS los links hacia `/categoria/<slug>` de una —
+las chips de categoría en `/compras`, cualquier link externo o guardado —
+sin tener que tocarlos uno por uno.
+
+Efecto secundario que hubo que corregir: el breadcrumb "← [Categoría]" en
+`producto_detalle_template` apuntaba a `/categoria/<slug>` de la propia
+categoría del producto — para una categoría de un solo producto, eso
+redirige de vuelta al mismo producto (loop). Se agregó la condición
+`len(producto.category_id.producto_ids.filtered('is_published')) > 1`:
+con un solo producto en la categoría, el breadcrumb cae en "← Catálogo"
+(a `/compras`) en vez de al loop.
+
+**Gotcha de Odoo, distinto a los anteriores**: este cambio SÍ tocó un
+archivo `.py` (el controlador), no solo XML — a diferencia de las vistas,
+el código Python de los controladores se carga una sola vez al arrancar
+el proceso de Odoo. `button_immediate_upgrade` (que alcanza para XML) NO
+recarga controladores; hizo falta `docker compose restart odoo` para que
+tomara el cambio.
 
 ## Migración de datos
 

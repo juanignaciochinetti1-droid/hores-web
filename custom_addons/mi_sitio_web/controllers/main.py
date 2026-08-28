@@ -1,4 +1,8 @@
+import hmac
+import html
 import re
+
+from markupsafe import Markup
 
 from odoo import http
 from odoo.http import request
@@ -6,6 +10,11 @@ from odoo.http import request
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 NOMBRE_MAX_LEN = 200
 MENSAJE_MAX_LEN = 5000
+
+# Estados de sale.order desde los que un cliente puede cancelar/pedir un
+# cambio por su cuenta, sin pasar por Ventas primero — ver
+# _pedido_gestionable() más abajo.
+PEDIDO_ESTADOS_GESTIONABLES = ('draft', 'sent', 'sale')
 
 # ---------------------------------------------------------------------------
 # Contenido de ejemplo para /historia — NO son datos reales confirmados de
@@ -23,24 +32,36 @@ MENSAJE_MAX_LEN = 5000
 # ---------------------------------------------------------------------------
 
 _HISTORIA_ES = {
+    # Actualizado el 28/08/2026 con datos reales tomados de hores.com.ar/wp
+    # (Empresa, Clientes) — 'stats.moldes por año' y 'stats.clientes' NO
+    # tienen fuente real (el sitio real no publica esos dos números) y
+    # quedan igual que antes. 'años de experiencia' usa el "31 años de
+    # operaciones" que el sitio real muestra hoy mismo, en vez de
+    # recalcularlo a mano — evita asumir desde qué año exacto cuentan
+    # ellos (¿1992, la primera máquina? ¿1999, la constitución de la
+    # SRL?). 'países' pasa de 6 a 8 para que coincida con la lista real
+    # de 'paises' más abajo (que ya estaba bien, pero el contador no).
     'stats': [
-        {'icon': '📅', 'value': '+40', 'label': 'años de experiencia'},
+        {'icon': '📅', 'value': '+31', 'label': 'años de experiencia'},
         {'icon': '📦', 'value': '+500', 'label': 'moldes por año'},
         {'icon': '🤝', 'value': '+150', 'label': 'clientes'},
-        {'icon': '🌎', 'value': '6', 'label': 'países'},
+        {'icon': '🌎', 'value': '8', 'label': 'países'},
     ],
     'timeline': [
-        {'year': '1985', 'title': 'Fundación', 'text': 'Inicio de la planta en Bell Ville, Córdoba, fabricando los primeros moldes de papel.'},
-        {'year': '1993', 'title': 'Primeras exportaciones', 'text': 'Comienza la comercialización hacia países vecinos de la región.'},
-        {'year': '2001', 'title': 'Ampliación de planta', 'text': 'Incorporación de una nueva línea de producción para sostener la demanda.'},
-        {'year': '2009', 'title': 'Gestión de calidad', 'text': 'Primeros pasos hacia un sistema de gestión de inocuidad alimentaria certificado.'},
-        {'year': '2016', 'title': 'Nuevas líneas de producto', 'text': 'Ampliación del catálogo con nuevos formatos y tamaños de molde.'},
-        {'year': '2021', 'title': 'Certificación ISO 22000:2018', 'text': 'Se certifica el sistema de gestión de inocuidad de los alimentos.'},
-        {'year': '2025', 'title': 'Actualidad', 'text': 'Presencia consolidada en el mercado regional, con más de 40 años de trayectoria.'},
+        {'year': '1992', 'title': 'Primera máquina automática', 'text': 'Gabriel Markarian y Oscar Urbano construyen la primera máquina automática para moldes de pan dulce.'},
+        {'year': '1999', 'title': 'Constitución de la SRL', 'text': 'Se constituye formalmente como Cartotécnica Hores SRL.'},
+        {'year': '2002', 'title': 'Budín sin Fleje', 'text': 'Se lanza la línea de Budín sin Fleje, con registro de diseño industrial n.° 68.399.'},
+        {'year': '2003–2005', 'title': 'Diversificación de líneas', 'text': 'Se suman las líneas de pan dulce, rosca, bizcochuelo, budín y pan de Pascua.'},
+        {'year': '2006–2009', 'title': 'Ampliación de planta', 'text': 'La planta en Bell Ville, Córdoba, crece hasta los 5.000 m².'},
+        {'year': '2011–2012', 'title': 'Certificación ISO 22000:2005', 'text': 'Se certifica el sistema de gestión de inocuidad, con Bureau Veritas.'},
+        {'year': '2015', 'title': 'Nuevo predio', 'text': 'Se adquiere un predio de 4,50 hectáreas para la futura planta.'},
+        {'year': '2020', 'title': 'Nueva planta', 'text': 'El 9 de marzo, mudanza a la nueva planta de 12.000 m².'},
+        {'year': 'Hoy', 'title': 'Actualidad', 'text': 'Presencia consolidada en el mercado argentino y en el resto de la región, con más de 25 años de trayectoria formal.'},
     ],
+    # Texto real, tomado palabra por palabra de hores.com.ar/wp/empresa/.
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Misión', 'text': 'Fabricar moldes de papel de calidad para la industria alimentaria, acompañando a cada cliente con soluciones a medida.'},
-        {'icon': '👁️', 'title': 'Visión', 'text': 'Ser una referencia regional en moldes de papel para panificación, innovando de forma sustentable.'},
+        {'icon': '🎯', 'title': 'Misión', 'text': 'Producir y proveer moldes de papel inocuos para la industria de la alimentación, atendiendo las necesidades de los clientes y brindando condiciones para el desarrollo personal.'},
+        {'icon': '👁️', 'title': 'Visión', 'text': 'Posicionarse como una de las principales empresas a nivel mundial en producción de moldes de papel para alimentación.'},
     ],
     'valores': [
         {'icon': '🎯', 'title': 'Precisión', 'text': 'Medidas exactas y consistentes en cada lote de producción.'},
@@ -101,24 +122,29 @@ _HISTORIA_ES = {
 }
 
 _HISTORIA_EN = {
+    # Updated 08/28/2026 with real data from hores.com.ar/wp — see the
+    # es_AR block above for the sourcing notes (same numbers/years,
+    # translated).
     'stats': [
-        {'icon': '📅', 'value': '+40', 'label': 'years of experience'},
+        {'icon': '📅', 'value': '+31', 'label': 'years of experience'},
         {'icon': '📦', 'value': '+500', 'label': 'molds per year'},
         {'icon': '🤝', 'value': '+150', 'label': 'clients'},
-        {'icon': '🌎', 'value': '6', 'label': 'countries'},
+        {'icon': '🌎', 'value': '8', 'label': 'countries'},
     ],
     'timeline': [
-        {'year': '1985', 'title': 'Foundation', 'text': 'The plant began operating in Bell Ville, Córdoba, manufacturing the first paper molds.'},
-        {'year': '1993', 'title': 'First exports', 'text': 'We began selling to neighboring countries in the region.'},
-        {'year': '2001', 'title': 'Plant expansion', 'text': 'A new production line was added to keep up with demand.'},
-        {'year': '2009', 'title': 'Quality management', 'text': 'First steps toward a certified food-safety management system.'},
-        {'year': '2016', 'title': 'New product lines', 'text': 'The catalog expanded with new mold formats and sizes.'},
-        {'year': '2021', 'title': 'ISO 22000:2018 Certification', 'text': 'Our food-safety management system was certified.'},
-        {'year': '2025', 'title': 'Today', 'text': 'A consolidated presence in the regional market, with more than 40 years of history.'},
+        {'year': '1992', 'title': 'First automatic machine', 'text': 'Gabriel Markarian and Oscar Urbano build the first automatic machine for panettone molds.'},
+        {'year': '1999', 'title': 'Company incorporated', 'text': 'Formally incorporated as Cartotécnica Hores SRL.'},
+        {'year': '2002', 'title': 'Strapless pound cake mold', 'text': 'Launch of the strapless pound cake line, with industrial design registration No. 68.399.'},
+        {'year': '2003–2005', 'title': 'Product line diversification', 'text': 'The panettone, ring cake, sponge cake, pound cake and Christmas bread lines are added.'},
+        {'year': '2006–2009', 'title': 'Plant expansion', 'text': 'The plant in Bell Ville, Córdoba, grows to 5,000 m².'},
+        {'year': '2011–2012', 'title': 'ISO 22000:2005 certification', 'text': 'Our food-safety management system is certified, with Bureau Veritas.'},
+        {'year': '2015', 'title': 'New site acquired', 'text': 'A 4.50-hectare site is acquired for the future plant.'},
+        {'year': '2020', 'title': 'New plant', 'text': 'On March 9, the company moves into the new 12,000 m² plant.'},
+        {'year': 'Today', 'title': 'Today', 'text': 'A consolidated presence in the Argentine market and across the region, with more than 25 years of formal history.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Mission', 'text': 'To manufacture quality paper molds for the food industry, supporting each client with tailored solutions.'},
-        {'icon': '👁️', 'title': 'Vision', 'text': 'To be a regional benchmark in paper molds for baking, innovating sustainably.'},
+        {'icon': '🎯', 'title': 'Mission', 'text': 'To produce and provide safe paper molds for the food industry, meeting the needs of our clients and providing the conditions for personal growth.'},
+        {'icon': '👁️', 'title': 'Vision', 'text': 'To become one of the leading companies worldwide in the production of paper molds for the food industry.'},
     ],
     'valores': [
         {'icon': '🎯', 'title': 'Precision', 'text': 'Exact, consistent measurements in every production batch.'},
@@ -174,24 +200,29 @@ _HISTORIA_EN = {
 }
 
 _HISTORIA_PT = {
+    # Atualizado em 28/08/2026 com dados reais de hores.com.ar/wp — ver
+    # as notas de fonte no bloco es_AR acima (mesmos números/anos,
+    # traduzidos).
     'stats': [
-        {'icon': '📅', 'value': '+40', 'label': 'anos de experiência'},
+        {'icon': '📅', 'value': '+31', 'label': 'anos de experiência'},
         {'icon': '📦', 'value': '+500', 'label': 'moldes por ano'},
         {'icon': '🤝', 'value': '+150', 'label': 'clientes'},
-        {'icon': '🌎', 'value': '6', 'label': 'países'},
+        {'icon': '🌎', 'value': '8', 'label': 'países'},
     ],
     'timeline': [
-        {'year': '1985', 'title': 'Fundação', 'text': 'Início da fábrica em Bell Ville, Córdoba, fabricando os primeiros moldes de papel.'},
-        {'year': '1993', 'title': 'Primeiras exportações', 'text': 'Início da comercialização para países vizinhos da região.'},
-        {'year': '2001', 'title': 'Ampliação da fábrica', 'text': 'Incorporação de uma nova linha de produção para sustentar a demanda.'},
-        {'year': '2009', 'title': 'Gestão de qualidade', 'text': 'Primeiros passos rumo a um sistema de gestão de inocuidade alimentar certificado.'},
-        {'year': '2016', 'title': 'Novas linhas de produto', 'text': 'Ampliação do catálogo com novos formatos e tamanhos de molde.'},
-        {'year': '2021', 'title': 'Certificação ISO 22000:2018', 'text': 'Certificação do sistema de gestão de inocuidade dos alimentos.'},
-        {'year': '2025', 'title': 'Atualidade', 'text': 'Presença consolidada no mercado regional, com mais de 40 anos de trajetória.'},
+        {'year': '1992', 'title': 'Primeira máquina automática', 'text': 'Gabriel Markarian e Oscar Urbano constroem a primeira máquina automática para moldes de panetone.'},
+        {'year': '1999', 'title': 'Constituição da empresa', 'text': 'Constituição formal como Cartotécnica Hores SRL.'},
+        {'year': '2002', 'title': 'Bolo inglês sem fita', 'text': 'Lançamento da linha de bolo inglês sem fita, com registro de desenho industrial n.° 68.399.'},
+        {'year': '2003–2005', 'title': 'Diversificação de linhas', 'text': 'Incorporação das linhas de panetone, rosca, pão de ló, bolo inglês e pão de Natal.'},
+        {'year': '2006–2009', 'title': 'Ampliação da fábrica', 'text': 'A fábrica em Bell Ville, Córdoba, cresce até os 5.000 m².'},
+        {'year': '2011–2012', 'title': 'Certificação ISO 22000:2005', 'text': 'Certificação do sistema de gestão de inocuidade, com a Bureau Veritas.'},
+        {'year': '2015', 'title': 'Novo terreno', 'text': 'Aquisição de um terreno de 4,50 hectares para a futura fábrica.'},
+        {'year': '2020', 'title': 'Nova fábrica', 'text': 'Em 9 de março, mudança para a nova fábrica de 12.000 m².'},
+        {'year': 'Hoje', 'title': 'Atualidade', 'text': 'Presença consolidada no mercado argentino e no resto da região, com mais de 25 anos de trajetória formal.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Missão', 'text': 'Fabricar moldes de papel de qualidade para a indústria alimentícia, acompanhando cada cliente com soluções sob medida.'},
-        {'icon': '👁️', 'title': 'Visão', 'text': 'Ser uma referência regional em moldes de papel para panificação, inovando de forma sustentável.'},
+        {'icon': '🎯', 'title': 'Missão', 'text': 'Produzir e fornecer moldes de papel inócuos para a indústria de alimentação, atendendo às necessidades dos clientes e proporcionando condições para o desenvolvimento pessoal.'},
+        {'icon': '👁️', 'title': 'Visão', 'text': 'Posicionar-se como uma das principais empresas do mundo na produção de moldes de papel para alimentação.'},
     ],
     'valores': [
         {'icon': '🎯', 'title': 'Precisão', 'text': 'Medidas exatas e consistentes em cada lote de produção.'},
@@ -272,6 +303,35 @@ def _redirect(path):
     return request.redirect(request.env['ir.http']._url_for(path))
 
 
+def _pedido_por_token(order_id, token):
+    """Busca un sale.order por id y valida el token de acceso, sin pasar
+    por ningún login -- el mismo patrón que usa el portal nativo de Odoo
+    para links de "ver mi cotización" en emails, pero implementado acá
+    directo (no heredamos CustomerPortal). `access_token` se genera solo,
+    la primera vez que se pide (sale.order lo trae de portal.mixin).
+
+    Devuelve el pedido si el token es válido, o un recordset vacío si no
+    -- nunca tira 404 acá adentro, para no filtrar por el código de error
+    si existe o no un pedido con ese id (deja que el caller decida)."""
+    order = request.env['sale.order'].sudo().browse(order_id)
+    if not order.exists() or not token:
+        return request.env['sale.order']
+    token_real = order._portal_ensure_token()
+    if not hmac.compare_digest(str(token_real), str(token)):
+        return request.env['sale.order']
+    return order
+
+
+def _pedido_gestionable(order):
+    """Un pedido se puede cancelar / pedir cambios desde el sitio solo si
+    todavía no se facturó de verdad (una factura confirmada ya generada
+    significa que Administración ya lo procesó -- a partir de ahí el
+    cambio se coordina a mano, no solo)."""
+    if order.state not in PEDIDO_ESTADOS_GESTIONABLES:
+        return False
+    return not any(m.state == 'posted' for m in order.invoice_ids)
+
+
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
@@ -325,6 +385,15 @@ class MiSitioWeb(http.Controller):
         if not categoria:
             raise request.not_found()
         productos = categoria.producto_ids.filtered('is_published')
+        # Con un solo producto publicado, la página de categoría es un
+        # paso intermedio sin nada propio que mostrar (misma foto/nombre
+        # que ya se ve en la ficha) — a pedido explícito (28/08/2026,
+        # "esta sección quitala porque está de más") se salta directo a
+        # la ficha del producto. Con más de uno (hoy, Rosca/Bizcochuelo)
+        # la página de categoría sigue mostrándose normal, porque ahí sí
+        # agrupa algo que /producto/<id> no puede mostrar solo.
+        if len(productos) == 1:
+            return _redirect('/producto/%d' % productos.id)
         return request.render('mi_sitio_web.categoria_template', {
             'categoria': categoria,
             'productos': productos,
@@ -417,3 +486,60 @@ class MiSitioWeb(http.Controller):
         cart = request.cart
         cantidad = len(cart.order_line.filtered(lambda l: not l.display_type)) if cart else 0
         return request.make_json_response({'cantidad': cantidad})
+
+    # -----------------------------------------------------------------
+    # Cancelar / pedir un cambio en un pedido ya hecho — sin login, con
+    # el link que se muestra en /shop/confirmation (ver
+    # views/pedido_gestion_templates.xml). A pedido explícito
+    # (28/08/2026): "cancelar" lo hace el sitio directo; "editar" solo
+    # manda el pedido de cambio a Ventas (queda en el chatter del pedido
+    # + una actividad para el vendedor) — el cambio en sí lo aplica una
+    # persona a mano, coherente con que todo el proceso hoy es manual
+    # (sin pago online, sin stock automatizado). Ver DOCS/07-pedidos.md.
+    # -----------------------------------------------------------------
+
+    @http.route('/mi-sitio/pedido/<int:order_id>/gestionar', type='http', auth='public', website=True, sitemap=False)
+    def pedido_gestionar(self, order_id, token=None, ok=None, **kwargs):
+        order = _pedido_por_token(order_id, token)
+        if not order:
+            raise request.not_found()
+        return request.render('mi_sitio_web.pedido_gestionar_template', {
+            'order': order,
+            'token': token,
+            'gestionable': _pedido_gestionable(order),
+            'ok': ok,
+        })
+
+    @http.route('/mi-sitio/pedido/<int:order_id>/cancelar', type='http', auth='public',
+                website=True, methods=['POST'], sitemap=False)
+    def pedido_cancelar(self, order_id, token=None, **kwargs):
+        order = _pedido_por_token(order_id, token)
+        if not order:
+            raise request.not_found()
+        if _pedido_gestionable(order):
+            order.action_cancel()
+        return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s&ok=cancelado' % (order_id, token or ''))
+
+    @http.route('/mi-sitio/pedido/<int:order_id>/cambio', type='http', auth='public',
+                website=True, methods=['POST'], sitemap=False)
+    def pedido_solicitar_cambio(self, order_id, token=None, mensaje='', **kwargs):
+        order = _pedido_por_token(order_id, token)
+        if not order:
+            raise request.not_found()
+        mensaje = (mensaje or '').strip()[:MENSAJE_MAX_LEN]
+        if mensaje and _pedido_gestionable(order):
+            # message_post trata un str común como texto sin confiar (lo
+            # escapa entero, "<b>" incluido) -- correcto para no abrir un
+            # XSS con lo que escriba el cliente, pero también nos come el
+            # HTML propio si no se marca aparte. Se escapa el mensaje del
+            # cliente a mano primero, y recién ahí se envuelve todo en
+            # Markup() para que las etiquetas nuestras (que sí son de
+            # confianza, las escribimos acá) se rendericen de verdad.
+            cuerpo = 'Pedido de cambio del cliente, vía sitio web:<br/>' + html.escape(mensaje).replace('\n', '<br/>')
+            order.message_post(body=Markup(cuerpo))
+            order.activity_schedule(
+                'mail.mail_activity_data_todo',
+                summary='Cliente pidió un cambio en este pedido (sitio web)',
+                user_id=order.user_id.id or request.env.user.id,
+            )
+        return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s&ok=cambio' % (order_id, token or ''))

@@ -258,6 +258,18 @@
 <!-- ============ /compras — catálogo completo ============ -->
 <template id="compras_template" name="Mi Sitio - Compras">
   <t t-call="website.layout">
+    <!-- Suprime el header genérico de Odoo ("Your Logo", nav de fábrica,
+         teléfono/login de ejemplo) que website.layout arma por fuera de
+         #wrap, ANTES de nuestro propio site_header de acá abajo — mismo
+         bug que el del footer duplicado (ver
+         DOCS/02-arquitectura-proyecto.md#footer-único-en-todo-el-sitio),
+         pero del lado del header. `no_header` ya lo chequea Odoo mismo
+         (web.frontend_layout, `<header t-if="not no_header">`) — no hizo
+         falta un xpath propio, alcanza con esta variable. Solo se pone
+         acá y en el resto de NUESTRAS páginas — /shop y el checkout de
+         website_sale se dejan con su header nativo a propósito (ver
+         DOCS/07-pedidos.md). -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title">Catálogo de moldes de papel — HORES Cartotécnica</t>
     <t t-set="website_meta_description">Moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Consultá ficha técnica y especificaciones de cada línea.</t>
     <div id="wrap" class="oe_structure oe_empty">
@@ -329,16 +341,13 @@
 <!-- ============ /categoria/<slug> ============ -->
 <template id="categoria_template" name="Mi Sitio - Categoría">
   <t t-call="website.layout">
+    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+         comentario largo en compras_template más arriba. -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — HORES Cartotécnica</t>
     <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por HORES Cartotécnica. Aptos para contacto alimentario, consultá por WhatsApp.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
-      <style>
-        .lightbox-overlay { display:none; position:fixed; inset:0; background:rgba(20,15,11,.92); z-index:100; align-items:center; justify-content:center; padding:40px; cursor:zoom-out; }
-        .lightbox-overlay.open { display:flex; }
-        .lightbox-overlay img { max-width:90%; max-height:90%; border-radius:8px; }
-        .variant-thumb { cursor:zoom-in; }
-      </style>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
         <t t-call="mi_sitio_web.site_header"/>
 
@@ -368,33 +377,12 @@
                 <span t-if="p.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">A pedido</span>
                 <span t-elif="p.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">Sin stock</span>
                 <p style="font-size:15px; line-height:1.6; color:#5a4f44; margin:8px 0 18px;" t-esc="p.summary"/>
-                <div t-if="p.variante_ids" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
-                  <t t-foreach="p.variante_ids" t-as="v">
-                    <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image"
-                         t-att-alt="v.dimensions" t-att-title="v.dimensions"
-                         class="variant-thumb" loading="lazy"
-                         onclick="document.getElementById('lb-img').src=this.src; document.getElementById('lightbox').classList.add('open');"
-                         style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid #e0d8ca;"/>
-                  </t>
-                </div>
                 <a t-attf-href="/producto/#{p.id}" style="font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ver ficha técnica completa →</a>
                 <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
               </div>
             </div>
           </t>
         </section>
-
-        <div id="lightbox" class="lightbox-overlay" onclick="this.classList.remove('open');">
-          <img id="lb-img" src=""/>
-        </div>
-        <script>
-          document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-              var lb = document.getElementById('lightbox');
-              if (lb) lb.classList.remove('open');
-            }
-          });
-        </script>
 
       </div>
     </div>
@@ -404,6 +392,9 @@
 <!-- ============ /producto/<id> ============ -->
 <template id="producto_detalle_template" name="Mi Sitio - Ficha de producto">
   <t t-call="website.layout">
+    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+         comentario largo en compras_template más arriba. -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title"><t t-esc="producto.name"/> — HORES Cartotécnica</t>
     <t t-set="website_meta_description"><t t-esc="producto.summary or producto.description or producto.name"/></t>
     <div id="wrap" class="oe_structure oe_empty">
@@ -412,7 +403,12 @@
         <t t-call="mi_sitio_web.site_header"/>
 
         <section style="max-width:1200px; margin:0 auto; padding:56px 28px 70px;">
-          <a t-if="producto.category_id" t-attf-href="/categoria/#{producto.category_id.slug}" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
+          <!-- Si la categoría tiene un solo producto publicado (este
+               mismo), /categoria/<slug> redirige derecho de vuelta acá
+               (ver controllers/main.py) — el breadcrumb apuntaría a un
+               loop sobre sí mismo, así que en ese caso va a /compras en
+               vez de a la categoría. -->
+          <a t-if="producto.category_id and len(producto.category_id.producto_ids.filtered('is_published')) > 1" t-attf-href="/categoria/#{producto.category_id.slug}" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
           <a t-else="" href="/compras" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
 
           <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; margin-top:24px; align-items:start;">
@@ -617,6 +613,9 @@
 <!-- ============ /calidad ============ -->
 <template id="calidad_template" name="Mi Sitio - Calidad">
   <t t-call="website.layout">
+    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+         comentario largo en compras_template más arriba. -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title">Calidad y certificaciones — HORES Cartotécnica</t>
     <t t-set="website_meta_description">Gestión de inocuidad certificada ISO 22000:2018. Moldes de papel aptos para contacto directo con alimentos, con control de calidad en cada etapa de producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
@@ -663,7 +662,7 @@
               <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Control de lote y materia prima</div>
             </div>
             <div style="padding:28px 24px;">
-              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">+40 años</div>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">+31 años</div>
               <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Experiencia fabricando</div>
             </div>
           </div>
@@ -698,6 +697,37 @@
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Trazabilidad</h3>
                 <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Registro desde la recepción hasta el despacho.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Política de inocuidad: texto real de hores.com.ar/wp/calidad,
+             tomado palabra por palabra (28/08/2026) — los 4 objetivos
+             prioritarios de la política institucional, no una
+             descripción nuestra. -->
+        <section class="reveal" style="background:#f6ede1; border-top:1px solid #ecd9bf; border-bottom:1px solid #ecd9bf;">
+          <div style="max-width:1200px; margin:0 auto; padding:56px 28px;">
+            <div style="max-width:44em; margin-bottom:32px;">
+              <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Política de inocuidad</div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Nuestros objetivos prioritarios</h2>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px;">
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <span style="flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">1</span>
+                <p style="font-size:15.5px; line-height:1.55; color:#3a3f43; margin:0;">Productos inocuos, a través del control de nuestros procesos.</p>
+              </div>
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <span style="flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">2</span>
+                <p style="font-size:15.5px; line-height:1.55; color:#3a3f43; margin:0;">Cumplimiento de los requisitos legales, reglamentarios y de nuestros clientes.</p>
+              </div>
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <span style="flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">3</span>
+                <p style="font-size:15.5px; line-height:1.55; color:#3a3f43; margin:0;">Eficacia y mejora continua en cada uno de nuestros procesos.</p>
+              </div>
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <span style="flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">4</span>
+                <p style="font-size:15.5px; line-height:1.55; color:#3a3f43; margin:0;">Un ambiente laboral seguro, con nuestro equipo comprometido con el sistema de gestión.</p>
               </div>
             </div>
           </div>
@@ -748,13 +778,13 @@
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Certificado ISO 22000:2018</div>
               <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Sistema de gestión de inocuidad de los alimentos vigente.</p>
-              <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
             </div>
             <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Aptitud sanitaria</div>
               <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Documentación que acredita el uso en contacto con alimentos.</p>
-              <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
             </div>
             <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
@@ -772,7 +802,7 @@
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff;">¿Necesitás la documentación de calidad?</h2>
               <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Escribinos y te enviamos los certificados y fichas técnicas correspondientes.</p>
             </div>
-            <a href="mailto:calidad@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
+            <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
           </div>
         </section>
 
@@ -784,6 +814,9 @@
 <!-- ============ /compromiso ============ -->
 <template id="compromiso_template" name="Mi Sitio - Compromiso">
   <t t-call="website.layout">
+    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+         comentario largo en compras_template más arriba. -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title">Compromiso ambiental — HORES Cartotécnica</t>
     <t t-set="website_meta_description">Trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap de papel para minimizar el impacto ambiental de nuestra producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
@@ -958,8 +991,11 @@
          tema claro/oscuro) — se suprime el footer compartido para no
          mostrar los dos. -->
     <t t-set="no_footer" t-value="True"/>
+    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+         comentario largo en compras_template. -->
+    <t t-set="no_header" t-value="True"/>
     <t t-set="title">Nuestra historia — HORES Cartotécnica</t>
-    <t t-set="website_meta_description">Más de 40 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
+    <t t-set="website_meta_description">Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <style>
@@ -976,11 +1012,29 @@
         .historia-page * { box-sizing:border-box; }
         .historia-page h1, .historia-page h2, .historia-page h3 { font-family:'Source Serif 4',serif; }
         .historia-page .h-card {
+          /* A pedido explícito (28/08/2026): las cards quedaban muy
+             parecidas al fondo (blanco sobre crema, sombra apenas
+             perceptible) — se les sube bastante la sombra y el lift al
+             hover para que resalten de verdad, no solo de forma sutil. */
           background:var(--h-card); border:1px solid var(--h-border); border-radius:14px;
-          box-shadow:0 2px 8px rgba(0,0,0,.05), 0 10px 26px rgba(0,0,0,.06);
+          box-shadow:0 6px 18px rgba(0,0,0,.08), 0 20px 46px rgba(0,0,0,.10);
           transition:background .3s ease, border-color .3s ease, transform .25s ease, box-shadow .25s ease;
         }
-        .historia-page .h-card:hover { transform:translateY(-3px); }
+        .historia-page .h-card:hover {
+          transform:translateY(-5px);
+          box-shadow:0 10px 24px rgba(0,0,0,.12), 0 28px 60px rgba(0,0,0,.16);
+        }
+        .historia-page[data-theme="dark"] .h-card {
+          /* Las sombras negras casi no se ven sobre fondo oscuro — se
+             oscurecen más (alpha más alto) en vez de aclararlas, para que
+             sigan marcando elevación en el tema oscuro. */
+          box-shadow:0 6px 18px rgba(0,0,0,.35), 0 20px 46px rgba(0,0,0,.45);
+        }
+        .historia-page[data-theme="dark"] .h-card:hover {
+          box-shadow:0 10px 24px rgba(0,0,0,.45), 0 28px 60px rgba(0,0,0,.55);
+        }
+        .historia-page .h-stat-icon { transition:transform .25s ease; }
+        .historia-page .h-card:hover .h-stat-icon { transform:scale(1.08); }
         .historia-page .h-bar-track { background:var(--h-border); border-radius:20px; overflow:hidden; height:9px; }
         .historia-page .h-bar-fill { background:var(--h-accent); height:100%; border-radius:20px; }
         @media (max-width:900px) {
@@ -1005,15 +1059,15 @@
             <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:20px;">
               <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span> Nuestra historia <span style="width:26px; height:2px; background:#f0b878; display:inline-block;"></span>
             </div>
-            <h1 style="font-weight:700; font-size:clamp(32px,4.4vw,50px); line-height:1.1; margin:0 0 18px; color:#fff;">Más de 40 años construyendo <span style="color:#e08a34;">confianza</span></h1>
+            <h1 style="font-weight:700; font-size:clamp(32px,4.4vw,50px); line-height:1.1; margin:0 0 18px; color:#fff;">Más de 30 años construyendo <span style="color:#e08a34;">confianza</span></h1>
             <p style="font-size:17px; line-height:1.6; color:#dcd2c4; max-width:36em; margin:0 auto;">Desde Bell Ville, Córdoba, hasta el resto de la región: así fuimos creciendo, molde a molde.</p>
           </div>
-          <div class="h-grid-4" style="max-width:1200px; margin:44px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:14px; position:relative; z-index:2;">
+          <div class="h-grid-4" style="max-width:1200px; margin:44px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:18px; position:relative; z-index:2;">
             <t t-foreach="stats" t-as="s">
-              <div class="h-card" style="text-align:center; padding:24px 14px;">
-                <div style="width:46px; height:46px; margin:0 auto 12px; border-radius:50%; background:#f6ede1; display:flex; align-items:center; justify-content:center; font-size:20px;" t-esc="s['icon']"/>
-                <div class="historia-stat-value" t-att-data-target="s['value']" style="font-weight:700; font-size:26px; color:var(--h-accent);" t-esc="s['value']"/>
-                <div style="font-size:12.5px; color:var(--h-text2);" t-esc="s['label']"/>
+              <div class="h-card" style="text-align:center; padding:32px 18px;">
+                <div class="h-stat-icon" style="width:54px; height:54px; margin:0 auto 16px; border-radius:50%; background:radial-gradient(circle at 32% 28%, #fdf6ea, #f2e2c8); border:1px solid rgba(194,106,30,.18); box-shadow:0 4px 10px rgba(194,106,30,.14); display:flex; align-items:center; justify-content:center; font-size:22px;" t-esc="s['icon']"/>
+                <div class="historia-stat-value" t-att-data-target="s['value']" style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; line-height:1.1; color:var(--h-accent);" t-esc="s['value']"/>
+                <div style="font-size:12.5px; font-weight:500; letter-spacing:.02em; color:var(--h-text2); margin-top:7px;" t-esc="s['label']"/>
               </div>
             </t>
           </div>
