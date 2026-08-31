@@ -234,6 +234,7 @@
           <a href="/calidad" style="color:#cfccc5;">Calidad</a>
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
+          <a href="/mi-sitio/consultar-pedido" style="color:#cfccc5;">Consultar mi pedido</a>
         </div>
       </div>
       <div>
@@ -874,11 +875,34 @@
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:14px;">Bosques responsables</div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#1c2124;">Un recurso renovable, bien administrado</h2>
-              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 16px;">Priorizamos proveedores de papel comprometidos con una adecuada administración de los bosques, donde por cada árbol utilizado se planifica su reposición. Así, el papel se mantiene como una materia prima verdaderamente renovable.</p>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 16px;">Trabajamos con proveedores comprometidos con la sustentabilidad y el manejo adecuado de los bosques, bajo esquemas certificados <strong style="color:#1c2124;">FSC</strong>, y contamos además con autorizaciones <strong style="color:#1c2124;">ISEGA</strong> para el contacto directo de nuestros moldes con alimentos.</p>
               <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0;">El papel es, además, uno de los materiales más reciclados y biodegradables, lo que reduce su huella respecto de otras alternativas de envase.</p>
             </div>
             <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e8e3d9; box-shadow:0 20px 50px rgba(30,40,30,.08);">
               <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Bosque — administración responsable" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            </div>
+          </div>
+        </section>
+
+        <!-- Residuos y agua: texto real, tomado de POLITICA_DE_INOCUIDAD_rev_06.pdf
+             (Cartotécnica Hores SRL, revisión 06, 24/06/2024, aprobado por
+             Dirección) — sección "Proveedores y medio ambiente" del
+             documento, no una descripción nuestra. -->
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+          <div style="max-width:44em; margin-bottom:30px;">
+            <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:10px;">Residuos y agua</div>
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Cómo cuidamos lo que sale de planta</h2>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+              <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🗑️</div>
+              <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Separación de residuos</h3>
+              <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Procedimientos internos de control y separación, coordinando con recicladoras externas la disposición final de papeles, plásticos, lubricantes y demás scrap del proceso.</p>
+            </div>
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
+              <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">💧</div>
+              <h3 style="font-size:19px; font-weight:600; margin:0 0 9px; color:#1c2124;">Tratamiento de agua</h3>
+              <p style="font-size:14.5px; line-height:1.6; color:#5a4f44; margin:0;">Tratamos las aguas residuales del lavado de nuestras impresoras flexográficas, para reducir el agua utilizada y minimizar el impacto ambiental.</p>
             </div>
           </div>
         </section>
@@ -934,7 +958,7 @@
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
                 <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Proveedores responsables</h3>
-                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Selección con criterio de manejo forestal adecuado.</p>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Manejo forestal certificado FSC, con autorizaciones ISEGA para contacto con alimentos.</p>
               </div>
             </div>
             <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
@@ -947,8 +971,8 @@
             <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
               <span style="width:32px; height:32px; flex-shrink:0; border-radius:8px; background:#e7f0dc; color:#3f7d38; display:flex; align-items:center; justify-content:center; font-weight:700;">✓</span>
               <div>
-                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Gestión del scrap</h3>
-                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Separación y revalorización del recorte de papel.</p>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 5px; color:#1c2124;">Gestión de residuos</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Separación de papel, plásticos y lubricantes, con recicladoras externas.</p>
               </div>
             </div>
             <div class="hc-card" style="display:flex; align-items:flex-start; gap:14px; border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">

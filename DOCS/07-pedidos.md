@@ -244,6 +244,269 @@ en todo el ancho, sin franja blanca.
 > existe — ver
 > [arquitectura](02-arquitectura-proyecto.md#footer-único-en-todo-el-sitio).
 
+## Repaso del checkout con screenshots reales (31/08/2026)
+
+El usuario mandó 3 screenshots de un pedido real completo (dirección,
+confirmar orden, gracias) pidiendo mejoras. De ahí salieron estos
+cambios:
+
+### Tarjeta de dirección con texto crudo ("ancor, juan chinetti")
+
+Se repetía en las 3 pantallas: el widget nativo `contact` (usado para
+mostrar Empresa + Nombre) arma una línea combinando lo que haya de
+calle/ciudad/país con el nombre — como esos campos ya no existen en
+este checkout (ver más abajo, "Sin dirección de entrega"), lo único
+que quedaba era esa combinación cruda, todo junto y sin formato.
+
+Hay **dos plantillas nativas distintas** mostrando lo mismo, no una
+sola — importante para no arreglar una y dar por hecho que ya está:
+- `website_sale.address_on_checkout` — la tarjeta "Entrega y
+  facturación" de "Confirmar orden" y de la página de gracias.
+- `website_sale.address_card` (clon propio de `portal.address_card`,
+  "para que los cambios del checkout no afecten al portal", según el
+  comentario del código nativo) — la tarjeta con lápiz de "Dirección
+  de entrega" del primer paso.
+
+Las dos se reemplazan por el mismo formato propio: Empresa (si el
+cliente la cargó — el campo sigue siendo opcional) en negrita arriba,
+Nombre abajo, en vez del widget nativo. Verificado con un pedido real
+de prueba (Empresa + Nombre distintos) en las dos pantallas.
+
+**Nota de proceso**: el primer intento de este arreglo solo tocó
+`address_on_checkout` y se dio por terminado sin probar la pantalla de
+"Dirección" — quedó sin corregir hasta que se volvió a revisar con
+datos reales. Ojo con esto la próxima vez que aparezca el mismo texto
+en más de un lugar: probar cada pantalla por separado, no asumir que
+arreglar una plantilla alcanza para todas.
+
+### "Envío estándar" → método de envío renombrado
+
+Era el `delivery.carrier` "Standard delivery" que trae Odoo de fábrica,
+nunca personalizado — con el envío coordinado por WhatsApp después del
+pedido (no hay dirección real para calcular un costo de envío de
+verdad), ese nombre podía confundir. Se renombró a "Coordinamos la
+entrega por WhatsApp" (y su traducción en los 3 idiomas), tanto el
+`delivery.carrier` como el `product.template` de servicio que tiene
+detrás (por si el nombre llega a aparecer en una línea de pedido o
+factura más adelante).
+
+### Buscador de pedido sin cuenta (nuevo: `/mi-sitio/consultar-pedido`)
+
+La página de gracias ofrece "Registrate" (crear cuenta con login) y
+"Gestionar mi pedido" (link con token, sin cuenta) — quedó sin resolver
+si conviene sacar el primero, no se tocó. En cambio se sumó un tercer
+camino para quien ya no tiene ese link a mano (lo perdió, borró el
+mail): un formulario que busca el pedido por **número de pedido +
+documento (DNI/CUIT/etc.)**.
+
+El documento solo no alcanza para buscar — a diferencia del token del
+link, no es un dato secreto, cualquiera que lo supiera podría consultar
+el pedido de otra persona (dirección, teléfono, qué compró). Pedir las
+dos cosas juntas (mismo patrón que un rastreo de paquetería) resuelve
+eso sin necesitar cuenta ni login.
+
+Implementación en `controllers/main.py` (`consultar_pedido()`) y
+`views/pedido_gestion_templates.xml`
+(`consultar_pedido_template`): busca el pedido por `name` (sin
+importar mayúsculas), compara el documento normalizado (saca guiones,
+puntos y espacios antes de comparar — "20-12345678-9" y "20123456789"
+matchean igual) contra `partner_id.vat`, y si coincide redirige a la
+misma página de gestión de siempre
+(`/mi-sitio/pedido/<id>/gestionar?token=...`), generando el token real
+en el momento — no arma una vista aparte. El campo de documento y su
+tipo (DNI/CUIT/etc.) ya existían en el checkout, vía la localización
+argentina (`l10n_latam_identification_type_id` + `vat`) — no hizo falta
+agregar nada nuevo ahí, solo esta pantalla de consulta.
+
+Link agregado en el footer del sitio ("Consultar mi pedido"), visible
+en todas las páginas — no solo en la de gracias, para quien vuelve
+días después. Traducido a los 3 idiomas.
+
+**Bug de seguridad real, encontrado y corregido en el momento**: la
+primera versión buscaba el pedido con `('name', '=ilike', numero)`.
+`=ilike` en Odoo NO escapa los comodines de SQL (`%`, `_`) que vengan
+en el texto del cliente — un "número de pedido" de `%` o `S%`
+matcheaba **cualquier pedido de la base**, no uno puntual. Eso anulaba
+el motivo entero de pedir número + documento juntos: alcanzaba con
+saber (o adivinar) el documento de alguien y escribir `%` en el otro
+campo para llegar a un pedido suyo. Confirmado el problema probando
+directo contra la base antes de tocar nada. Se corrigió cambiando a
+mayúsculas + `'='` exacto (`numero.strip().upper()`, dominio con `=`
+en vez de `=ilike`) — sigue siendo insensible a mayúsculas/minúsculas
+(lo hacemos nosotros en Python, no SQL) pero ya no interpreta ningún
+carácter del cliente como comodín. Reverificado: `%` y `S%` ahora caen
+al mensaje de "no encontramos", `s00057` en minúsculas sigue
+encontrando el pedido bien.
+
+## /shop redirige a /compras — se saca la grilla nativa (28/08/2026, a pedido explícito)
+
+`/shop` es la grilla de productos que arma `website_sale` — visualmente
+distinta de nuestro catálogo propio (`/compras`), y con los mismos
+productos pero sin nuestro diseño ni marca. A pedido explícito ("no
+sirve y no lo quieren", con screenshot de la grilla y del botón "Seguir
+comprando" que lleva ahí), `/shop` pasa a redirigir directo a
+`/compras`.
+
+Se pisa el método `shop()` de `website_sale.WebsiteSale` en
+`WebsiteSaleHores` (mismo patrón que el resto de los overrides de este
+archivo — herencia de clase de Python, no una ruta nueva), con las
+**4 variantes de ruta** que declara el original (`/shop`, `/shop/page/
+<n>`, `/shop/category/<categoría>`, `/shop/category/<categoría>/page/
+<n>`) — taparlas todas evita que se siga llegando a la grilla nativa por
+alguna de esas variantes.
+
+**El carrito y el checkout no se tocan** — son rutas aparte
+(`/shop/cart`, `/shop/checkout`, `/shop/payment`, etc.), y "Agregar al
+carrito" nunca visita `/shop` en sí (llama directo a `/shop/cart/add`
+por JS). El botón nativo "Seguir comprando" (en la tarjeta de totales
+del carrito/checkout) sigue apuntando a `href="/shop"` en el HTML — no
+hizo falta tocar esa plantilla nativa: como esa URL ahora redirige sola
+a `/compras`, el resultado es el mismo.
+
+Verificado: `/shop`, `/shop/page/2` y las versiones `/en/shop`, `/pt/shop`
+redirigen preservando el idioma; `/shop/cart` sigue funcionando igual
+(agregado, visto y confirmado un pedido de prueba sin problemas).
+
+## "Seguir comprando" → "Realizar otro pedido" (31/08/2026, a pedido explícito, con screenshot)
+
+Mismo botón del punto anterior (el de la tarjeta de totales del
+carrito, cuando el carrito recién se arma y todavía no hay ningún paso
+anterior del checkout al que volver) — ahora también el texto, no solo
+adónde lleva. Es texto fijo en la plantilla nativa
+`website_sale.navigation_buttons`, no un campo de
+`website.checkout.step` (esos son "Pago"→"Pedido" y el resto de los
+breadcrumbs, ver más abajo) — se pisa con un `<xpath position="replace">`
+en `ecommerce_theme_templates.xml`, mismo patrón que el resto de este
+archivo.
+
+**Bug propio, encontrado y corregido en el momento**: `navigation_buttons`
+tiene **dos** `<t t-else="">` distintos — uno para el botón principal de
+avanzar de paso (ícono `fa-angle-right`, href dinámico según el paso
+siguiente) y otro para este link de volver (ícono `fa-angle-left`, href
+fijo `/shop`). Un primer xpath armado por posición (`//t[@t-else='']/a`,
+"el primer `t-else` que tenga un `<a>` adentro") agarró el botón
+equivocado — el principal, no el de volver — y lo reemplazó por este
+link. Se notó enseguida probando la página real: aparecían **dos**
+"botones de volver" seguidos (uno con el texto nuevo, otro con el viejo
+"Seguir comprando" sin traducir) y el botón de avanzar de paso había
+desaparecido. Se corrigió apuntando el xpath por algo específico de
+ese `<a>` en particular — su atributo `t-att-href="'/shop'"`, que es
+único en toda la plantilla — en vez de por posición. Verificado después
+de la corrección: el botón principal de avanzar (probado en
+`/shop/checkout`, que redirige a `/shop/address`) y el link "Volver"
+del paso siguiente siguen intactos; solo cambió el texto de este botón
+puntual.
+
+Traducido a los 3 idiomas (`ir.ui.view.update_field_translations`,
+mismo mecanismo y mismo gotcha de orden que el resto del sitio — ver
+[idiomas](06-idiomas.md#gotcha-1b-la-clave-para-pt_br-cambia-después-de-escribir-en_us)):
+"Realizar otro pedido" / "Order again" / "Fazer outro pedido".
+
+## "Responsabilidad de ARCA" sacado del checkout (28/08/2026, con un bug real encontrado en el camino)
+
+Mismo pedido que la dirección de entrega, campo aparte: "Responsabilidad
+de ARCA" (`l10n_ar_afip_responsibility_type_id`) también sale del
+formulario de dirección del checkout.
+
+**A diferencia de calle/ciudad/país, acá NO alcanzó con sacar el campo y
+aflojar la validación** — se probó así primero (mismo patrón que la
+dirección) y rompió la creación del cliente con un error real de
+Postgres: `null value in column "partner_id" of relation "sale_order"
+violates not-null constraint`. Encontrado revisando el log del
+contenedor (no alcanzaba con el mensaje genérico "422 - Algo salió mal"
+que mostraba el navegador).
+
+**Causa raíz, en el código de Odoo (no nuestro)**: `l10n_ar/controllers/
+portal.py`, `L10nARPortalAccount._validate_address_values` — cuando este
+campo llega vacío, ese método de todos modos intenta
+`request.env['l10n_ar.afip.responsibility.type'].browse(address_values.get('l10n_ar_afip_responsibility_type_id'))`,
+y como esa clave ni siquiera existe en `address_values` si nunca se
+mandó, `.get(...)` devuelve `None` — `browse(None)` rompe la transacción
+a medio camino en vez de fallar en forma prolija. Es un bug real de la
+localización argentina de Odoo (probado también con la ORM directa, sin
+nuestro módulo de por medio, para confirmar que no era algo nuestro), no
+algo que dependiera de cómo se sacaron el resto de los campos.
+
+**Arreglo**: en vez de pelear ese bug (o parchear el método de Odoo, más
+frágil todavía — se probó primero sacar la obligatoriedad con
+`_get_mandatory_billing_address_fields`/`_validate_address_values` en
+`WebsiteSaleHores`, pero tampoco alcanzaba solo, ver el commit), se
+reemplaza el `<select>` visible por un `<input type="hidden">` con
+"Consumidor Final" (código AFIP `5`, buscado por código en vez de
+hardcodear el id, en `ecommerce_theme_templates.xml`) ya cargado. El
+cliente no ve ni elige nada, y el código de Odoo siempre recibe un valor
+real — nunca llega al camino roto. "Consumidor Final" es el valor
+genérico correcto para un cliente sin categoría fiscal declarada (mismo
+código que ya usa el checkout para casos similares, ver "Tipo de
+Identificación").
+
+Verificado con un pedido real de punta a punta: el cliente se crea con
+`l10n_ar_afip_responsibility_type_id = Consumidor Final` sin que se le
+haya pedido nada, y el pedido se confirma igual que siempre.
+
+## "Pago" → "Pedido", y el botón de volver más visible (28/08/2026)
+
+Dos pedidos en el mismo mensaje, ambos sobre el wizard del checkout
+(Orden / Dirección / Pedido):
+
+- **El paso "Pago" pasa a llamarse "Pedido"** — es el nombre del paso
+  (breadcrumb de arriba), un campo (`website.checkout.step.name`) del
+  mismo registro donde ya se había cambiado el texto del botón a
+  "Realizar pedido" (ver más abajo, "Sin precios ni pago online"). Ojo
+  con la traducción: en inglés y portugués el primer paso (el carrito) ya
+  se llama "Order"/"Pedido" — ponerle lo mismo al último paso hubiera
+  dejado el breadcrumb repetido ("Order > Address > Order"). Quedó
+  "Pedido" (es) / "Confirm" (en) / "Confirmar" (pt) — mismo criterio
+  (distinguir el paso final del primero), sin repetir palabra.
+- **El link para volver a corregir algo del paso anterior** ("Volver al
+  carrito", "Regresar a la dirección") **ya existía nativo** en cada
+  paso del wizard — no hubo que agregar la función. El problema real era
+  que estaba escondido: un texto gris chico debajo del botón principal,
+  fácil de no ver. Se le subió el peso visual a botón secundario de
+  verdad (blanco, con borde, mismo estilo que "Volver al sitio") en
+  `ecommerce_theme_templates.xml`. Se engancha por el ícono
+  (`a:has(> i.fa-angle-left)`) en vez de por una clase o contenedor
+  propio, porque el mismo link se repite sin el mismo wrapper en la
+  versión de mobile (cajón de resumen) — así cubre las dos versiones con
+  una sola regla.
+
+## Sin dirección de entrega en el checkout (a pedido explícito, 28/08/2026)
+
+El formulario de "Dirección" del checkout ya no pide calle, departamento,
+ciudad, código postal ni país — quedan solo los datos de contacto
+(nombre, mail, teléfono, empresa) y los de facturación argentina (tipo
+de identificación, CUIT/DNI, responsabilidad ARCA). La dirección de
+entrega se termina de coordinar a mano (WhatsApp/mail) después del
+pedido, no en el checkout — mismo criterio que ya se usa para todo lo
+demás del proceso.
+
+**Se sacaron del todo, no se ocultaron con CSS** (a diferencia de los
+precios/cupón más abajo) — pedido explícito puntual del usuario. Dos
+partes:
+
+1. **Plantilla**: `views/ecommerce_theme_templates.xml` hereda
+   `portal.address_form_fields` (la plantilla que arma esos campos —
+   **compartida** con `/my/address`, el portal de cuenta de cliente, que
+   hoy no se usa en este proyecto; si algún día se activa un portal de
+   cliente, revisar si esto también le sacó la dirección a esa pantalla)
+   y saca los `<div>` de calle/depto/ciudad/CP/país/provincia con
+   `position="replace"` sin contenido — la forma estándar de QWeb para
+   eliminar un nodo en vez de reemplazarlo por otro.
+2. **Validación del servidor**: no alcanza con sacar los campos de la
+   vista — el controlador base de Odoo (`portal.CustomerPortal.
+   _get_mandatory_address_fields`, en `odoo/addons/portal/controllers/
+   portal.py`) los exige por default (`{'street', 'city', 'country_id'}`,
+   más `state_id`/`zip` según el país) sin importar si el formulario los
+   muestra o no — si solo se ocultan, el envío del formulario falla
+   igual. `controllers/main.py` agrega `WebsiteSaleHores`, que hereda
+   `website_sale.controllers.main.WebsiteSale` por herencia normal de
+   Python (no hace falta declarar rutas nuevas, ver el comentario en el
+   código) y pisa ese método para devolver un set vacío.
+
+Verificado con un pedido real de punta a punta sin ningún dato de
+dirección: el partner se crea con `street`/`city`/`zip`/`country_id` en
+`False`, sin error, y el pedido se confirma igual que siempre.
+
 ## Sin precios ni pago online en el carrito (a pedido explícito, 26/08/2026)
 
 El carrito y las 3 pantallas del checkout (Orden / Dirección / Pago) ya no

@@ -5,6 +5,7 @@ import re
 from markupsafe import Markup
 
 from odoo import http
+from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.http import request
 
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
@@ -322,6 +323,13 @@ def _pedido_por_token(order_id, token):
     return order
 
 
+def _normalizar_identificacion(valor):
+    """Deja solo letras y números, en mayúsculas -- para comparar DNI/CUIT/
+    etc. sin que importe si el cliente escribe guiones, puntos o espacios
+    (ej. '20-12345678-9' vs '20123456789' vs '20.123.456.789')."""
+    return re.sub(r'[^0-9A-Za-z]', '', valor or '').upper()
+
+
 def _pedido_gestionable(order):
     """Un pedido se puede cancelar / pedir cambios desde el sitio solo si
     todavía no se facturó de verdad (una factura confirmada ya generada
@@ -498,6 +506,39 @@ class MiSitioWeb(http.Controller):
     # (sin pago online, sin stock automatizado). Ver DOCS/07-pedidos.md.
     # -----------------------------------------------------------------
 
+    # Buscador de pedido sin cuenta (31/08/2026, a pedido explícito) --
+    # complementa el link con token de /shop/confirmation ("Gestionar mi
+    # pedido") para quien ya no lo tiene a mano. El DNI/CUIT solo no
+    # alcanza para buscar -- no es un dato secreto, cualquiera que lo
+    # sepa podría consultar el pedido de otra persona (dirección,
+    # teléfono, qué compró). Se pide junto con el número de pedido (ej.
+    # "S00057", visible en la página de gracias y en el email de
+    # confirmación) -- hacen falta las dos cosas, como en un rastreo de
+    # paquetería. Si coinciden, redirige a la misma página de gestión de
+    # siempre (con el token real), no arma una vista aparte.
+    @http.route('/mi-sitio/consultar-pedido', type='http', auth='public',
+                website=True, methods=['GET', 'POST'], sitemap=False)
+    def consultar_pedido(self, **post):
+        error = False
+        if request.httprequest.method == 'POST':
+            # Mayúsculas a mano + '=' exacto, no '=ilike' -- '=ilike' no
+            # escapa los comodines de SQL ('%', '_') que vengan en el
+            # texto del cliente, así que un "número de pedido" como '%'
+            # matcheaba CUALQUIER pedido (bug real, encontrado y probado
+            # contra la base) y de paso anulaba el sentido de pedir
+            # las dos cosas juntas (ver el comentario de más arriba).
+            numero = (post.get('numero_pedido') or '').strip().upper()
+            identificacion = _normalizar_identificacion(post.get('identificacion'))
+            order = request.env['sale.order'].sudo()
+            if numero and identificacion:
+                order = order.search([('name', '=', numero)], limit=1)
+            if (order and identificacion
+                    and _normalizar_identificacion(order.partner_id.vat) == identificacion):
+                return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s'
+                                  % (order.id, order._portal_ensure_token()))
+            error = True
+        return request.render('mi_sitio_web.consultar_pedido_template', {'error': error})
+
     @http.route('/mi-sitio/pedido/<int:order_id>/gestionar', type='http', auth='public', website=True, sitemap=False)
     def pedido_gestionar(self, order_id, token=None, ok=None, **kwargs):
         order = _pedido_por_token(order_id, token)
@@ -543,3 +584,48 @@ class MiSitioWeb(http.Controller):
                 user_id=order.user_id.id or request.env.user.id,
             )
         return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s&ok=cambio' % (order_id, token or ''))
+
+
+class WebsiteSaleHores(WebsiteSale):
+    """Extiende el checkout nativo de website_sale (no una ruta propia —
+    ver como se hereda un controlador de Odoo por herencia de clase
+    normal de Python, sin @route nuevo, para pisar un método puntual).
+
+    A pedido explícito (28/08/2026, con screenshot): calle, depto,
+    ciudad, código postal y país salen del formulario de dirección del
+    checkout — se ocultan en la plantilla (ver
+    ecommerce_theme_templates.xml) y acá se saca la validación que los
+    exige, para que ocultarlos no rompa el envío del formulario. La
+    dirección de entrega se termina de coordinar a mano (WhatsApp/mail)
+    después del pedido, no en el checkout — decisión explícita del
+    usuario, no completar nada de esto "por dentro" tampoco.
+
+    "Responsabilidad de ARCA" también se sacó del formulario (mismo
+    pedido), pero a ese sí hubo que completarlo "por dentro" (con un
+    <input type="hidden">, en la misma plantilla) — sacarlo del todo
+    rompía la creación del cliente por un bug real de l10n_ar que no
+    maneja el caso de que ese campo llegue vacío. Ver el comentario largo
+    en ecommerce_theme_templates.xml, junto al xpath de ese campo."""
+
+    def _get_mandatory_address_fields(self, country_sudo):
+        return set()
+
+    # /shop (la grilla de productos nativa de website_sale, distinta de
+    # nuestro catálogo propio en /compras) redirige derecho a /compras —
+    # a pedido explícito (28/08/2026, con screenshot: "no sirve y no lo
+    # quieren"). Mismas 4 variantes de ruta que declara el método
+    # original (con página, con categoría, con categoría + página) para
+    # taparlas todas — si se deja alguna sin redirigir, se sigue llegando
+    # a la grilla nativa por ese camino. El carrito y el checkout
+    # (/shop/cart, /shop/checkout, /shop/payment, etc.) son rutas
+    # aparte, no se tocan: "Agregar al carrito" nunca visita /shop en sí,
+    # así que nada de esto rompe el flujo de compra — ver
+    # DOCS/07-pedidos.md.
+    @http.route([
+        '/shop',
+        '/shop/page/<int:page>',
+        '/shop/category/<model("product.public.category"):category>',
+        '/shop/category/<model("product.public.category"):category>/page/<int:page>',
+    ], type='http', auth='public', website=True, sitemap=False)
+    def shop(self, *args, **kwargs):
+        return _redirect('/compras')

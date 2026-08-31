@@ -234,6 +234,35 @@
                 .oe_website_sale .o_total_card {
                     border-top: 3px solid #c26a1e !important;
                 }
+                /* "Volver al carrito" / "Regresar a la dirección": el link
+                   para corregir algo del paso anterior ya existe nativo en
+                   cada paso del checkout, pero como texto gris chico
+                   debajo del botón principal — fácil de pasar por alto
+                   (28/08/2026, a pedido explícito: que se pueda volver a
+                   corregir algo). Se le sube el peso visual a botón
+                   secundario real, igual que "Volver al sitio". Se agarra
+                   por el ícono (fa-angle-left es propio de este link, no
+                   lo usa nada más en estas páginas) en vez de por una
+                   clase o contenedor, porque el mismo link se repite sin
+                   el mismo wrapper en la versión de mobile (cajón de
+                   resumen). */
+                .oe_website_sale a:has(> i.fa-angle-left) {
+                    display: inline-flex !important;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    background: #ffffff;
+                    border: 1px solid #e8e3d9;
+                    border-radius: 9px;
+                    padding: 10px 18px;
+                    color: #5a4f44 !important;
+                    font-weight: 600;
+                    text-decoration: none !important;
+                }
+                .oe_website_sale a:has(> i.fa-angle-left):hover {
+                    border-color: #c26a1e;
+                    color: #c26a1e !important;
+                }
                 /* Pasos del checkout (Orden / Dirección / Pago): el paso
                    activo es un div con clase fw-bold, los ya recorridos
                    son links comunes — ninguno trae una clase de color
@@ -265,6 +294,130 @@
                     box-shadow: 0 0 0 .2rem rgba(194,106,30,.15) !important;
                 }
             </style>
+        </xpath>
+    </template>
+
+    <!-- Calle/depto/ciudad/CP/país sacados del formulario de dirección
+         del checkout (28/08/2026, a pedido explícito — "borralos
+         directamente, no los ocultes"). No alcanza con ocultarlos con
+         CSS: el servidor los exige por default
+         (portal.CustomerPortal._get_mandatory_address_fields, ver
+         controllers/main.py, WebsiteSaleHores._get_mandatory_address_fields
+         — ahí se saca esa validación). La dirección de entrega se
+         coordina a mano (WhatsApp/mail) después del pedido, no en el
+         checkout.
+
+         portal.address_form_fields es compartida con /my/address (el
+         portal de cuenta de cliente) — hoy no se usa en este proyecto
+         (checkout siempre como invitado, sin login, ver DOCS/07-pedidos.md),
+         así que sacar los campos acá no rompe nada activo. Si algún día
+         se activa el portal de cliente, esto también le va a sacar la
+         dirección a esa pantalla — revisar en ese momento. -->
+    <template id="direccion_checkout_sin_domicilio" inherit_id="portal.address_form_fields">
+        <xpath expr="//div[@id='div_street']" position="replace"/>
+        <xpath expr="//div[@id='div_street2']" position="replace"/>
+        <xpath expr="//t[@t-if='zip_before_city']//div[@id='div_zip']" position="replace"/>
+        <xpath expr="//div[@id='div_city']" position="replace"/>
+        <xpath expr="//t[@t-if='not zip_before_city']//div[@id='div_zip']" position="replace"/>
+        <xpath expr="//div[@id='div_country']" position="replace"/>
+        <xpath expr="//div[@id='div_state']" position="replace"/>
+        <!-- "Responsabilidad de ARCA" (28/08/2026, a pedido explícito, con
+             screenshot) — el div no tiene id propio (lo inserta
+             l10n_ar/views/portal_address_templates.xml con position="before"
+             sobre #div_vat, sin id), así que se agarra por el <label> que
+             tiene adentro, que sí es estable.
+
+             OJO, a diferencia de calle/ciudad/país de arriba: acá NO
+             alcanza con sacar el campo y aflojar la validación nomás —
+             se probó así primero y rompió la creación del cliente con un
+             error de Postgres (columna partner_id de sale_order en NULL).
+             La causa es un bug real en l10n_ar
+             (l10n_ar/controllers/portal.py, L10nARPortalAccount.
+             _validate_address_values): cuando el campo llega vacío,
+             ese código hace
+             `request.env['l10n_ar.afip.responsibility.type'].browse(None)`
+             en vez de manejar el caso "no vino nada", y esa llamada
+             revienta la transacción a medio camino. En vez de pelear
+             contra ese bug, se reemplaza el campo visible por un
+             <input type="hidden"> con "Consumidor Final" (código AFIP
+             '5', el valor genérico para un cliente sin categoría fiscal
+             declarada) ya cargado — así ese código de Odoo recibe
+             siempre un valor real y nunca llega a ese camino roto. El
+             cliente no ve ni elige nada. -->
+        <xpath expr="//div[label[@for='l10n_ar_afip_responsibility_type_id']]" position="replace">
+            <input type="hidden" name="l10n_ar_afip_responsibility_type_id"
+                   t-att-value="request.env['l10n_ar.afip.responsibility.type'].sudo().search([('code', '=', '5')], limit=1).id"/>
+        </xpath>
+    </template>
+
+    <!-- "Continue shopping" (botón de volver del carrito, cuando todavía no
+         hay ningún paso anterior del checkout) — pasa a "Realizar otro
+         pedido" (31/08/2026, a pedido explícito, con screenshot). Es texto
+         fijo en website_sale.navigation_buttons, no un campo de
+         website.checkout.step (esos son "Pago"→"Pedido" y el resto de los
+         breadcrumbs, ver más arriba). El link sigue yendo a /shop, que ya
+         redirige a /compras — no hace falta tocar el href.
+
+         OJO: el template tiene DOS <t t-else="">, uno para el botón
+         principal de "siguiente paso" (icono fa-angle-right, href dinámico)
+         y otro para este link de volver (icono fa-angle-left, href fijo
+         '/shop') — hay que agarrar este por el href literal, agarrar el
+         primer t-else a secas rompe el botón principal de avanzar. -->
+    <template id="volver_al_carrito_texto" inherit_id="website_sale.navigation_buttons">
+        <xpath expr="//a[@t-att-href=&quot;'/shop'&quot;]" position="replace">
+            <a t-att-href="'/shop'" class="mt-2 mt-lg-0 text-center">
+                <i class="fa fa-angle-left me-2 fw-light"/>
+                Realizar otro pedido
+            </a>
+        </xpath>
+    </template>
+
+    <!-- Tarjeta "Entrega y facturación" del checkout (31/08/2026, a pedido
+         explícito, con 3 screenshots): antes mostraba Empresa y Nombre
+         pegados en una sola línea sin salto, ej. "ancor, juan chinetti"
+         — el widget nativo `contact` (fields=['name','address']) arma esa
+         línea combinando lo que haya de calle/ciudad/país con el nombre,
+         y como esos campos ya no existen en este checkout (ver la
+         plantilla de arriba, direccion_checkout_sin_domicilio), lo único
+         que queda es esa combinación cruda. Se reemplaza por dos líneas
+         propias: Empresa (si el cliente la cargó — el campo es opcional)
+         en negrita arriba, Nombre abajo. No se toca la rama de
+         "pickup_location_data" (retiro en punto físico): no se usa en
+         este proyecto, no hay motivo para tocarla. -->
+    <template id="tarjeta_direccion_checkout" inherit_id="website_sale.address_on_checkout">
+        <xpath expr="//t[@t-out='order.partner_shipping_id']" position="replace">
+            <div>
+                <div t-if="order.partner_shipping_id.commercial_company_name"
+                     class="fw-bold" t-out="order.partner_shipping_id.commercial_company_name"/>
+                <div t-out="order.partner_shipping_id.name"/>
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-out='order.partner_invoice_id']" position="replace">
+            <div>
+                <div t-if="order.partner_invoice_id.commercial_company_name"
+                     class="fw-bold" t-out="order.partner_invoice_id.commercial_company_name"/>
+                <div t-out="order.partner_invoice_id.name"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Mismo arreglo que la plantilla de arriba, pero para la tarjeta con
+         lápiz de "Dirección de entrega" del primer paso del checkout
+         (/shop/checkout) — es una plantilla nativa DISTINTA
+         (website_sale.address_card, clon propio de portal.address_card
+         "para que los cambios del checkout no afecten al portal", según
+         su propio comentario en el core) con el mismo widget `contact` y
+         el mismo problema de texto crudo. `website_sale.address_card` es
+         el punto de extensión correcto acá, no `portal.address_card`
+         directo — ese sí lo comparte con /my/address (ver el comentario
+         de direccion_checkout_sin_domicilio, más arriba en este archivo). -->
+    <template id="tarjeta_direccion_lista_checkout" inherit_id="website_sale.address_card">
+        <xpath expr="//t[@t-out='contact']" position="replace">
+            <div>
+                <div t-if="contact.commercial_company_name"
+                     class="fw-bold" t-out="contact.commercial_company_name"/>
+                <div t-out="contact.name"/>
+            </div>
         </xpath>
     </template>
 </odoo>

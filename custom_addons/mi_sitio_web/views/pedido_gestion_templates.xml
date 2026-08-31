@@ -74,6 +74,49 @@
         </t>
     </template>
 
+    <!-- Buscador de pedido sin cuenta — complementa el link con token de
+         /shop/confirmation para quien ya no lo tiene a mano (link
+         guardado, mail borrado, etc.). Ver controllers/main.py,
+         consultar_pedido(), para el porqué de pedir pedido + documento
+         juntos (el documento solo no es un dato secreto). -->
+    <template id="consultar_pedido_template" name="Mi Sitio - Consultar pedido">
+        <t t-call="website.layout">
+            <!-- Header genérico de Odoo duplicado con el nuestro — ver el
+                 comentario largo en compras_template (catalogo_templates.xml). -->
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="title">Consultar mi pedido — HORES Cartotécnica</t>
+            <div id="wrap" class="oe_structure oe_empty">
+                <t t-call="mi_sitio_web.head_assets"/>
+                <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+                    <t t-call="mi_sitio_web.site_header"/>
+
+                    <section style="max-width:480px; margin:0 auto; padding:56px 28px 90px;">
+                        <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#241d17;">Consultar mi pedido</h1>
+                        <p style="font-size:14px; color:#8a7a67; margin:0 0 26px;">Ingresá el número de tu pedido y tu documento para ver el estado, cancelarlo o pedir un cambio.</p>
+
+                        <div t-if="error" style="background:#f6e2df; color:#b23b3b; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:20px;">
+                            No encontramos un pedido con esos datos. Revisá que el número y el documento estén bien escritos.
+                        </div>
+
+                        <form method="post" style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:22px 24px;">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div style="margin-bottom:16px;">
+                                <label for="numero_pedido" style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Número de pedido</label>
+                                <input id="numero_pedido" name="numero_pedido" type="text" required="required" placeholder="Ej: S00057" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;"/>
+                                <p style="font-size:12px; color:#8a7a67; margin:6px 0 0;">Lo encontrás en la página de confirmación y en el email que te enviamos.</p>
+                            </div>
+                            <div style="margin-bottom:18px;">
+                                <label for="identificacion" style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Documento (DNI, CUIT, etc.)</label>
+                                <input id="identificacion" name="identificacion" type="text" required="required" placeholder="El que usaste al hacer el pedido" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;"/>
+                            </div>
+                            <button type="submit" style="width:100%; background:#c26a1e; color:#fff; border:none; padding:12px 20px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;">Buscar mi pedido</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+
     <!-- Link a la página de arriba, agregado en la confirmación nativa de
          website_sale (/shop/confirmation) — oe_structure_website_sale_confirmation_2
          es un punto de inserción que la propia plantilla de Odoo deja

@@ -67,6 +67,22 @@ También se corrigieron, con el mismo criterio (dato real o sin tocar):
   etc.) es una decisión de catálogo más grande que enriquecer texto
   existente. Queda pendiente si se decide sumarlo.
 
+**28/08/2026, segunda vuelta — `/compromiso`**: se sumó contenido real
+tomado directo de `POLITICA_DE_INOCUIDAD_rev_06.pdf` (documento oficial
+de Cartotécnica Hores SRL, revisión 06, 24/06/2024, aprobado por
+Dirección — la misma política cuyos 4 objetivos ya se habían cargado en
+`/calidad`), sección "Proveedores y medio ambiente":
+
+- Certificaciones reales de los proveedores de papel — esquemas
+  **FSC** (manejo forestal) y autorizaciones **ISEGA** (contacto directo
+  con alimentos) — sumadas a la sección "Bosques responsables" y a una
+  de las tarjetas de "Nuestros compromisos".
+- Sección nueva **"Residuos y agua"**: separación de residuos
+  (coordinación con recicladoras externas para papel, plásticos y
+  lubricantes) y tratamiento de las aguas residuales del lavado de las
+  impresoras flexográficas — ninguno de los dos hechos estaba en el
+  sitio antes. Traducido a los 3 idiomas.
+
 **Sigue pendiente confirmar con Dirección**: los valores (¿son reales los
 6 que están, o solo "Seriedad y Eficiencia" como dice el sitio actual?),
 los objetivos a futuro, los porcentajes por línea de producto, y si hay
