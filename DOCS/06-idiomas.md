@@ -162,6 +162,13 @@ Se puede confirmar si una traducción quedó bien pegada con
 lista con `{lang, source, value}` por término; si `value` está vacío o
 es el texto viejo, no se escribió.
 
+**Ver también [gotcha #1c en bolsa de trabajo](08-bolsa-de-trabajo.md#gotcha-de-traducción-una-plantilla-nueva-puede-perder-el-español-al-traducirla)**:
+seguir exactamente esta receta (saltear `es_AR`) hizo que una plantilla
+nueva mostrara **inglés en la versión en español** — no se encontró
+la condición exacta que lo dispara, así que después de traducir hay
+que probar la versión sin prefijo de idioma también, no solo `/en` y
+`/pt`.
+
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 
 Encontrado y corregido el 26/08/2026, al agregar el formulario de

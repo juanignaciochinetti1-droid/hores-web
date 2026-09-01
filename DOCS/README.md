@@ -13,6 +13,7 @@ a él en unos meses) no tenga que reconstruir el contexto desde cero.
 5. [Validaciones](05-validaciones.md) — qué se valida en modelos, seguridad y el formulario de contacto
 6. [Idiomas](06-idiomas.md) — español/inglés/portugués, cómo está traducido cada tipo de contenido
 7. [Pedidos](07-pedidos.md) — carrito y checkout (eCommerce/website_sale), catálogo puente y badges de disponibilidad
+8. [Bolsa de trabajo](08-bolsa-de-trabajo.md) — /trabaja-con-nosotros, postulaciones (hr.applicant) y el gotcha de traducción encontrado ahí
 
 ## Resumen de una línea
 

@@ -1,5 +1,7 @@
+import base64
 import hmac
 import html
+import os
 import re
 
 from markupsafe import Markup
@@ -11,6 +13,10 @@ from odoo.http import request
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 NOMBRE_MAX_LEN = 200
 MENSAJE_MAX_LEN = 5000
+
+# Bolsa de trabajo (/trabaja-con-nosotros) -- ver postulacion() más abajo.
+CV_EXTENSIONES_PERMITIDAS = ('.pdf', '.doc', '.docx')
+CV_MAX_BYTES = 5 * 1024 * 1024  # 5 MB
 
 # Estados de sale.order desde los que un cliente puede cancelar/pedir un
 # cambio por su cuenta, sin pasar por Ventas primero — ver
@@ -482,6 +488,91 @@ class MiSitioWeb(http.Controller):
     @http.route('/mi-sitio/gracias', type='http', auth='public', website=True)
     def contacto_gracias(self, **kwargs):
         return request.render('mi_sitio_web.contacto_gracias_template', {})
+
+    # -----------------------------------------------------------------
+    # Bolsa de trabajo (01/09/2026, a pedido explícito) -- "una sección
+    # donde la gente pueda cargar su currículum para buscar trabajo en la
+    # fábrica". Crea un hr.applicant real (app de Selección de Personal),
+    # no un modelo propio -- mismo criterio que pedidos/facturas. Ver el
+    # comentario largo en postulacion_templates.xml.
+    # -----------------------------------------------------------------
+
+    @http.route('/trabaja-con-nosotros', type='http', auth='public', website=True, sitemap=True)
+    def trabaja_con_nosotros(self, postulacion_error=None, **kwargs):
+        return request.render('mi_sitio_web.trabaja_con_nosotros_template', {
+            'postulacion_error': postulacion_error,
+        })
+
+    @http.route('/mi-sitio/postulacion', type='http', auth='public',
+                website=True, methods=['POST'], csrf=True)
+    def postulacion(self, **post):
+        nombre = (post.get('nombre') or '').strip()
+        email = (post.get('email') or '').strip()
+        telefono = (post.get('telefono') or '').strip()
+        puesto = (post.get('puesto') or '').strip()
+        mensaje = (post.get('mensaje') or '').strip()
+
+        # Honeypot anti-bot: mismo patrón que /mi-sitio/contacto. Fingimos
+        # éxito para no darle pistas al bot, sin crear nada.
+        if (post.get('sitio_web') or '').strip():
+            return _redirect('/mi-sitio/postulacion/gracias')
+
+        if (not nombre or not email or not EMAIL_RE.match(email)
+                or len(nombre) > NOMBRE_MAX_LEN
+                or len(mensaje) > MENSAJE_MAX_LEN):
+            return _redirect('/trabaja-con-nosotros?postulacion_error=campos#postularse')
+
+        # El input file llega en request.httprequest.files (werkzeug), no
+        # en **post -- ahí solo caen los campos de texto del form.
+        cv = request.httprequest.files.get('cv')
+        if not cv or not cv.filename:
+            return _redirect('/trabaja-con-nosotros?postulacion_error=archivo#postularse')
+
+        extension = os.path.splitext(cv.filename)[1].lower()
+        if extension not in CV_EXTENSIONES_PERMITIDAS:
+            return _redirect('/trabaja-con-nosotros?postulacion_error=formato#postularse')
+
+        contenido = cv.read()
+        if not contenido:
+            return _redirect('/trabaja-con-nosotros?postulacion_error=archivo#postularse')
+        if len(contenido) > CV_MAX_BYTES:
+            return _redirect('/trabaja-con-nosotros?postulacion_error=tamano#postularse')
+
+        job = request.env.ref('mi_sitio_web.hr_job_postulacion_espontanea', raise_if_not_found=False)
+        medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
+
+        applicant = request.env['hr.applicant'].sudo().create({
+            'partner_name': nombre,
+            'email_from': email,
+            'partner_phone': telefono,
+            'job_id': job.id if job else False,
+            'medium_id': medium.id if medium else False,
+        })
+
+        if puesto:
+            # message_post escapa un str común entero (a propósito, ver el
+            # comentario en pedido_solicitar_cambio más abajo) -- se arma
+            # a mano para poder mezclar la etiqueta fija (de confianza)
+            # con el texto del postulante (sin confiar).
+            cuerpo = 'Área de interés: ' + html.escape(puesto)
+            if mensaje:
+                cuerpo += '<br/><br/>' + html.escape(mensaje).replace('\n', '<br/>')
+            applicant.message_post(body=Markup(cuerpo))
+        elif mensaje:
+            applicant.message_post(body=Markup(html.escape(mensaje).replace('\n', '<br/>')))
+
+        request.env['ir.attachment'].sudo().create({
+            'name': cv.filename,
+            'datas': base64.b64encode(contenido),
+            'res_model': 'hr.applicant',
+            'res_id': applicant.id,
+        })
+
+        return _redirect('/mi-sitio/postulacion/gracias')
+
+    @http.route('/mi-sitio/postulacion/gracias', type='http', auth='public', website=True, sitemap=False)
+    def postulacion_gracias(self, **kwargs):
+        return request.render('mi_sitio_web.postulacion_gracias_template', {})
 
     @http.route('/mi-sitio/carrito/lineas', type='http', auth='public', website=True, sitemap=False)
     def carrito_lineas(self, **kwargs):

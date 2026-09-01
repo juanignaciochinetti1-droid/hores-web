@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Puesto genérico para postulaciones espontáneas que llegan desde
+         /trabaja-con-nosotros (bolsa de trabajo del sitio, no una
+         búsqueda activa puntual) — así todas caen agrupadas en un solo
+         lugar reconocible dentro de la app de Selección de Personal, en
+         vez de quedar sin puesto asignado. noupdate="1" para que un
+         cambio de nombre a mano en el backend no se pise solo en la
+         próxima actualización del módulo. -->
+    <record id="hr_job_postulacion_espontanea" model="hr.job">
+        <field name="name">Postulación espontánea (sitio web)</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+</odoo>
