@@ -25,7 +25,7 @@ PEDIDO_ESTADOS_GESTIONABLES = ('draft', 'sent', 'sale')
 
 # ---------------------------------------------------------------------------
 # Contenido de ejemplo para /historia — NO son datos reales confirmados de
-# HORES Cartotécnica. Reemplazar por la información verificada de la empresa
+# Cartotécnica Hores. Reemplazar por la información verificada de la empresa
 # antes de que la página se considere definitiva (ver DOCS/04-pendientes...).
 #
 # Traducido a los 3 idiomas activos del sitio (es_AR/en_US/pt_BR): a

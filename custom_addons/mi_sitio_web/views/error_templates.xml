@@ -23,7 +23,7 @@
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
                  comentario largo en catalogo_templates.xml (compras_template). -->
             <t t-set="no_header" t-value="True"/>
-            <t t-set="title">Página no encontrada — HORES Cartotécnica</t>
+            <t t-set="title">Página no encontrada — Cartotécnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
                 <t t-call="mi_sitio_web.head_assets"/>
                 <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">

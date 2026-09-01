@@ -189,7 +189,7 @@
   <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
     <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
       <a href="/mi-sitio" style="display:flex; align-items:center; color:inherit;">
-        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:56px; width:auto; display:block;"/>
+        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:56px; width:auto; display:block;"/>
       </a>
       <nav style="display:flex; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
@@ -226,7 +226,7 @@
   <footer style="background:#2a2b2e; color:#b9b6b0; border-top:3px solid #c26a1e;">
     <div style="max-width:1200px; margin:0 auto; padding:50px 28px 30px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; align-items:start;">
       <div>
-        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
+        <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:52px; width:auto; display:block; margin-bottom:14px;"/>
         <p style="font-family:'Bricolage Grotesque',sans-serif; font-size:15px; line-height:1.5; color:#9a978f; margin:0; max-width:22em;">Moldes de papel para panificación. Bell Ville, Córdoba.</p>
       </div>
       <div>
@@ -252,7 +252,7 @@
       </div>
     </div>
     <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
-      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 HORES Cartotécnica — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 Cartotécnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
     </div>
   </footer>
   <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20HORES%20Cartot%C3%A9cnica" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
@@ -276,7 +276,7 @@
          website_sale se dejan con su header nativo a propósito (ver
          DOCS/07-pedidos.md). -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title">Catálogo de moldes de papel — HORES Cartotécnica</t>
+    <t t-set="title">Catálogo de moldes de papel — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Consultá ficha técnica y especificaciones de cada línea.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
@@ -350,8 +350,8 @@
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en compras_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — HORES Cartotécnica</t>
-    <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por HORES Cartotécnica. Aptos para contacto alimentario, consultá por WhatsApp.</t>
+    <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — Cartotécnica Hores</t>
+    <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por Cartotécnica Hores. Aptos para contacto alimentario, consultá por WhatsApp.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -401,7 +401,7 @@
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en compras_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title"><t t-esc="producto.name"/> — HORES Cartotécnica</t>
+    <t t-set="title"><t t-esc="producto.name"/> — Cartotécnica Hores</t>
     <t t-set="website_meta_description"><t t-esc="producto.summary or producto.description or producto.name"/></t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
@@ -622,7 +622,7 @@
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en compras_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title">Calidad y certificaciones — HORES Cartotécnica</t>
+    <t t-set="title">Calidad y certificaciones — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Gestión de inocuidad certificada ISO 22000:2018. Moldes de papel aptos para contacto directo con alimentos, con control de calidad en cada etapa de producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
@@ -823,7 +823,7 @@
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en compras_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title">Compromiso ambiental — HORES Cartotécnica</t>
+    <t t-set="title">Compromiso ambiental — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap de papel para minimizar el impacto ambiental de nuestra producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
@@ -1023,7 +1023,7 @@
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en compras_template. -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title">Nuestra historia — HORES Cartotécnica</t>
+    <t t-set="title">Nuestra historia — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
@@ -1234,7 +1234,7 @@
         <footer style="border-top:1px solid var(--h-border); padding:34px 28px;">
           <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:space-between;">
             <div style="display:flex; align-items:center; gap:12px;">
-              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="HORES Cartotécnica" style="height:32px; width:auto;"/>
+              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:32px; width:auto;"/>
               <span style="font-size:13.5px; color:var(--h-text2);">Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
             </div>
             <a href="/mi-sitio" style="font-size:13px; font-weight:600; color:var(--h-accent);">Volver al sitio →</a>

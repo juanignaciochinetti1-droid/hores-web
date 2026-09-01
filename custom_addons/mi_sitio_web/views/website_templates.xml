@@ -10,7 +10,7 @@
                  (web.frontend_layout) — no hace falta un xpath propio. -->
             <t t-set="no_header" t-value="True"/>
             <t t-set="pageName" t-value="'home_hores'"/>
-            <t t-set="title">HORES Cartotécnica — Moldes de papel para panificación</t>
+            <t t-set="title">Cartotécnica Hores — Moldes de papel para panificación</t>
             <t t-set="website_meta_description">Fabricamos moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Aptos para contacto alimentario, gestión de calidad certificada ISO 22000:2018. Bell Ville, Córdoba.</t>
             <div id="wrap" class="oe_structure oe_empty">
 
@@ -37,10 +37,10 @@
       </style>
       <div style="position:absolute; inset:0; overflow:hidden;">
         <div t-attf-style="display:flex; height:100%; width:#{hero_track_width_pct}%; animation:heroSlide #{hero_total_seconds}s ease infinite;">
-          <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea"
+          <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta Cartotécnica Hores — vista aérea"
                t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
           <t t-foreach="productos" t-as="p">
-            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-attf-alt="#{p.name} — HORES Cartotécnica"
+            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-attf-alt="#{p.name} — Cartotécnica Hores"
                  t-attf-style="width:#{hero_img_width_pct}%; height:100%; object-fit:cover; flex-shrink:0;"/>
           </t>
           <!-- Duplicado de la primera foto: el loop cierra acá, invisible -->
@@ -49,7 +49,7 @@
         </div>
       </div>
     </t>
-    <img t-else="" src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta HORES Cartotécnica — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+    <img t-else="" src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta Cartotécnica Hores — vista aérea" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
     <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(20,15,11,.88) 0%, rgba(20,15,11,.66) 42%, rgba(20,15,11,.34) 100%);"></div>
 
     <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:80px 28px; width:100%;">
@@ -264,10 +264,10 @@
       <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:start;">
         <div>
           <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Trabajá con nosotros</div>
-          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17;">Sumate al equipo de HORES Cartotécnica</h2>
+          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17;">Sumate al equipo de Cartotécnica Hores</h2>
           <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 26px;">Dejanos tu currículum. Lo sumamos a nuestra base de postulantes y te contactamos cuando surja una búsqueda que coincida con tu perfil.</p>
           <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e8e3d9; box-shadow:0 20px 50px rgba(30,40,30,.08);">
-            <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta de HORES Cartotécnica en Bell Ville" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            <img src="/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg" alt="Planta de Cartotécnica Hores en Bell Ville" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
           </div>
         </div>
         <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px; box-shadow:0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);">
@@ -355,7 +355,7 @@
           </div>
         </div>
         <div style="margin-top:22px; flex:1; display:flex; flex-direction:column; border:1px solid #e8e3d9; border-radius:12px; overflow:hidden;">
-          <iframe title="Ubicación HORES Cartotécnica — Bell Ville" src="https://www.openstreetmap.org/export/embed.html?bbox=-62.7090%2C-32.6380%2C-62.6690%2C-32.6180&amp;layer=mapnik&amp;marker=-32.6284%2C-62.6890" style="width:100%; flex:1; min-height:200px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <iframe title="Ubicación Cartotécnica Hores — Bell Ville" src="https://www.openstreetmap.org/export/embed.html?bbox=-62.7090%2C-32.6380%2C-62.6690%2C-32.6180&amp;layer=mapnik&amp;marker=-32.6284%2C-62.6890" style="width:100%; flex:1; min-height:200px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           <a href="https://www.openstreetmap.org/?mlat=-32.6284&amp;mlon=-62.6890#map=15/-32.6284/-62.6890" target="_blank" rel="noopener" style="display:block; text-align:center; padding:9px; font-size:13px; font-weight:600; color:#c26a1e; background:#ffffff;">Cómo llegar →</a>
         </div>
       </div>

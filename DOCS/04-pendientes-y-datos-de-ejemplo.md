@@ -88,6 +88,25 @@ Dirección — la misma política cuyos 4 objetivos ya se habían cargado en
 los objetivos a futuro, los porcentajes por línea de producto, y si hay
 números reales de moldes/año y clientes para reemplazar el "+500"/"+150".
 
+## Orden del nombre de la empresa: "Cartotécnica Hores", no "Hores Cartotécnica"
+
+Corregido el 01/09/2026, a pedido explícito. El nombre legal real es
+**Cartotécnica Hores SRL** (así consta en el propio timeline de
+`/historia`, "Se constituye formalmente como Cartotécnica Hores SRL",
+1999) — pero el sitio venía usando el orden invertido, "HORES
+Cartotécnica", en absolutamente todos lados: títulos de página,
+meta-description, alt de imágenes, copyright del footer, mensaje de
+WhatsApp de respaldo. Se corrigió en los 27 lugares donde aparecía
+(9 archivos), en los 3 idiomas — cada título/alt/meta que tenía el
+nombre de la empresa quedó sin traducción por un rato hasta que se
+retradujo (ver el gotcha en [idiomas](06-idiomas.md)).
+
+**De acá en más, cualquier texto nuevo que mencione a la empresa va
+"Cartotécnica Hores", no al revés** — es fácil escribirlo mal de
+memoria porque el logo (imagen, no texto) muestra "Hores" grande con
+"Cartotécnica" chico abajo, lo que visualmente sugiere el orden
+equivocado a quien no conoce el nombre legal.
+
 ## Otras cosas pendientes / decisiones tomadas a propósito
 
 - **Fichas técnicas en PDF**: hoy los botones de "Certificaciones" en
