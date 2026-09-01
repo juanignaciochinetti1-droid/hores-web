@@ -198,11 +198,7 @@
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
         <a href="/compromiso" style="color:#5a4f44;">Compromiso</a>
         <a href="/mi-sitio#faq" style="color:#5a4f44;">FAQ</a>
-        <t t-call="portal.language_selector">
-          <t t-set="_div_classes" t-value="'hc-lang-selector'"/>
-          <t t-set="_btn_class" t-value="'hc-lang-btn'"/>
-          <t t-set="_dropdown_menu_class" t-value="'hc-lang-menu'"/>
-        </t>
+        <a href="/mi-sitio#trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
         <!-- El numerito muestra la cantidad de PEDIDOS (líneas del
              carrito), no la suma de unidades: pedir 20 moldes en una sola
              línea marca "1", no "20" — ver /mi-sitio/carrito/lineas. -->
@@ -212,6 +208,14 @@
           <span class="hc-cart-badge" t-attf-style="position:absolute; top:-7px; right:-11px; background:#c26a1e; color:#fff; font-size:10.5px; font-weight:700; border-radius:50%; min-width:16px; height:16px; align-items:center; justify-content:center; padding:0 3px; font-family:'Archivo',sans-serif; letter-spacing:normal; text-transform:none; display:#{'flex' if carrito_lineas else 'none'};" t-esc="carrito_lineas"/>
         </a>
         <a href="/mi-sitio#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;">Contacto</a>
+        <!-- Selector de idioma al final del todo, a pedido explícito
+             (01/09/2026) — antes iba entre FAQ y el carrito, donde ahora
+             está "Empleo". -->
+        <t t-call="portal.language_selector">
+          <t t-set="_div_classes" t-value="'hc-lang-selector'"/>
+          <t t-set="_btn_class" t-value="'hc-lang-btn'"/>
+          <t t-set="_dropdown_menu_class" t-value="'hc-lang-menu'"/>
+        </t>
       </nav>
     </div>
   </header>
@@ -235,7 +239,7 @@
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
           <a href="/mi-sitio/consultar-pedido" style="color:#cfccc5;">Consultar mi pedido</a>
-          <a href="/trabaja-con-nosotros" style="color:#cfccc5;">Trabajá con nosotros</a>
+          <a href="/mi-sitio#trabaja-con-nosotros" style="color:#cfccc5;">Trabajá con nosotros</a>
         </div>
       </div>
       <div>

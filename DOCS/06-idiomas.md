@@ -165,9 +165,13 @@ es el texto viejo, no se escribió.
 **Ver también [gotcha #1c en bolsa de trabajo](08-bolsa-de-trabajo.md#gotcha-de-traducción-una-plantilla-nueva-puede-perder-el-español-al-traducirla)**:
 seguir exactamente esta receta (saltear `es_AR`) hizo que una plantilla
 nueva mostrara **inglés en la versión en español** — no se encontró
-la condición exacta que lo dispara, así que después de traducir hay
-que probar la versión sin prefijo de idioma también, no solo `/en` y
-`/pt`.
+la condición exacta que lo dispara. **Corrección confirmada**:
+escribir `es_AR` como identidad (`{texto: texto}`) para cada término
+**antes** de tocar `en_US`, en vez de saltearlo — probado dos veces
+en la misma sesión, sin que se rompiera nada. Usar esta versión más
+segura de la receta (los 3 pasos, no 2) de acá en adelante, y de
+todos modos probar la versión sin prefijo de idioma después de
+traducir, no solo `/en` y `/pt`.
 
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 

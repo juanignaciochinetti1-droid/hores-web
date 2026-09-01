@@ -1,8 +1,13 @@
 # Bolsa de trabajo
 
-`/trabaja-con-nosotros` (01/09/2026, a pedido explícito: "una sección
-donde la gente pueda cargar su currículum para buscar trabajo en la
-fábrica").
+Sección "Trabajá con nosotros" en `/mi-sitio` (01/09/2026, a pedido
+explícito: "una sección donde la gente pueda cargar su currículum para
+buscar trabajo en la fábrica"). Primera versión como página propia
+(`/trabaja-con-nosotros`); un pedido explícito aparte, en el momento
+("que esta nueva sección esté en la página principal y no esté
+apartado"), la movió a ser una sección más de la home, mismo patrón
+que `#contacto` — esa URL vieja ahora redirige a
+`/mi-sitio#trabaja-con-nosotros`, por si quedó algún link guardado.
 
 ## Qué se instaló
 
@@ -38,13 +43,25 @@ paso manual antes que ese riesgo.
 
 ## Cómo funciona
 
-- `GET /trabaja-con-nosotros` — el formulario (nombre, email, teléfono,
-  área de interés, comentario, CV).
-- `POST /mi-sitio/postulacion` — valida y crea el `hr.applicant`.
-- `GET /mi-sitio/postulacion/gracias` — página de confirmación.
+- El formulario (nombre, email, teléfono, área de interés, comentario,
+  CV) vive en `views/website_templates.xml`, dentro de
+  `home_template`, como la sección `#trabaja-con-nosotros` — no en
+  `postulacion_templates.xml` (esa vista hoy solo tiene la plantilla de
+  "gracias").
+- `POST /mi-sitio/postulacion` — valida y crea el `hr.applicant`;
+  ante cualquier error redirige de vuelta a
+  `/mi-sitio?postulacion_error=<código>#trabaja-con-nosotros` (mismo
+  patrón que `/mi-sitio/contacto` con `contacto_error`).
+- `GET /mi-sitio/postulacion/gracias` — página de confirmación aparte
+  (no una sección de la home: after someone submits, tiene sentido que
+  sea su propia pantalla, no un scroll de vuelta al formulario).
+- `GET /trabaja-con-nosotros` — solo queda como redirect a
+  `/mi-sitio#trabaja-con-nosotros`, por compatibilidad con la versión
+  anterior.
 
 Todo en `controllers/main.py` (`consultar_pedido()` no, ojo, es
-`postulacion()`) y `views/postulacion_templates.xml`.
+`postulacion()`) y `views/website_templates.xml` /
+`views/postulacion_templates.xml`.
 
 **Validaciones del lado servidor** (mismo criterio que
 `/mi-sitio/contacto` — el `required`/`accept` del HTML no protege
@@ -129,6 +146,14 @@ justamente el caso que se rompió acá y no se hubiera notado sin ese
 paso. Ídem con `<title>`, el `alt` de imágenes y el meta-description:
 son fáciles de saltear por no ser visibles a simple vista en el
 navegador, pero son términos traducibles como cualquier otro.
+
+**Confirmado más tarde, la misma sesión** (al mover este mismo
+formulario a `home_template`, ver más abajo): escribir `es_AR` como
+identidad (`{texto: texto}`) **antes** de tocar `en_US`, para cada
+término, en vez de saltearlo, evita el problema de raíz — probado en
+los 3 idiomas después, sin que se rompiera nada. Queda como la forma
+segura de traducir contenido nuevo de acá en adelante, aunque no se
+haya llegado a entender la causa exacta del bug original.
 
 ## Qué falta / decisiones pendientes
 
