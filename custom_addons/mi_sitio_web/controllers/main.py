@@ -467,6 +467,7 @@ class MiSitioWeb(http.Controller):
         if (not nombre or not email or not mensaje
                 or not EMAIL_RE.match(email)
                 or len(nombre) > NOMBRE_MAX_LEN
+                or len(empresa) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
             return _redirect('/mi-sitio?contacto_error=1#contacto')
 
@@ -523,6 +524,7 @@ class MiSitioWeb(http.Controller):
 
         if (not nombre or not email or not EMAIL_RE.match(email)
                 or len(nombre) > NOMBRE_MAX_LEN
+                or len(puesto) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
             return _redirect('/mi-sitio?postulacion_error=campos#trabaja-con-nosotros')
 
@@ -536,7 +538,11 @@ class MiSitioWeb(http.Controller):
         if extension not in CV_EXTENSIONES_PERMITIDAS:
             return _redirect('/mi-sitio?postulacion_error=formato#trabaja-con-nosotros')
 
-        contenido = cv.read()
+        # Se lee como mucho CV_MAX_BYTES + 1 -- no CV_MAX_BYTES en sí, que
+        # dejaría pasar un archivo un byte más grande sin darse cuenta --
+        # así un archivo enorme nunca llega a cargarse entero en memoria
+        # antes de rechazarlo por tamaño.
+        contenido = cv.read(CV_MAX_BYTES + 1)
         if not contenido:
             return _redirect('/mi-sitio?postulacion_error=archivo#trabaja-con-nosotros')
         if len(contenido) > CV_MAX_BYTES:
