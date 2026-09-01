@@ -136,6 +136,26 @@
   }
   .oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
   .oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
+
+  /* Desplegable "Más" del header (Historia/Compromiso/FAQ) — mismo
+     mecanismo que el selector de idioma de arriba, pero el botón se ve
+     como un link más del nav (no como un botón aparte con borde). */
+  .oe_structure .hc-more-selector { position: relative; }
+  .oe_structure .hc-more-btn {
+    background: none; border: none; padding: 0; margin: 0; cursor: pointer;
+    color: #5a4f44; font-family: 'Archivo', sans-serif; font-weight: 600;
+    font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .oe_structure .hc-more-btn:hover { color: #c26a1e; }
+  .oe_structure .hc-more-menu {
+    background: #ffffff; border: 1px solid #e8e3d9; border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(36,29,23,.14); padding: 6px; min-width: 160px;
+  }
+  .oe_structure .hc-more-menu .dropdown-item {
+    display: block; padding: 8px 12px; border-radius: 6px; font-size: 13px;
+    font-weight: 500; letter-spacing: normal; text-transform: none; color: #5a4f44;
+  }
+  .oe_structure .hc-more-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -187,18 +207,37 @@
     </div>
   </div>
   <header style="position:sticky; top:0; z-index:20; background:linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),repeating-linear-gradient(135deg,#f3ece0,#f3ece0 3px,#efe7d9 3px,#efe7d9 6px); backdrop-filter:blur(8px); border-bottom:1px solid #e6dcc9;">
+    <!-- 3 zonas (logo / nav centrado / acciones), no logo-izquierda +
+         nav-empujado-a-la-derecha como antes — a pedido explícito
+         (01/09/2026: "más centralizado los campos"). El nav queda
+         centrado en el espacio disponible en vez de pegado al borde
+         derecho; "Más" pasa a ser el último link del grupo central,
+         justo antes del carrito (mismo pedido). -->
     <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
       <a href="/mi-sitio" style="display:flex; align-items:center; color:inherit;">
         <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:56px; width:auto; display:block;"/>
       </a>
-      <nav style="display:flex; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
+      <nav style="flex:1; display:flex; justify-content:center; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
-        <a href="/historia" style="color:#5a4f44;">Historia</a>
         <a href="/compras" style="color:#5a4f44;">Productos</a>
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
-        <a href="/compromiso" style="color:#5a4f44;">Compromiso</a>
-        <a href="/mi-sitio#faq" style="color:#5a4f44;">FAQ</a>
         <a href="/mi-sitio#trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
+        <!-- Historia/Compromiso/FAQ agrupados en un desplegable (01/09/2026,
+             a pedido explícito: "que no ocupen tanto espacio") — mismo
+             mecanismo de Bootstrap (data-bs-toggle="dropdown") que ya usa
+             el selector de idioma de acá al lado, con clases hc-more-* en
+             vez de las de Bootstrap por defecto para que combine con el
+             resto del nav en vez de verse como un botón aparte. -->
+        <div class="dropdown hc-more-selector">
+          <button class="hc-more-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Más</button>
+          <div class="dropdown-menu hc-more-menu" role="menu">
+            <a class="dropdown-item" href="/historia" role="menuitem">Historia</a>
+            <a class="dropdown-item" href="/compromiso" role="menuitem">Compromiso</a>
+            <a class="dropdown-item" href="/mi-sitio#faq" role="menuitem">FAQ</a>
+          </div>
+        </div>
+      </nav>
+      <div style="display:flex; gap:20px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
         <!-- El numerito muestra la cantidad de PEDIDOS (líneas del
              carrito), no la suma de unidades: pedir 20 moldes en una sola
              línea marca "1", no "20" — ver /mi-sitio/carrito/lineas. -->
@@ -216,7 +255,7 @@
           <t t-set="_btn_class" t-value="'hc-lang-btn'"/>
           <t t-set="_dropdown_menu_class" t-value="'hc-lang-menu'"/>
         </t>
-      </nav>
+      </div>
     </div>
   </header>
 </template>
@@ -255,7 +294,7 @@
       <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 Cartotécnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
     </div>
   </footer>
-  <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20HORES%20Cartot%C3%A9cnica" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
+  <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20Cartot%C3%A9cnica%20Hores" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
     <img src="/mi_sitio_web/static/src/img/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
   </a>
   <button class="hc-back-to-top" style="left:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
