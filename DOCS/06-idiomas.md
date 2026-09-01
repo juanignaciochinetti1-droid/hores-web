@@ -1,8 +1,9 @@
 # Idiomas del sitio
 
-El sitio es multi-idioma: **español (default), inglés y portugués (Brasil)**.
-Se armó con la infraestructura nativa de Odoo (`res.lang` + idiomas del
-`website`), no con una solución propia.
+El sitio es multi-idioma: **español (default), inglés, portugués (Brasil),
+italiano, francés, alemán y chino simplificado**. Se armó con la
+infraestructura nativa de Odoo (`res.lang` + idiomas del `website`), no
+con una solución propia.
 
 ## Qué idiomas están activos y por qué
 
@@ -12,19 +13,28 @@ traducción automática o sin traducir — ver la conversación donde se decidi�
 esto (25/08/2026). Activar un idioma en el selector sin tener su contenido
 traducido deja páginas rotas a medias (interfaz en un idioma, contenido en
 otro), así que cada idioma nuevo que se agregue tiene que traer su
-traducción completa antes de sumarse al switcher.
+traducción completa antes de sumarse al switcher. El 02/09/2026, a pedido
+explícito, se sumaron 4 idiomas más (italiano, francés, alemán, chino
+simplificado) — ver el gotcha nuevo más abajo sobre cómo instalarlos sin
+romper todo lo que ya estaba traducido.
 
 | Idioma | Código Odoo | Prefijo de URL | Default |
 |---|---|---|---|
 | Español (Argentina) | `es_AR` | (sin prefijo) | Sí |
 | Inglés (US) | `en_US` | `/en/...` | No |
 | Portugués (Brasil) | `pt_BR` | `/pt/...` | No |
+| Italiano | `it_IT` | `/it/...` | No |
+| Francés | `fr_FR` | `/fr/...` | No |
+| Alemán | `de_DE` | `/de/...` | No |
+| Chino (simplificado) | `zh_CN` | `/zh_CN/...` | No |
 
 Configurado en el registro `website` (id 1, "My Website" — hay un segundo
 website de prueba en la instancia, id 2, que no es el nuestro) vía
-`language_ids` (los 3) y `default_lang_id` (es_AR). El prefijo de URL lo
-resuelve Odoo solo (`/mi-sitio`, `/en/mi-sitio`, `/pt/mi-sitio`) porque
-todas las rutas del controlador ya usaban `website=True`.
+`language_ids` (los 7) y `default_lang_id` (es_AR). El prefijo de URL lo
+resuelve Odoo solo (`/mi-sitio`, `/en/mi-sitio`, `/pt/mi-sitio`, etc.)
+porque todas las rutas del controlador ya usaban `website=True`. Nota:
+`zh_CN` usa `/zh_CN/` como prefijo (no `/zh/`) — así lo nombra Odoo, no
+es algo que se haya configurado a mano.
 
 ## Selector de idioma
 
@@ -172,6 +182,124 @@ en la misma sesión, sin que se rompiera nada. Usar esta versión más
 segura de la receta (los 3 pasos, no 2) de acá en adelante, y de
 todos modos probar la versión sin prefijo de idioma después de
 traducir, no solo `/en` y `/pt`.
+
+## ⚠️ Gotcha #1d (la causa real de #1b y #1c): falta `source_lang='es_AR'`
+
+Encontrado el 02/09/2026, agregando italiano/francés/alemán/chino. Todo
+el patrón de arriba (escribir `es_AR` identidad, después `en_US`,
+después cada idioma con la clave en inglés) era en realidad un
+**parche alrededor de un bug propio, no la forma correcta de usar el
+método**.
+
+`update_field_translations` tiene un parámetro `source_lang` que le
+dice a Odoo en qué idioma están las CLAVES del diccionario que se le
+pasa — y ese parámetro **no tiene nada que ver con `es_AR` por
+default: asume `en_US` si no se lo pasa explícito** (está en la
+docstring del método, `odoo/orm/models.py`,
+`_update_field_translations`). Como el contenido real del sitio está
+en español, todas las llamadas de este proyecto (¡desde antes de esta
+sesión!) venían mintiéndole a Odoo sobre en qué idioma estaban las
+claves — y por eso hacía falta la cadena rara de 3 pasos: la primera
+llamada (a `en_US`, con clave en español) solo "funcionaba" porque,
+para un término recién creado sin ninguna traducción todavía, la
+comparación caía por casualidad en el texto español de base; una vez
+que esa llamada pegaba, listo, malas cadenas de comodín en los pasos
+siguientes.
+
+**La solución real** — pasar `source_lang='es_AR'` siempre — hace
+que la clave del diccionario sea el texto real en español, para
+cualquier idioma, en cualquier orden, sin la cadena de 3 pasos:
+
+```python
+# Antes (frágil, dependía de qué se hubiera escrito antes):
+update_field_translations(view_id, 'arch_db', {'es_AR': {ES: ES}})
+update_field_translations(view_id, 'arch_db', {'en_US': {ES: EN}})
+update_field_translations(view_id, 'arch_db', {'pt_BR': {EN: PT}})  # clave = EN, no ES
+
+# Ahora (confiable, mismo texto en español como clave siempre):
+update_field_translations(view_id, 'arch_db', {'en_US': {ES: EN}}, 'es_AR')
+update_field_translations(view_id, 'arch_db', {'pt_BR': {ES: PT}}, 'es_AR')
+update_field_translations(view_id, 'arch_db', {'it_IT': {ES: IT}}, 'es_AR')
+# ... cualquier idioma, en cualquier orden, siempre con la clave en español
+```
+
+Esto explica retroactivamente los gotchas #1b y #1c de más arriba —
+quedan documentados igual, por si alguien se cruza con el mismo
+síntoma, pero **la corrección de fondo es esta, no la cadena de 3
+pasos**. `scripts/traducir_vista.py` (`bulk_translate`, `dump_terms`)
+ya pasa `source_lang` siempre — usarlo en vez de armar las llamadas a
+mano.
+
+## ⚠️ Gotcha #3: instalar un idioma nuevo rompe TODAS las traducciones existentes
+
+Encontrado el 02/09/2026, instalando italiano/francés/alemán/chino
+para sumarlos al sitio. Instalar idiomas nuevos vía el asistente
+estándar de Odoo (`base.language.install`, `lang_install()` → llama a
+`ir.module.module._update_translations(...)` para TODOS los módulos
+instalados) tiene un efecto secundario grave y no documentado en este
+proyecto: **pisa el contenido de `en_US` y `pt_BR` de TODAS las vistas
+del sitio con el texto en español**, no solo de los idiomas que se
+están instalando.
+
+Confirmado mirando la columna `arch_db` directo en Postgres
+(`docker compose exec db psql -U odoo -d odoo.bd -c "SELECT
+jsonb_pretty(arch_db) FROM ir_ui_view WHERE id = <algún view_id>"`):
+antes de instalar los idiomas nuevos, esa columna tenía distinto texto
+por idioma; después, `en_US` y `pt_BR` tenían el mismo texto español
+que `es_AR`. Todo el sitio (títulos, textos, todo) quedó mostrando
+español en las versiones `/en` y `/pt` hasta que se detectó y se
+volvió a traducir todo a mano.
+
+**No hay forma de deshacer esto** — esas traducciones vivían solo en
+la base de datos (no en Git, que solo tiene el contenido en español),
+así que no hay un "volver atrás" automático; hay que re-traducir.
+
+**Si se vuelve a instalar un idioma nuevo en este proyecto**:
+1. Antes de instalar, avisar que esto va a pasar (no es opcional, es
+   el comportamiento del wizard de Odoo).
+2. Después de instalar, verificar `en_US` y `pt_BR` en un par de
+   páginas ya traducidas ANTES de asumir que solo falta agregar el
+   idioma nuevo — probablemente haya que re-traducir todo el sitio
+   otra vez, no solo sumar el idioma que se acaba de instalar.
+3. Usar `source_lang='es_AR'` (gotcha de arriba) para que la
+   re-traducción sea confiable.
+
+## Estado de la traducción a los 4 idiomas nuevos (02/09/2026)
+
+A pedido explícito, se sumaron italiano/francés/alemán/chino
+simplificado — hecho paso a paso, verificando cada página antes de
+seguir con la próxima (mismo criterio que la corrección de `en_US`/
+`pt_BR` de arriba, que se necesitó de vuelta por el gotcha #3).
+
+**Completo y verificado en los 7 idiomas** (nav/footer del header,
+que aparecen en todo el sitio, más el contenido propio):
+- Header (`site_header`) y footer (`site_footer`)
+- Home (`home_template`) — hero, empresa, productos, calidad,
+  sustentabilidad, FAQ, trabajá con nosotros, contacto
+- `/historia` — el contenido real (Python, `HISTORIA_POR_IDIOMA` en
+  `controllers/main.py`), la plantilla en sí (`historia_template`)
+  queda pendiente
+- `/calidad`
+
+**Pendiente** (quedó sin traducir a it_IT/fr_FR/de_DE/zh_CN — hoy
+caen a español en esos 4 idiomas, no rotos, solo sin traducir):
+- `historia_template` (la plantilla QWeb — título, breadcrumb, textos
+  fijos alrededor del contenido dinámico)
+- `/compromiso`
+- `/compras`, `/categoria/<slug>`, `/producto/<id>`
+- Checkout adyacentes: `pedido_gestionar_template`,
+  `consultar_pedido_template`, `postulacion_gracias_template`,
+  `pagina_no_encontrada`
+- El checkout nativo de `website_sale` en sí (carrito, direcciones,
+  pago) no se tocó — son strings de Odoo, ya vienen traducidas de
+  fábrica para estos 4 idiomas al instalarlos (son idiomas oficiales
+  con traducción de la comunidad), no hace falta re-traducirlas a
+  mano como el resto.
+
+Para retomar: `scripts/traducir_vista.py` (`dump_terms(view_id)` para
+ver el estado actual de una vista, `bulk_translate(view_id, rows)`
+para escribir), view por view, con `docker compose exec db psql` para
+confirmar directo en la base si hace falta.
 
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 

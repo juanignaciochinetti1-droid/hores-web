@@ -120,22 +120,37 @@
      vez de las clases default de Bootstrap. */
   .oe_structure .hc-lang-selector { position: relative; }
   .oe_structure .hc-lang-btn {
-    display: flex; align-items: center; gap: 5px; background: #ffffff;
+    display: flex; align-items: center; gap: 6px; background: #ffffff;
     border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
     border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
     font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
   }
+  .oe_structure .hc-lang-btn::before { content: '🌐'; font-size: 13px; line-height: 1; }
   .oe_structure .hc-lang-btn:hover { border-color: #c26a1e; color: #c26a1e; }
   .oe_structure .hc-lang-menu {
     background: #ffffff; border: 1px solid #e8e3d9; border-radius: 10px;
     box-shadow: 0 10px 26px rgba(36,29,23,.14); padding: 6px; min-width: 160px;
   }
   .oe_structure .hc-lang-menu .dropdown-item {
-    display: block; padding: 8px 12px; border-radius: 6px; font-size: 13px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 12px; border-radius: 6px; font-size: 13px;
     font-weight: 500; letter-spacing: normal; text-transform: none; color: #5a4f44;
+    transition: background-color .15s ease, color .15s ease;
   }
   .oe_structure .hc-lang-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
-  .oe_structure .hc-lang-menu .dropdown-item.active { color: #c26a1e; font-weight: 700; }
+  /* El ".active" de Bootstrap trae fondo propio (el violeta de fábrica de
+     Odoo, --bs-dropdown-link-active-bg) que no combina con la paleta del
+     sitio — sin este background explícito quedaba pisando el hover de
+     acá arriba. El tilde marca el idioma activo sin depender solo del
+     color, para que se note incluso si alguien no distingue bien el
+     naranja del gris. */
+  .oe_structure .hc-lang-menu .dropdown-item.active {
+    background: #f6e0c2 !important; color: #c26a1e !important; font-weight: 700;
+  }
+  .oe_structure .hc-lang-menu .dropdown-item.active::after {
+    content: '✓'; font-weight: 700;
+  }
 
   /* Desplegable "Más" del header (Historia/Compromiso/FAQ) — mismo
      mecanismo que el selector de idioma de arriba, pero el botón se ve
@@ -686,7 +701,7 @@
               </div>
             </div>
             <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e7e9eb; box-shadow:0 20px 50px rgba(30,40,50,.08);">
-              <img src="/mi_sitio_web/static/src/img/Gemini_Generated_Image_2w0ia32w0ia32w0i.jpeg" alt="Control de calidad en planta HORES — inspección de lotes" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+              <img src="/mi_sitio_web/static/src/img/Gemini_Generated_Image_2w0ia32w0ia32w0i.jpeg" alt="Control de calidad en planta Cartotécnica Hores — inspección de lotes" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
             </div>
           </div>
         </section>
@@ -871,7 +886,7 @@
 
         <!-- Hero -->
         <section style="position:relative; overflow:hidden; background:#1f2e1c;">
-          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Naturaleza — compromiso ambiental HORES" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5;"/>
+          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Naturaleza — compromiso ambiental Cartotécnica Hores" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5;"/>
           <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(18,28,16,.9) 0%, rgba(18,28,16,.64) 60%, rgba(18,28,16,.4) 100%);"></div>
           <div class="hc-hero-grid"></div>
           <div style="position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:34px 28px 78px;">

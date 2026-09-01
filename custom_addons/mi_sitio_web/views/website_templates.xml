@@ -115,7 +115,7 @@
       <t t-foreach="productos" t-as="p">
         <a class="hc-product-card" t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
           <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8; margin-bottom:16px;">
-            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name + ' — molde de papel HORES'" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+            <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name + ' — molde de papel Cartotécnica Hores'" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
             <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
           </div>
           <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
@@ -181,7 +181,7 @@
           <a href="/compromiso" style="display:inline-flex; align-items:center; gap:9px; background:#a9c48f; color:#1a2718; padding:13px 24px; border-radius:9px; font-weight:600; font-size:15px;">Conocé nuestro compromiso →</a>
         </div>
         <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #3a4a37;">
-          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental HORES" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
+          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental Cartotécnica Hores" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
         </div>
       </div>
     </div>
