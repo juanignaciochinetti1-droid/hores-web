@@ -20,9 +20,21 @@
     -->
     <template id="ecommerce_theme" inherit_id="website.layout">
         <xpath expr="//head/meta[last()]" position="after">
+            <!-- Nuestras propias páginas ya cargan estas mismas familias
+                 (y más) vía mi_sitio_web.head_assets, t-call'eado dentro de
+                 #wrap: todas ellas ponen no_header=True para suprimir el
+                 header genérico de Odoo (ver comentario de compras_template
+                 más abajo en catalogo_templates.xml). Repetir acá el mismo
+                 <link> de Google Fonts en esas páginas duplicaba una
+                 request bloqueante de render en el <head> de cada carga sin
+                 aportar nada nuevo. Solo hace falta en /shop y el checkout
+                 nativo de website_sale, que sí dependen de este template
+                 (no_header queda False/sin definir ahí). -->
+            <t t-if="not no_header">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
             <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+            </t>
             <style>
                 /* Variables de Bootstrap 5: la mayoría de los componentes
                    nativos (botones, links, focus) las consumen en cascada.
