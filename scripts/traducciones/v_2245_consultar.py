@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+from translate_helpers import bulk_translate
+
+VIEW_ID = 2245  # consultar_pedido_template
+
+ROWS = [
+    ("Consultar mi pedido — Cartotécnica Hores", "Consultar mi pedido — Cartotécnica Hores",
+     "Look up my order — Cartotécnica Hores", "Consultar meu pedido — Cartotécnica Hores",
+     "Consulta il tuo ordine — Cartotécnica Hores", "Suivre ma commande — Cartotécnica Hores",
+     "Bestellung nachverfolgen — Cartotécnica Hores", "查询我的订单 — Cartotécnica Hores"),
+    ("Consultar mi pedido", "Consultar mi pedido", "Look up my order", "Consultar meu pedido",
+     "Verifica il tuo ordine", "Suivre ma commande", "Bestellung nachverfolgen", "查询我的订单"),
+    ("Ingresá el número de tu pedido y tu documento para ver el estado, cancelarlo o pedir un cambio.",
+     "Ingresá el número de tu pedido y tu documento para ver el estado, cancelarlo o pedir un cambio.",
+     "Enter your order number and your ID document to check its status, cancel it, or request a change.",
+     "Digite o número do seu pedido e o seu documento para ver o status, cancelar ou pedir uma alteração.",
+     "Inserisci il numero del tuo ordine e il tuo documento per vedere lo stato, annullarlo o richiedere una modifica.",
+     "Indiquez le numéro de votre commande et votre document pour voir son statut, l'annuler ou demander une modification.",
+     "Geben Sie Ihre Bestellnummer und Ihr Dokument ein, um den Status zu sehen, zu stornieren oder eine Änderung anzufordern.",
+     "输入您的订单号和证件号码，即可查看订单状态、取消订单或申请变更。"),
+    ("No encontramos un pedido con esos datos. Revisá que el número y el documento estén bien escritos.",
+     "No encontramos un pedido con esos datos. Revisá que el número y el documento estén bien escritos.",
+     "We couldn't find an order with that information. Check that the order number and the ID document are correct.",
+     "Não encontramos um pedido com esses dados. Confira se o número e o documento estão corretos.",
+     "Non abbiamo trovato un ordine con questi dati. Controlla che il numero e il documento siano scritti correttamente.",
+     "Nous n'avons trouvé aucune commande avec ces informations. Vérifiez que le numéro et le document sont correctement saisis.",
+     "Wir konnten keine Bestellung mit diesen Angaben finden. Bitte überprüfen Sie Nummer und Dokument.",
+     "未找到匹配的订单，请检查订单号和证件号码是否填写正确。"),
+    ("Número de pedido", "Número de pedido", "Order number", "Número do pedido", "Numero d'ordine",
+     "Numéro de commande", "Bestellnummer", "订单号"),
+    ("Lo encontrás en la página de confirmación y en el email que te enviamos.",
+     "Lo encontrás en la página de confirmación y en el email que te enviamos.",
+     "You'll find it on the confirmation page and in the email we sent you.",
+     "Você encontra esse número na página de confirmação e no email que enviamos.",
+     "Lo trovi nella pagina di conferma e nell'email che ti abbiamo inviato.",
+     "Vous le trouverez sur la page de confirmation et dans l'email que nous vous avons envoyé.",
+     "Sie finden sie auf der Bestätigungsseite und in der E-Mail, die wir Ihnen geschickt haben.",
+     "您可以在确认页面和我们发送的邮件中找到该编号。"),
+    ("Documento (DNI, CUIT, etc.)", "Documento (DNI, CUIT, etc.)", "ID document (DNI, CUIT, etc.)",
+     "Documento (DNI, CUIT, etc.)", "Documento (DNI, CUIT, ecc.)", "Document (DNI, CUIT, etc.)",
+     "Dokument (DNI, CUIT usw.)", "证件（身份证号、税号等）"),
+    ("El que usaste al hacer el pedido", "El que usaste al hacer el pedido", "The one you used when placing the order",
+     "O mesmo que você usou ao fazer o pedido", "Quello che hai usato per effettuare l'ordine",
+     "Celui que vous avez utilisé lors de la commande", "Dasjenige, das Sie bei der Bestellung verwendet haben",
+     "您下单时使用的证件号码"),
+    ("Buscar mi pedido", "Buscar mi pedido", "Look up my order", "Consultar meu pedido", "Verifica il mio ordine",
+     "Suivre ma commande", "Bestellung nachverfolgen", "查询我的订单"),
+]
+
+bulk_translate(VIEW_ID, ROWS)

@@ -230,7 +230,7 @@ pasos**. `scripts/traducir_vista.py` (`bulk_translate`, `dump_terms`)
 ya pasa `source_lang` siempre — usarlo en vez de armar las llamadas a
 mano.
 
-## ⚠️ Gotcha #3: instalar un idioma nuevo rompe TODAS las traducciones existentes
+## ⚠️ Gotcha #3: instalar un idioma nuevo — Y actualizar el módulo — rompen TODAS las traducciones existentes
 
 Encontrado el 02/09/2026, instalando italiano/francés/alemán/chino
 para sumarlos al sitio. Instalar idiomas nuevos vía el asistente
@@ -263,6 +263,47 @@ así que no hay un "volver atrás" automático; hay que re-traducir.
    otra vez, no solo sumar el idioma que se acaba de instalar.
 3. Usar `source_lang='es_AR'` (gotcha de arriba) para que la
    re-traducción sea confiable.
+
+### El mismo gotcha, disparado por `button_immediate_upgrade` (02/09/2026, más tarde)
+
+Ese mismo día, horas después de terminar y verificar la traducción a
+los 7 idiomas, se hizo un cambio de XML sin relación con idiomas
+(deduplicar la carga de Google Fonts en `ecommerce_theme_templates.xml`,
+ver el commit de rendimiento) y se aplicó de la única forma que existe
+para que Odoo tome cambios de vistas: `button_immediate_upgrade` sobre
+`mi_sitio_web`. **Eso solo volvió a romper la traducción de las 13
+vistas** — mismo síntoma exacto (arch_db de la mayoría de los idiomas
+igual al español), confirmado comparando `write_date` por vista:
+todas quedaron con el mismo timestamp, el del momento del upgrade.
+
+Es decir: **no es un problema exclusivo de instalar idiomas** — es que
+`button_immediate_upgrade` recarga el XML de los módulos desde disco
+y, como ese XML en Git solo tiene el texto en español (las
+traducciones a los otros 6 idiomas viven solo en la base), el upgrade
+las pisa. Como este proyecto no tiene otra forma de aplicar cambios de
+vistas sin pasar por un upgrade del módulo (no hay `-u` en el `CMD` del
+Dockerfile, ver `DOCS/01-stack-y-herramientas.md`), **cualquier cambio
+futuro a una vista XML de `mi_sitio_web` va a volver a disparar esto**.
+
+**Protocolo para cualquier cambio de vista/XML de acá en más**:
+1. Hacer el cambio en el XML y aplicarlo con `button_immediate_upgrade`
+   como siempre.
+2. Inmediatamente después, correr
+   `python scripts/traducciones/reaplicar_todo.py` desde la raíz del
+   repo (re-escribe las 13 vistas en los 7 idiomas, es idempotente —
+   no importa si algunas ya estaban bien).
+3. Verificar con `curl` un par de idiomas antes de dar por terminado
+   el cambio (ver ejemplo de verificación en el propio
+   `reaplicar_todo.py`).
+
+Los scripts fuente de cada término traducido (uno por vista, con el
+helper `translate_helpers.py` que ya pasa `source_lang='es_AR'`) están
+committeados en `scripts/traducciones/` — antes vivían solo como
+archivos sueltos en el scratchpad de la sesión de Claude Code, que se
+borra al terminar; se movieron al repo específicamente para no
+depender de eso. Si se agrega contenido nuevo a una vista, sumar sus
+términos al script de esa vista (o crear uno nuevo y agregarlo a la
+lista `SCRIPTS` de `reaplicar_todo.py`).
 
 ## Estado de la traducción a los 4 idiomas nuevos (02/09/2026)
 
