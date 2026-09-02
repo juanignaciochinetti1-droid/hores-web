@@ -271,35 +271,30 @@ simplificado — hecho paso a paso, verificando cada página antes de
 seguir con la próxima (mismo criterio que la corrección de `en_US`/
 `pt_BR` de arriba, que se necesitó de vuelta por el gotcha #3).
 
-**Completo y verificado en los 7 idiomas** (nav/footer del header,
-que aparecen en todo el sitio, más el contenido propio):
+**Completo y verificado en los 7 idiomas**, todas las vistas propias
+del módulo:
 - Header (`site_header`) y footer (`site_footer`)
 - Home (`home_template`) — hero, empresa, productos, calidad,
   sustentabilidad, FAQ, trabajá con nosotros, contacto
 - `/historia` — el contenido real (Python, `HISTORIA_POR_IDIOMA` en
-  `controllers/main.py`), la plantilla en sí (`historia_template`)
-  queda pendiente
-- `/calidad`
-
-**Pendiente** (quedó sin traducir a it_IT/fr_FR/de_DE/zh_CN — hoy
-caen a español en esos 4 idiomas, no rotos, solo sin traducir):
-- `historia_template` (la plantilla QWeb — título, breadcrumb, textos
-  fijos alrededor del contenido dinámico)
-- `/compromiso`
+  `controllers/main.py`) y la plantilla en sí (`historia_template`)
+- `/calidad`, `/compromiso`
 - `/compras`, `/categoria/<slug>`, `/producto/<id>`
 - Checkout adyacentes: `pedido_gestionar_template`,
   `consultar_pedido_template`, `postulacion_gracias_template`,
   `pagina_no_encontrada`
-- El checkout nativo de `website_sale` en sí (carrito, direcciones,
-  pago) no se tocó — son strings de Odoo, ya vienen traducidas de
-  fábrica para estos 4 idiomas al instalarlos (son idiomas oficiales
-  con traducción de la comunidad), no hace falta re-traducirlas a
-  mano como el resto.
 
-Para retomar: `scripts/traducir_vista.py` (`dump_terms(view_id)` para
-ver el estado actual de una vista, `bulk_translate(view_id, rows)`
-para escribir), view por view, con `docker compose exec db psql` para
-confirmar directo en la base si hace falta.
+El checkout nativo de `website_sale` en sí (carrito, direcciones,
+pago) no se tocó a propósito — son strings de Odoo, ya vienen
+traducidas de fábrica para estos 4 idiomas al instalarlos (son
+idiomas oficiales con traducción de la comunidad), no hace falta
+re-traducirlas a mano.
+
+**Si se agrega contenido nuevo de acá en más**: usar
+`scripts/traducir_vista.py` (`dump_terms(view_id)` para ver el estado
+actual de una vista, `bulk_translate(view_id, rows)` para escribir,
+siempre con `source_lang='es_AR'` como ya hace el helper) para sumar
+los 7 idiomas desde el principio, en vez de dejarlo para después.
 
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 
