@@ -1017,6 +1017,72 @@ class WebsiteSaleHores(WebsiteSale):
     def _get_mandatory_address_fields(self, country_sudo):
         return set()
 
+    def _validate_address_values(self, address_values, partner_sudo, address_type,
+                                  use_delivery_as_billing, required_fields, **kwargs):
+        """Se saca la obligatoriedad de Tipo/Número de Identificación
+        (l10n_latam_identification_type_id, vat) para este checkout,
+        mismo criterio que _get_mandatory_address_fields de arriba
+        (todo opcional salvo nombre/email/teléfono, se coordina por
+        WhatsApp/mail después del pedido). Esos dos campos los exige
+        l10n_latam_base vía _get_mandatory_billing_address_fields cada
+        vez que la compañía es de Latinoamérica (siempre, acá) y se
+        confirma "entrega y facturación al mismo tiempo" (el caso
+        normal de este checkout, un solo formulario para las dos).
+
+        Encontrado el 02/09/2026: sobrescribir
+        _get_mandatory_billing_address_fields (como ya se hace arriba
+        con _get_mandatory_address_fields) NO alcanza acá -- Odoo arma
+        el controlador combinando TODOS los controllers que tocan estos
+        hooks (L10nARPortalAccount, L10nLatamBasePortalAccount, este) en
+        una sola clase con herencia múltiple, y por algún criterio de
+        Odoo que no depende de las dependencias declaradas en
+        __manifest__.py (se probó agregando 'l10n_ar' ahí, no cambió
+        nada -- confirmado imprimiendo type(self).__mro__ en runtime),
+        L10nARPortalAccount queda ANTES que este controlador en el MRO.
+        Como su código es "pedir el resultado de más abajo con super() y
+        SUMARLE sus propios campos", cualquier cosa que este controlador
+        devuelva ahí (incluso un set() vacío) queda pisada por esa suma
+        posterior -- no hay forma de anular eso desde ese método en
+        particular, sin importar qué se le reste/devuelva.
+
+        En cambio, filtrar acá (en _validate_address_values, que es lo
+        que arma la respuesta final que ve el cliente) sí funciona
+        siempre, sin depender del MRO: l10n_ar solo agrega algo EXTRA a
+        esta misma función cuando address_type == 'billing' (ver
+        l10n_ar/controllers/portal.py) -- eso pasa en el segundo paso
+        del checkout (address_type llega en 'delivery' en el primer
+        formulario, 'billing' en el segundo), pero esa rama de l10n_ar
+        igual no suma nada dañino: como acá l10n_latam_identification_type_id
+        siempre llega vacío, `id_type = ...browse(None)` da un recordset
+        vacío y esa función corta con un `return` temprano
+        ("not id_type... skip the validation") antes de llegar a agregar
+        nada. Verificado con Chrome headless los dos pasos completos del
+        checkout (dirección + facturación) sin errores."""
+        invalid_fields, missing_fields, error_messages = super()._validate_address_values(
+            address_values, partner_sudo, address_type, use_delivery_as_billing,
+            required_fields, **kwargs,
+        )
+        skip = {'l10n_latam_identification_type_id', 'vat'}
+        original_invalid, original_missing = invalid_fields, missing_fields
+        invalid_fields = invalid_fields - skip
+        missing_fields = missing_fields - skip
+        if (
+            original_missing and original_missing <= skip
+            and not original_invalid
+            and not invalid_fields and not missing_fields
+        ):
+            # Si TODO lo que faltaba/estaba mal eran justo estos dos
+            # campos (nada más quedó pendiente después de sacarlos), el
+            # mensaje genérico ("Algunos campos obligatorios están
+            # vacíos") queda huérfano -- se limpia para no confundir con
+            # un error que ya no aplica. No se compara por texto (probado
+            # primero, no funcionaba: `_()` acá arma el mensaje con un
+            # contexto de traducción distinto al de portal.py, así que
+            # la comparación de strings nunca daba igual) -- se decide
+            # solo por el estado antes/después de sacar `skip`.
+            error_messages = []
+        return invalid_fields, missing_fields, error_messages
+
     # /shop (la grilla de productos nativa de website_sale, distinta de
     # nuestro catálogo propio en /compras) redirige derecho a /compras —
     # a pedido explícito (28/08/2026, con screenshot: "no sirve y no lo

@@ -22,7 +22,17 @@
     # (una sola sección para recibir CVs). Se prefirió una página propia,
     # con el diseño del sitio, en vez de esa (mismo criterio que /shop
     # redirige a /compras en vez de usarse tal cual).
-    'depends': ['website', 'crm', 'sale', 'website_sale', 'payment_custom', 'hr_recruitment'],
+    # 'l10n_ar': ya venía instalado (la compañía es de Argentina), pero no
+    # estaba declarado como dependencia acá -- se agrega por prolijidad
+    # (el controlador de esta app referencia código específico de l10n_ar,
+    # como el afip.responsibility.type "Consumidor Final"). OJO: agregarlo
+    # NO cambia el orden en que Odoo combina los controladores del
+    # checkout (se probó, confirmado imprimiendo type(self).__mro__ en
+    # runtime) -- ver el comentario largo junto a
+    # WebsiteSaleHores._validate_address_values en controllers/main.py
+    # para la explicación completa y la forma correcta de anular campos
+    # obligatorios que agregan l10n_ar/l10n_latam_base.
+    'depends': ['website', 'crm', 'sale', 'website_sale', 'payment_custom', 'hr_recruitment', 'l10n_ar'],
     'data': [
         'security/ir.model.access.csv',
         'data/hr_job_data.xml',

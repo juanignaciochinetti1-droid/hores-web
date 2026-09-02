@@ -331,7 +331,31 @@
         <xpath expr="//t[@t-if='zip_before_city']//div[@id='div_zip']" position="replace"/>
         <xpath expr="//div[@id='div_city']" position="replace"/>
         <xpath expr="//t[@t-if='not zip_before_city']//div[@id='div_zip']" position="replace"/>
-        <xpath expr="//div[@id='div_country']" position="replace"/>
+        <!-- OJO con country_id: a diferencia de calle/ciudad/CP de arriba,
+             este campo hay que dejarlo en el DOM aunque sea vacío y oculto
+             (02/09/2026, bug real encontrado con el checkout roto en el
+             navegador). portal/static/src/interactions/address.js
+             (CustomerAddress._onChangeCountry, que corre solo con cargar
+             la página, en willStart) hace
+             `this.addressForm.country_id.value` sin chequear que el campo
+             exista: si no hay NINGÚN elemento country_id en el form
+             (que es lo que hacía este xpath con position="replace" vacío,
+             igual que con calle/ciudad/CP), esa línea tira
+             "Cannot read properties of undefined (reading 'value')" y
+             frena TODA la inicialización de esa interacción, incluido el
+             wiring del botón "Confirmar" (es un <a>, no un <button
+             type=submit>, así que sin JS no manda nada al hacer click —
+             por eso no aparecía ningún request en el server). Con el
+             campo presente pero vacío, `parseInt('')` da NaN, entra en el
+             `if (!countryId) return;` de esa función y corta ahí mismo,
+             sin llegar a tocar state_id/zip/city (que si están sacados
+             del form, como abajo) ni a pedir nada al servidor. Server-side
+             ya acepta country_id vacío sin problema
+             (_get_mandatory_address_fields en controllers/main.py
+             devuelve un set() vacío, nada es obligatorio). -->
+        <xpath expr="//div[@id='div_country']" position="replace">
+            <input type="hidden" name="country_id" value=""/>
+        </xpath>
         <xpath expr="//div[@id='div_state']" position="replace"/>
         <!-- "Responsabilidad de ARCA" (28/08/2026, a pedido explícito, con
              screenshot) — el div no tiene id propio (lo inserta
