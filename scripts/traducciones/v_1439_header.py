@@ -14,6 +14,19 @@ ROWS = [
     ('Compromiso', 'Compromiso', 'Commitment', 'Compromisso', 'Impegno', 'Engagement', 'Engagement', '承诺'),
     ('FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', '常见问题'),
     ('Carrito', 'Carrito', 'Cart', 'Carrinho', 'Carrello', 'Panier', 'Warenkorb', '购物车'),
+    ('Mi cuenta', 'Mi cuenta', 'My account', 'Minha conta', 'Il mio account', 'Mon compte', 'Mein Konto', '我的账户'),
+    # Este término incluye el <span> del ícono entero, no solo el texto
+    # visible -- QWeb lo extrae así porque el ícono y "Ingresar" quedan
+    # como hermanos dentro del mismo <a>, sin envolver "Ingresar" en su
+    # propio tag (mismo patrón que otros spans+texto sueltos del sitio).
+    ('<span aria-hidden="true" style="font-size:17px;">👤</span> Ingresar',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Ingresar',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Log in',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Entrar',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Accedi',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Se connecter',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> Anmelden',
+     '<span aria-hidden="true" style="font-size:17px;">👤</span> 登录'),
     ('Contacto', 'Contacto', 'Contact', 'Contato', 'Contatti', 'Contact', 'Kontakt', '联系我们'),
 ]
 

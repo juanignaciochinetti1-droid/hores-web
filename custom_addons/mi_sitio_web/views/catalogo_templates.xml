@@ -261,6 +261,18 @@
           🛒
           <span class="hc-cart-badge" t-attf-style="position:absolute; top:-7px; right:-11px; background:#c26a1e; color:#fff; font-size:10.5px; font-weight:700; border-radius:50%; min-width:16px; height:16px; align-items:center; justify-content:center; padding:0 3px; font-family:'Archivo',sans-serif; letter-spacing:normal; text-transform:none; display:#{'flex' if carrito_lineas else 'none'};" t-esc="carrito_lineas"/>
         </a>
+        <!-- Link a la cuenta de cliente (02/09/2026, a pedido explícito:
+             "crea un campo en la pagina donde te puedas registrar") — Odoo
+             ya trae /web/login y /web/signup armados (auth_signup con
+             invitation_scope='b2c', o sea que el registro está abierto a
+             cualquiera); acá solo se lo hace visible en el header, que
+             antes no tenía ningún link a esto. Si ya hay sesión iniciada
+             (cliente o vos como admin) va directo al portal (/my) en vez
+             de mostrar el login de nuevo. -->
+        <a t-if="not request.env.user._is_public()" href="/my" aria-label="Mi cuenta" style="display:flex; align-items:center; color:#5a4f44; font-size:19px;">👤</a>
+        <a t-else="" href="/web/login" style="display:flex; align-items:center; gap:6px; color:#5a4f44;">
+          <span aria-hidden="true" style="font-size:17px;">👤</span> Ingresar
+        </a>
         <a href="/mi-sitio#contacto" style="background:#c26a1e; color:#fff; padding:9px 18px; border-radius:8px; font-weight:600; letter-spacing:.08em;">Contacto</a>
         <!-- Selector de idioma al final del todo, a pedido explícito
              (01/09/2026) — antes iba entre FAQ y el carrito, donde ahora
