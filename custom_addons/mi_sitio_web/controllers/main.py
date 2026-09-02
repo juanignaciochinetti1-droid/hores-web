@@ -1017,6 +1017,36 @@ class WebsiteSaleHores(WebsiteSale):
     def _get_mandatory_address_fields(self, country_sudo):
         return set()
 
+    # Campos que l10n_latam_base/l10n_ar exigen en la dirección de
+    # facturación (vía _get_mandatory_billing_address_fields) que este
+    # checkout no pide -- reusado por _validate_address_values (lo que
+    # ve el cliente al mandar el formulario) y por _check_billing_address
+    # (lo que decide si el checkout deja avanzar de dirección a pago,
+    # ANTES de que el cliente llegue a mandar nada). Ver el comentario
+    # largo en _validate_address_values de por qué no alcanza con
+    # sobrescribir _get_mandatory_billing_address_fields directamente.
+    _CAMPOS_FACTURACION_OMITIDOS = frozenset({'l10n_latam_identification_type_id', 'vat'})
+
+    def _check_billing_address(self, partner_sudo):
+        """Encontrado el 02/09/2026, después de arreglar
+        _validate_address_values (que corrige el error que ve el
+        cliente al mandar el formulario, pero no evita que se lo mande
+        de vuelta al mismo paso): _check_addresses llama a este método
+        ANTES de dejarlo llegar a /shop/payment, y este NO pasa por
+        _validate_address_values -- llama directo a
+        _get_mandatory_billing_address_fields y exige que TODOS esos
+        campos tengan algún valor en el partner ya guardado. Como
+        vat/l10n_latam_identification_type_id quedan vacíos a propósito,
+        sin este fix el checkout entraba en bucle infinito: cada visita
+        a /shop/payment (o a /shop/checkout) rebotaba de nuevo a
+        /shop/address?...billing, sin ningún error visible que lo
+        explicara -- se encontró recorriendo el flujo completo con
+        Chrome headless, no alcanzaba con revisar que el formulario se
+        mandara bien."""
+        mandatory_fields = set(super()._get_mandatory_billing_address_fields(partner_sudo.country_id))
+        mandatory_fields -= self._CAMPOS_FACTURACION_OMITIDOS
+        return all(partner_sudo.read(list(mandatory_fields))[0].values())
+
     def _validate_address_values(self, address_values, partner_sudo, address_type,
                                   use_delivery_as_billing, required_fields, **kwargs):
         """Se saca la obligatoriedad de Tipo/Número de Identificación
@@ -1062,7 +1092,7 @@ class WebsiteSaleHores(WebsiteSale):
             address_values, partner_sudo, address_type, use_delivery_as_billing,
             required_fields, **kwargs,
         )
-        skip = {'l10n_latam_identification_type_id', 'vat'}
+        skip = self._CAMPOS_FACTURACION_OMITIDOS
         original_invalid, original_missing = invalid_fields, missing_fields
         invalid_fields = invalid_fields - skip
         missing_fields = missing_fields - skip
@@ -1082,6 +1112,92 @@ class WebsiteSaleHores(WebsiteSale):
             # solo por el estado antes/después de sacar `skip`.
             error_messages = []
         return invalid_fields, missing_fields, error_messages
+
+    # ------------------------------------------------------------------
+    # Cliente nuevo vs. cliente con pedidos anteriores (02/09/2026, a
+    # pedido explícito de Leandro, vía WhatsApp): separar el flujo de
+    # ventas del sitio en dos caminos. Un cliente que YA tiene algún
+    # pedido anterior sigue el camino que ya existía (llega derecho a
+    # sale.order, "pedido por facturar", sin pasar por CRM). Uno que
+    # NUNCA hizo un pedido antes arma el carrito igual que siempre, pero
+    # al llegar al paso de pago no ve el pago en sí: se le crea una
+    # oportunidad en CRM con el detalle de lo que eligió, se avisa al
+    # equipo comercial (actividad de Odoo + notificación — el email
+    # todavía no funciona, falta configurar el servidor SMTP saliente,
+    # ver conversación) y se lo manda a la página de agradecimiento en
+    # vez de dejarlo pagar. El pedido en sí (todavía sin confirmar en
+    # ese punto) se cancela — no queda un "pedido por facturar" fantasma
+    # dando vueltas en Ventas por una compra que en realidad tiene que
+    # pasar por Preventas primero.
+    def _es_cliente_nuevo(self, order_sudo):
+        partner = order_sudo.partner_id
+        website_partner = order_sudo.website_id.partner_id
+        if not partner or partner == website_partner:
+            # Sin dirección cargada todavía (visitante público, sin
+            # partner propio asignado al carrito) -- no hay con qué
+            # buscar pedidos anteriores, se trata como nuevo.
+            return True
+        domain = [('id', '!=', order_sudo.id)]
+        if partner.email:
+            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=', partner.email)]
+        else:
+            domain += [('partner_id', '=', partner.id)]
+        return not request.env['sale.order'].sudo().search_count(domain, limit=1)
+
+    def _crear_oportunidad_desde_carrito(self, order_sudo):
+        partner = order_sudo.partner_id
+        lineas = '\n'.join(
+            '- %s x%s' % (line.product_id.display_name, int(line.product_uom_qty))
+            for line in order_sudo.order_line
+            if not line.display_type
+        )
+        medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
+        team = request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
+        lead = request.env['crm.lead'].sudo().create({
+            'name': 'Pedido web (cliente nuevo): %s' % (partner.name or order_sudo.name),
+            'contact_name': partner.name,
+            'partner_name': partner.commercial_company_name or '',
+            'email_from': partner.email or '',
+            'phone': partner.phone or '',
+            'description': 'Productos consultados desde el sitio (pedido %s, cancelado -- '
+                            'primero pasa por acá):\n%s' % (order_sudo.name, lineas),
+            'medium_id': medium.id if medium else False,
+            'team_id': team.id if team else False,
+        })
+        # Notificación de Odoo para todo el equipo (campanita) -- se
+        # postea el mensaje CON partner_ids en vez de solo suscribirlos:
+        # message_subscribe por sí solo no avisa nada retroactivo, recién
+        # notifica de mensajes FUTUROS -- con partner_ids en message_post
+        # los suscribe Y les llega la notificación de este mensaje en el
+        # mismo paso. Además, actividad "A hacer" para el responsable del
+        # equipo -- mismo mecanismo que ya usa pedido_solicitar_cambio
+        # más abajo para avisar de un pedido de cambio.
+        lead.message_post(
+            body='Oportunidad creada automáticamente: cliente nuevo desde el sitio web.',
+            partner_ids=lead.team_id.member_ids.mapped('partner_id').ids,
+        )
+        lead.activity_schedule(
+            'mail.mail_activity_data_todo',
+            summary='Cliente nuevo desde el sitio — armar presupuesto/seguimiento',
+            user_id=lead.team_id.user_id.id if lead.team_id and lead.team_id.user_id else request.env.user.id,
+        )
+        return lead
+
+    @http.route('/shop/payment', type='http', auth='public', website=True, sitemap=False)
+    def shop_payment(self, **post):
+        order_sudo = request.cart
+        # Misma validación que hace shop_payment original antes de
+        # mostrar nada (carrito vacío, sin dirección todavía, etc.) --
+        # se llama acá primero para no crear una oportunidad ni cancelar
+        # nada a partir de un carrito que en realidad todavía no llegó a
+        # este paso de forma válida.
+        if redirection := self._check_cart_and_addresses(order_sudo):
+            return redirection
+        if self._es_cliente_nuevo(order_sudo):
+            self._crear_oportunidad_desde_carrito(order_sudo)
+            order_sudo.sudo().action_cancel()
+            return _redirect('/mi-sitio/gracias')
+        return super().shop_payment(**post)
 
     # /shop (la grilla de productos nativa de website_sale, distinta de
     # nuestro catálogo propio en /compras) redirige derecho a /compras —
