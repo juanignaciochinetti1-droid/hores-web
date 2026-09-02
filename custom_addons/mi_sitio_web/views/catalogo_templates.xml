@@ -152,6 +152,24 @@
     content: '✓'; font-weight: 700;
   }
 
+  /* Link de cuenta/login del header — mismo tratamiento "chip" que el
+     selector de idioma de al lado (fondo blanco, borde, píldora), para
+     que se vea como un botón real y no como un ícono suelto flotando
+     al final de la barra (02/09/2026, a pedido: "que podrias hacer
+     para mejorarlo?" sobre el ícono pelado que quedó antes). */
+  .oe_structure .hc-account-btn {
+    display: flex; align-items: center; gap: 6px; background: #ffffff;
+    border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
+    border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
+    font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+    text-decoration: none; transition: border-color .15s ease, color .15s ease;
+    max-width: 140px;
+  }
+  .oe_structure .hc-account-btn span:last-child {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .oe_structure .hc-account-btn:hover { border-color: #c26a1e; color: #c26a1e; }
+
   /* Desplegable "Más" del header (Historia/Compromiso/FAQ) — mismo
      mecanismo que el selector de idioma de arriba, pero el botón se ve
      como un link más del nav (no como un botón aparte con borde). */
@@ -271,16 +289,22 @@
         </t>
         <!-- Link a la cuenta de cliente (02/09/2026, a pedido explícito:
              "crea un campo en la pagina donde te puedas registrar",
-             después movido "a la derecha de todo") — Odoo ya trae
+             después movido "a la derecha de todo" y con el mismo
+             tratamiento "chip" que el selector de idioma) — Odoo ya trae
              /web/login y /web/signup armados (auth_signup con
              invitation_scope='b2c', o sea que el registro está abierto a
              cualquiera); acá solo se lo hace visible en el header, que
              antes no tenía ningún link a esto. Si ya hay sesión iniciada
-             (cliente o vos como admin) va directo al portal (/my) en vez
-             de mostrar el login de nuevo. -->
-        <a t-if="not request.env.user._is_public()" href="/my" aria-label="Mi cuenta" style="display:flex; align-items:center; color:#5a4f44; font-size:19px;">👤</a>
-        <a t-else="" href="/web/login" style="display:flex; align-items:center; gap:6px; color:#5a4f44;">
-          <span aria-hidden="true" style="font-size:17px;">👤</span> Ingresar
+             (cliente o vos como admin) va directo al portal (/my) y
+             muestra el nombre de pila (no hace falta traducir un nombre
+             propio); si no, ofrece "Ingresar". -->
+        <a t-if="not request.env.user._is_public()" href="/my" class="hc-account-btn">
+          <span aria-hidden="true">👤</span>
+          <span t-esc="request.env.user.name.split(' ')[0]"/>
+        </a>
+        <a t-else="" href="/web/login" class="hc-account-btn">
+          <span aria-hidden="true">👤</span>
+          <span>Ingresar</span>
         </a>
       </div>
     </div>
