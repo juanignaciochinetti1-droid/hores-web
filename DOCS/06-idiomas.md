@@ -296,6 +296,40 @@ actual de una vista, `bulk_translate(view_id, rows)` para escribir,
 siempre con `source_lang='es_AR'` como ya hace el helper) para sumar
 los 7 idiomas desde el principio, en vez de dejarlo para después.
 
+### Corrección del 02/09/2026 (tarde): header/footer/home habían quedado sin re-traducir
+
+Después de terminar el trabajo de arriba y commitear, el usuario
+reportó que el sitio "no traduce a ningún idioma" — se verificó con
+`curl` en los 7 idiomas y, efectivamente, `/en/mi-sitio`, `/it/mi-sitio`,
+etc. mostraban el título en español.
+
+**No fue un tercer evento de corrupción.** Comparando `write_date` de
+`ir_ui_view` por vista, tres vistas (`home_template`=1318,
+`site_header`=1439, `site_footer`=1440) tenían `write_date` congelado
+en el momento exacto del gotcha #3 (02/09 15:04–15:06), mientras que
+las otras 10 vistas tenían `write_date` de la sesión posterior (cuando
+se re-tradujo todo). Es decir: la instalación de idiomas rompió esas
+3 vistas igual que a las demás, pero **la re-traducción posterior se
+saltó justo el header, el footer y el home** — las 3 vistas que se
+ven en *todas* las páginas, por eso el sitio entero parecía sin
+traducir aunque el resto (`/historia`, `/calidad`, `/compras`, etc.)
+sí estuviera bien.
+
+Al recuperar los scripts originales (`v_1318_home.py`,
+`v_1439_header.py`, `v_1440_footer.py` en el scratchpad) y volver a
+correrlos, además apareció contenido nuevo que esos scripts no
+cubrían — agregado en commits posteriores a cuando se escribieron
+(los labels del formulario de contacto/postulación, las 3 tarjetas de
+sustentabilidad, "+31 años", dos `alt` de imágenes y el bloque de
+"Planta" en la sección de contacto). Se agregó ese faltante aparte
+(`v_1318_home_extra.py`) y se verificó con `curl` en los 7 idiomas.
+
+**Moraleja**: cuando se re-traduce después de un gotcha #3, hay que
+diffear explícitamente contra `dump_terms(view_id)` **de cada vista**
+en vez de confiar en una lista de "vistas ya traducidas" — sobre todo
+header/footer/home, que cambian seguido y aparecen en todas las
+páginas, así que un faltante ahí es el más visible de todos.
+
 ## ⚠️ Gotcha #2: `request.redirect()` no preserva el idioma
 
 Encontrado y corregido el 26/08/2026, al agregar el formulario de
