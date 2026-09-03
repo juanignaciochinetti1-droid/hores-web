@@ -276,17 +276,68 @@
                     color: #c26a1e !important;
                 }
                 /* Pasos del checkout (Orden / Dirección / Pago): el paso
-                   activo es un div con clase fw-bold, los ya recorridos
-                   son links comunes — ninguno trae una clase de color
-                   propia. */
+                   activo es un div name="step_name" con clase fw-bold, el
+                   paso pendiente es un div name="step_name" con clase
+                   text-muted (website.step_wizard, ambos vía t-if
+                   is_current_step/not_completed_step), pero el paso YA
+                   RECORRIDO es un caso aparte: se renderiza en el t-else
+                   de esa plantilla como <a><div class="d-flex
+                   align-items-center">...</div></a>, SIN el atributo
+                   name="step_name" (confirmado en el fuente de Odoo,
+                   website/views/website_templates.xml). El primer intento
+                   de esto apuntaba todo por [name="step_name"] y el paso
+                   recorrido quedaba afuera —se notaba recién al volver
+                   atrás desde Dirección/Pago, cuando "Orden" pasa a ser
+                   ese caso. Se agrega "a > div" para cubrir también ese
+                   tercer estado. */
+                .oe_website_sale .o_wizard [name="step_name"],
+                .oe_website_sale .o_wizard a > div {
+                    padding: 7px 16px;
+                    border-radius: 20px;
+                    border: 1px solid #e8e3d9;
+                    font-weight: 600;
+                    transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+                }
                 .oe_website_sale .o_wizard a {
                     color: #8a7a67;
                 }
                 .oe_website_sale .o_wizard a:hover {
                     color: #c26a1e;
                 }
+                .oe_website_sale .o_wizard a:hover > div {
+                    border-color: #c26a1e;
+                }
                 .oe_website_sale .o_wizard .fw-bold {
-                    color: #c26a1e !important;
+                    color: #fff !important;
+                    background: #c26a1e;
+                    border-color: #c26a1e;
+                }
+                .oe_website_sale .o_wizard .text-muted {
+                    border-style: dashed;
+                }
+                /* La flechita entre chips: el glifo de FontAwesome
+                   (fa-angle-right) no está renderizando bien en este
+                   entorno (aparece como "tofu box", el cuadrado de
+                   reemplazo típico de un carácter que la fuente no
+                   tiene) — probado también con un carácter de texto
+                   plano ("›") y pasaba lo mismo (esa puntuación en
+                   particular tampoco está en todas las fuentes). Se
+                   dibuja la flechita en CSS puro (dos bordes rotados,
+                   sin texto ni glifo de ningún tipo) para que no dependa
+                   de ninguna fuente y ande seguro en cualquier entorno. */
+                .oe_website_sale .o_wizard .fa-angle-right {
+                    font-size: 0 !important;
+                    display: inline-block !important;
+                    width: 6px !important;
+                    height: 6px !important;
+                    margin: 0 6px !important;
+                    vertical-align: middle;
+                    border-right: 2px solid #8a7a67;
+                    border-top: 2px solid #8a7a67;
+                    border-bottom: none;
+                    border-left: none;
+                    transform: rotate(45deg);
+                    opacity: .6;
                 }
                 /* Selector de cantidad (+/-) e input de código de descuento */
                 .oe_website_sale .input-group .btn {
@@ -304,6 +355,57 @@
                 .oe_website_sale .form-control:focus {
                     border-color: #c26a1e !important;
                     box-shadow: 0 0 0 .2rem rgba(194,106,30,.15) !important;
+                }
+                /* Ícono del carrito vacío: es un SVG nativo de Odoo que
+                   pinta el carrito con fill="currentColor" y un par de
+                   detalles con var(--o-color-1)/var(--o-color-3) (slots de
+                   color del theme builder) — quedaba en el gris genérico
+                   por defecto (#D9D9D9/#000) en vez de la paleta del
+                   sitio. Definiendo esas mismas variables acá arriba (se
+                   heredan al SVG) y el color de texto del contenedor
+                   (para el currentColor) se recolorea sin tocar el SVG.
+                   OJO: --o-color-1/3 son los slots de color GENÉRICOS del
+                   theme builder de Odoo — cualquier otro snippet nativo
+                   (badges, ribbons, otro SVG con tema) que ande adentro de
+                   .oe_website_sale también los lee. Por eso van acotados a
+                   .js_cart_lines (el contenedor puntual de este ícono), no
+                   a .oe_website_sale entero. */
+                .oe_website_sale .js_cart_lines {
+                    --o-color-1: #f0dcc0;
+                    --o-color-3: #c26a1e;
+                }
+                .oe_website_sale .js_cart_lines svg {
+                    color: #b0a390;
+                }
+                /* Paridad de hover/foco con el resto del sitio: estas
+                   pantallas nativas de website_sale no están dentro de
+                   .oe_structure (ver comentario del template más arriba),
+                   así que no heredaban ni el lift+sombra al hover de los
+                   botones ni el foco visible por teclado que sí tiene
+                   todo lo demás — quedaban con el hover plano de
+                   Bootstrap y sin foco visible al navegar con Tab. */
+                .oe_website_sale a, .oe_website_sale button {
+                    transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+                }
+                /* :not(.input-group .btn) -- el selector de cantidad (+/-)
+                   y el botón "Aplicar" del código de descuento viven
+                   pegados a un input dentro de un .input-group; levantarlos
+                   2px al hover los despega del input vecino y rompe la
+                   píldora (visto en pantalla: el "-" queda flotando por
+                   encima del número). Esos ya tienen su propio hover más
+                   sobrio (fondo/color, ver más abajo) — no necesitan el
+                   lift+sombra del resto de los botones. */
+                .oe_website_sale .btn:not(.input-group .btn):hover {
+                    transform: translateY(-2px);
+                    filter: brightness(1.07);
+                    box-shadow: 0 8px 18px rgba(0,0,0,.14);
+                }
+                .oe_website_sale a:focus-visible,
+                .oe_website_sale button:focus-visible,
+                .oe_website_sale input:focus-visible,
+                .oe_website_sale textarea:focus-visible {
+                    outline: 2.5px solid #c26a1e;
+                    outline-offset: 2px;
                 }
             </style>
         </xpath>

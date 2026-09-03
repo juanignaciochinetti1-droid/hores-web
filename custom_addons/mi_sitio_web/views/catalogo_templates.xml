@@ -40,8 +40,13 @@
   .oe_structure .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
   .oe_structure .reveal.is-visible { opacity: 1; transform: none; }
 
-  /* Tarjeta con sombra + lift al hover, reusable en todo el sitio */
+  /* Tarjeta con sombra + lift al hover, reusable en todo el sitio.
+     El radio va con !important porque cada instancia traía su propio
+     border-radius inline (12/13/14/15/16px sueltos, sin ningún criterio)
+     y el inline gana por especificidad — así queda un solo valor en
+     todo el sitio sin tener que tocar decenas de estilos inline. */
   .oe_structure .hc-card {
+    border-radius: 14px !important;
     box-shadow: 0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);
     transition: transform .25s ease, box-shadow .25s ease;
   }
@@ -49,6 +54,60 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(36,29,23,.08), 0 18px 34px rgba(36,29,23,.1);
   }
+
+  /* Jerarquía de botones: primario (acción principal, sólido) vs
+     secundario (acción alternativa, contorno) — antes todos los CTA
+     usaban el mismo naranja sólido sin distinguir cuál es la acción
+     principal de la página/sección. */
+  .oe_structure .hc-btn-primary,
+  .oe_structure .hc-btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 26px; border-radius: 9px;
+    font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 15px;
+    cursor: pointer;
+  }
+  .oe_structure .hc-btn-primary {
+    background: #c26a1e; color: #fff; border: 1px solid #c26a1e;
+  }
+  .oe_structure .hc-btn-secondary {
+    background: transparent; color: #241d17; border: 1px solid #d9ccb9;
+  }
+  .oe_structure .hc-btn-secondary:hover { border-color: #c26a1e; color: #c26a1e; }
+  /* Variante para usarse sobre fondos oscuros (hero, secciones oscuras).
+     El hover de acá abajo pisa el de arriba combinando ambas clases en
+     el selector (más específico de verdad, no solo "el que está más
+     abajo en el archivo") -- con la misma especificidad que tenía antes,
+     alguien podía mover este bloque sin querer y el botón oscuro
+     quedaba hover-eando en naranja sobre una foto, ilegible. */
+  .oe_structure .hc-btn-secondary--on-dark {
+    color: #fff; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.08);
+    backdrop-filter: blur(4px);
+  }
+  .oe_structure .hc-btn-secondary.hc-btn-secondary--on-dark:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+  /* El lift+sombra al hover de más arriba solo engancha links/botones con
+     border-radius en el style INLINE (ver comentario de esa regla) —
+     estos botones nuevos van por class, no por style, así que quedaban
+     sin ese hover. Se repite acá para no depender del truco de arriba. */
+  .oe_structure .hc-btn-primary:hover,
+  .oe_structure .hc-btn-secondary:hover,
+  .oe_structure .hc-btn-secondary--on-dark:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.07);
+    box-shadow: 0 8px 18px rgba(0,0,0,.14);
+  }
+
+  /* Links de tipo "leer más →": la flecha se desliza al hover en vez de
+     quedar estática, mismo detalle que ya tienen muchos sitios prolijos.
+     A propósito NO fija display/gap acá -- algunos usos son botones (con
+     su propio display:inline-flex inline) y otros son texto plano dentro
+     de una tarjeta que necesita display:block (la tarjeta de producto de
+     la home); si esta clase impusiera su propio display, en ese segundo
+     caso ganaría por casualidad el estilo inline y quedaría un choque
+     latente. Sin display propio, la flecha solo depende de que
+     .hc-arrow sea inline-block (ver regla siguiente), funciona igual de
+     bien suelta en texto corrido que dentro de un botón flex. */
+  .oe_structure .hc-arrow { display: inline-block; transition: transform .2s ease; }
+  .oe_structure .hc-link-arrow:hover .hc-arrow { transform: translateX(4px); }
 
   /* Tarjeta de producto: zoom de imagen + lift al hover */
   .oe_structure .hc-product-card .hc-product-thumb { overflow: hidden; }
@@ -404,7 +463,7 @@
                   <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
                   <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 14px;" t-esc="p.summary"/>
                 </a>
-                <a t-attf-href="/producto/#{p.id}" style="display:inline-block; font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ficha técnica →</a>
+                <a t-attf-href="/producto/#{p.id}" class="hc-link-arrow" style="display:inline-flex; font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ficha técnica <span class="hc-arrow">→</span></a>
                 <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
               </div>
             </t>
@@ -473,7 +532,7 @@
                 <span t-if="p.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">A pedido</span>
                 <span t-elif="p.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-left:10px;">Sin stock</span>
                 <p style="font-size:15px; line-height:1.6; color:#5a4f44; margin:8px 0 18px;" t-esc="p.summary"/>
-                <a t-attf-href="/producto/#{p.id}" style="font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ver ficha técnica completa →</a>
+                <a t-attf-href="/producto/#{p.id}" class="hc-link-arrow" style="font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ver ficha técnica completa <span class="hc-arrow">→</span></a>
                 <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
               </div>
             </div>
@@ -716,27 +775,27 @@
     <t t-set="website_meta_description">Gestión de inocuidad certificada ISO 22000:2018. Moldes de papel aptos para contacto directo con alimentos, con control de calidad en cada etapa de producción.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
-      <div style="max-width:100%; overflow-x:hidden; background:#f5f6f6;">
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
         <t t-call="mi_sitio_web.site_header"/>
 
         <!-- Hero -->
-        <section style="background:#ffffff; border-bottom:1px solid #e7e9eb;">
+        <section style="border-bottom:1px solid #e8e3d9;">
           <div style="max-width:1200px; margin:0 auto; padding:34px 28px 0;">
-            <div style="font-size:13px; color:#8a9099;"><a href="/mi-sitio" style="color:#8a9099;">Inicio</a> <span style="opacity:.6;">/</span> Calidad</div>
+            <div style="font-size:13px; color:#8a7a67;"><a href="/mi-sitio" style="color:#8a7a67;">Inicio</a> <span style="opacity:.6;">/</span> Calidad</div>
           </div>
           <div style="max-width:1200px; margin:0 auto; padding:44px 28px 60px; display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;">
             <div>
               <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:20px;">
                 <span style="width:26px; height:2px; background:#c26a1e; display:inline-block;"></span> Calidad y certificaciones
               </div>
-              <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.2vw,54px); line-height:1.06; letter-spacing:-.015em; margin:0 0 18px; color:#1c2124;">Inocuidad controlada en cada etapa</h1>
-              <p style="font-size:18px; line-height:1.6; color:#565c62; margin:0 0 28px; max-width:32em;">Todos nuestros productos están autorizados para el contacto directo con alimentos y se fabrican bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
+              <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(36px,4.2vw,54px); line-height:1.06; letter-spacing:-.015em; margin:0 0 18px; color:#241d17;">Inocuidad controlada en cada etapa</h1>
+              <p style="font-size:18px; line-height:1.6; color:#5a4f44; margin:0 0 28px; max-width:32em;">Todos nuestros productos están autorizados para el contacto directo con alimentos y se fabrican bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
               <div style="display:inline-flex; align-items:center; gap:12px; background:#f6ede1; border:1px solid #ecd9bf; border-radius:10px; padding:12px 18px;">
                 <span style="width:34px; height:34px; border-radius:8px; background:#c26a1e; color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Source Serif 4',serif; font-weight:700;">✓</span>
-                <span style="font-size:14px; color:#4a4f54;"><strong style="color:#1c2124;">ISO 22000:2018</strong> — Gestión de inocuidad certificada</span>
+                <span style="font-size:14px; color:#5a4f44;"><strong style="color:#241d17;">ISO 22000:2018</strong> — Gestión de inocuidad certificada</span>
               </div>
             </div>
-            <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e7e9eb; box-shadow:0 20px 50px rgba(30,40,50,.08);">
+            <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #e8e3d9; box-shadow:0 20px 50px rgba(30,40,50,.08);">
               <img src="/mi_sitio_web/static/src/img/Gemini_Generated_Image_2w0ia32w0ia32w0i.jpeg" alt="Control de calidad en planta Cartotécnica Hores — inspección de lotes" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
             </div>
           </div>
@@ -744,55 +803,55 @@
 
         <!-- Métricas -->
         <section class="reveal" style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
-          <div class="hc-card" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e7e9eb; border-radius:14px; overflow:hidden; background:#fff;">
-            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+          <div class="hc-card" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e8e3d9; border-radius:14px; overflow:hidden; background:#fff;">
+            <div style="padding:28px 24px; border-right:1px solid #efe6d8;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
-              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Gestión de inocuidad certificada (2018)</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#5a4f44;">Gestión de inocuidad certificada (2018)</div>
             </div>
-            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+            <div style="padding:28px 24px; border-right:1px solid #efe6d8;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">100%</div>
-              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Productos aptos para contacto con alimentos</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#5a4f44;">Productos aptos para contacto con alimentos</div>
             </div>
-            <div style="padding:28px 24px; border-right:1px solid #eef0f1;">
+            <div style="padding:28px 24px; border-right:1px solid #efe6d8;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">Trazable</div>
-              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Control de lote y materia prima</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#5a4f44;">Control de lote y materia prima</div>
             </div>
             <div style="padding:28px 24px;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">+31 años</div>
-              <div style="font-size:13.5px; line-height:1.5; color:#565c62;">Experiencia fabricando</div>
+              <div style="font-size:13.5px; line-height:1.5; color:#5a4f44;">Experiencia fabricando</div>
             </div>
           </div>
         </section>
 
         <!-- Inocuidad alimentaria -->
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:48px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:48px 28px; border-top:1px solid #e8e3d9;">
           <div style="display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center;">
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">Inocuidad alimentaria</div>
-              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#1c2124;">Materiales aptos, procesos trazables</h2>
-              <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0 0 16px;">Trabajamos con materiales aptos para uso alimentario y controlamos la trazabilidad de la materia prima. Cada lote se produce siguiendo procedimientos documentados que garantizan condiciones seguras de higiene y manipulación.</p>
-              <p style="font-size:16.5px; line-height:1.65; color:#565c62; margin:0;">La gestión de inocuidad certificada ISO 22000:2018 ordena todos nuestros procesos: desde la recepción de insumos hasta el despacho del producto terminado.</p>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 16px; color:#241d17;">Materiales aptos, procesos trazables</h2>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 16px;">Trabajamos con materiales aptos para uso alimentario y controlamos la trazabilidad de la materia prima. Cada lote se produce siguiendo procedimientos documentados que garantizan condiciones seguras de higiene y manipulación.</p>
+              <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0;">La gestión de inocuidad certificada ISO 22000:2018 ordena todos nuestros procesos: desde la recepción de insumos hasta el despacho del producto terminado.</p>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
-                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Materia prima apta</h3>
-                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Insumos habilitados para contacto con alimentos.</p>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#241d17;">Materia prima apta</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#5a4f44; margin:0;">Insumos habilitados para contacto con alimentos.</p>
               </div>
-              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
-                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Higiene en planta</h3>
-                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Procedimientos de limpieza y manipulación documentados.</p>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#241d17;">Higiene en planta</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#5a4f44; margin:0;">Procedimientos de limpieza y manipulación documentados.</p>
               </div>
-              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
-                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Control por lote</h3>
-                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Verificación de medidas y materiales en cada producción.</p>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#241d17;">Control por lote</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#5a4f44; margin:0;">Verificación de medidas y materiales en cada producción.</p>
               </div>
-              <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:12px; padding:22px; background:#fff;">
+              <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; padding:22px; background:#fff;">
                 <div style="width:36px; height:36px; border-radius:8px; border:1.5px solid #c26a1e; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:14px;">✓</div>
-                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#1c2124;">Trazabilidad</h3>
-                <p style="font-size:13.5px; line-height:1.5; color:#565c62; margin:0;">Registro desde la recepción hasta el despacho.</p>
+                <h3 style="font-size:15.5px; font-weight:600; margin:0 0 6px; color:#241d17;">Trazabilidad</h3>
+                <p style="font-size:13.5px; line-height:1.5; color:#5a4f44; margin:0;">Registro desde la recepción hasta el despacho.</p>
               </div>
             </div>
           </div>
@@ -806,7 +865,7 @@
           <div style="max-width:1200px; margin:0 auto; padding:56px 28px;">
             <div style="max-width:44em; margin-bottom:32px;">
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Política de inocuidad</div>
-              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Nuestros objetivos prioritarios</h2>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#241d17;">Nuestros objetivos prioritarios</h2>
             </div>
             <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px;">
               <div style="display:flex; gap:14px; align-items:flex-start;">
@@ -830,33 +889,33 @@
         </section>
 
         <!-- Proceso -->
-        <section class="reveal" style="background:#ffffff; border-top:1px solid #e7e9eb; border-bottom:1px solid #e7e9eb;">
+        <section class="reveal" style="border-top:1px solid #e8e3d9; border-bottom:1px solid #e8e3d9;">
           <div style="max-width:1200px; margin:0 auto; padding:60px 28px;">
             <div style="max-width:44em; margin-bottom:38px;">
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Nuestro proceso</div>
-              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Control en cada etapa</h2>
-              <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Un sistema documentado que asegura la misma calidad en cada lote.</p>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#241d17;">Control en cada etapa</h2>
+              <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0;">Un sistema documentado que asegura la misma calidad en cada lote.</p>
             </div>
             <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
               <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
                 <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">01</div>
-                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Recepción de insumos</h3>
-                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Control de proveedores y materia prima apta.</p>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#241d17;">Recepción de insumos</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Control de proveedores y materia prima apta.</p>
               </div>
               <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
                 <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">02</div>
-                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Producción</h3>
-                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Higiene y manipulación bajo procedimientos.</p>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#241d17;">Producción</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Higiene y manipulación bajo procedimientos.</p>
               </div>
               <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
                 <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">03</div>
-                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Control de calidad</h3>
-                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Verificación por lote de medidas y materiales.</p>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#241d17;">Control de calidad</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Verificación por lote de medidas y materiales.</p>
               </div>
               <div style="border-left:2px solid #f0ddc4; padding-left:22px;">
                 <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; color:#c26a1e; letter-spacing:.08em; margin-bottom:14px;">04</div>
-                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#1c2124;">Despacho</h3>
-                <p style="font-size:14px; line-height:1.55; color:#565c62; margin:0;">Trazabilidad hasta la entrega del producto.</p>
+                <h3 style="font-size:16.5px; font-weight:600; margin:0 0 8px; color:#241d17;">Despacho</h3>
+                <p style="font-size:14px; line-height:1.55; color:#5a4f44; margin:0;">Trazabilidad hasta la entrega del producto.</p>
               </div>
             </div>
           </div>
@@ -866,27 +925,27 @@
         <section class="reveal" style="max-width:1200px; margin:0 auto; padding:60px 28px;">
           <div style="max-width:44em; margin-bottom:30px;">
             <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Certificaciones</div>
-            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Documentación disponible</h2>
-            <p style="font-size:16px; line-height:1.55; color:#565c62; margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
+            <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#241d17;">Documentación disponible</h2>
+            <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
-            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
-              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Certificado ISO 22000:2018</div>
-              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Sistema de gestión de inocuidad de los alimentos vigente.</p>
-              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#241d17;">Certificado ISO 22000:2018</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#5a4f44; margin:0; flex:1;">Sistema de gestión de inocuidad de los alimentos vigente.</p>
+              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Certificado%20ISO%2022000%3A2018" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email <span class="hc-arrow">→</span></a>
             </div>
-            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
-              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Aptitud sanitaria</div>
-              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Documentación que acredita el uso en contacto con alimentos.</p>
-              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email →</a>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#241d17;">Aptitud sanitaria</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#5a4f44; margin:0; flex:1;">Documentación que acredita el uso en contacto con alimentos.</p>
+              <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20Aptitud%20Sanitaria" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Solicitar por email <span class="hc-arrow">→</span></a>
             </div>
-            <div class="hc-card" style="border:1px solid #e7e9eb; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
+            <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
-              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#1c2124;">Fichas técnicas</div>
-              <p style="font-size:14.5px; line-height:1.55; color:#565c62; margin:0; flex:1;">Especificaciones de cada producto: medidas, gramaje y material.</p>
-              <a href="/compras" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Ver catálogo →</a>
+              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:#241d17;">Fichas técnicas</div>
+              <p style="font-size:14.5px; line-height:1.55; color:#5a4f44; margin:0; flex:1;">Especificaciones de cada producto: medidas, gramaje y material.</p>
+              <a href="/compras" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Ver catálogo <span class="hc-arrow">→</span></a>
             </div>
           </div>
         </section>
@@ -944,7 +1003,7 @@
         </section>
 
         <!-- Pilares -->
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px; border-top:1px solid #e8e3d9;">
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
             <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:15px; padding:30px; background:#fff;">
               <div style="width:46px; height:46px; border-radius:10px; background:#e7f0dc; display:flex; align-items:center; justify-content:center; color:#3f7d38; font-size:20px; margin-bottom:18px;">🌳</div>
@@ -965,7 +1024,7 @@
         </section>
 
         <!-- Bosques responsables -->
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px; border-top:1px solid #e8e3d9;">
           <div style="display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center;">
             <div>
               <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:14px;">Bosques responsables</div>
@@ -983,7 +1042,7 @@
              (Cartotécnica Hores SRL, revisión 06, 24/06/2024, aprobado por
              Dirección) — sección "Proveedores y medio ambiente" del
              documento, no una descripción nuestra. -->
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px;">
+        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:44px 28px; border-top:1px solid #e8e3d9;">
           <div style="max-width:44em; margin-bottom:30px;">
             <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#3f7d38; margin-bottom:10px;">Residuos y agua</div>
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:#1c2124;">Cómo cuidamos lo que sale de planta</h2>
@@ -1327,7 +1386,7 @@
               <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:32px; width:auto;"/>
               <span style="font-size:13.5px; color:var(--h-text2);">Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
             </div>
-            <a href="/mi-sitio" style="font-size:13px; font-weight:600; color:var(--h-accent);">Volver al sitio →</a>
+            <a href="/mi-sitio" class="hc-link-arrow" style="font-size:13px; font-weight:600; color:var(--h-accent);">Volver al sitio <span class="hc-arrow">→</span></a>
           </div>
         </footer>
         <button class="hc-back-to-top" style="right:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
