@@ -408,6 +408,35 @@
                     outline-offset: 2px;
                 }
             </style>
+            <!-- Botón "Tienda" del carrito vacío: nativo de website_sale,
+                 apunta siempre a /shop (que ya redirige a /compras, el
+                 catálogo completo) sin importar de dónde venía el
+                 visitante, a pedido explícito (04/09/2026, con
+                 screenshot): si estaba viendo la ficha de un producto
+                 puntual, "Tienda" debería devolverlo ahí, no mandarlo al
+                 catálogo entero de nuevo. Se resuelve con JS liviano en
+                 vez de tocar la plantilla nativa del carrito vacío (mismo
+                 criterio del resto de este archivo): se toma
+                 document.referrer (la página desde la que llegó) y, si
+                 matchea /producto/<id>, se lo usa como destino; si no, va
+                 a la sección de productos de la home en vez del catálogo
+                 completo (a pedido explícito, mismo mensaje). El selector
+                 (".js_cart_lines a") agarra el único link del bloque de
+                 carrito vacío sin depender del texto del botón, que
+                 cambia según el idioma. -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var btn = document.querySelector('.js_cart_lines a');
+                    if (!btn) return;
+                    var ref = document.referrer || '';
+                    var vieneDeUnProducto = /\/producto\/\d+/.test(ref);
+                    if (vieneDeUnProducto) {
+                        btn.setAttribute('href', ref);
+                    } else {
+                        btn.setAttribute('href', '/mi-sitio#productos');
+                    }
+                });
+            </script>
         </xpath>
     </template>
 

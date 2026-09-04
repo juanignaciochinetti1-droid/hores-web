@@ -737,6 +737,10 @@ class MiSitioWeb(http.Controller):
     def compromiso(self, **kwargs):
         return request.render('mi_sitio_web.compromiso_template', {})
 
+    @http.route('/privacidad', type='http', auth='public', website=True, sitemap=True)
+    def privacidad(self, **kwargs):
+        return request.render('mi_sitio_web.privacidad_template', {})
+
     @http.route('/historia', type='http', auth='public', website=True, sitemap=True)
     def historia(self, **kwargs):
         data = _historia_data(request.env.lang)
@@ -1137,9 +1141,34 @@ class WebsiteSaleHores(WebsiteSale):
             # partner propio asignado al carrito) -- no hay con qué
             # buscar pedidos anteriores, se trata como nuevo.
             return True
-        domain = [('id', '!=', order_sudo.id)]
+        # state='sale': solo cuenta como "ya compró antes" un pedido
+        # REALMENTE confirmado -- ni un carrito abandonado (draft) ni,
+        # sobre todo, uno cancelado. Encontrado el 04/09/2026 (bug real,
+        # reportado por el usuario: "no te pide los datos"): sin este
+        # filtro, el propio pedido que este método cancela un par de
+        # líneas más abajo (para un cliente nuevo, ver
+        # _crear_oportunidad_desde_carrito) quedaba contando como
+        # "pedido anterior" -- la SEGUNDA vez que la misma persona (mismo
+        # email, mismo navegador) pedía algo, la clasificaba como
+        # cliente existente por error: saltaba directo a pago sin pasar
+        # por CRM, y como el navegador ya tenía guardados nombre/email/
+        # teléfono de la vez anterior (Odoo reutiliza esos datos dentro
+        # de la misma sesión, comportamiento nativo), ni siquiera volvía
+        # a pedirlos -- daba la sensación de que el pedido se hacía sin
+        # ningún dato.
+        domain = [('id', '!=', order_sudo.id), ('state', '=', 'sale')]
         if partner.email:
-            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=', partner.email)]
+            # '=ilike' para que "Juan@Gmail.com" y "juan@gmail.com" cuenten
+            # como el mismo cliente (encontrado el 04/09/2026 en revisión
+            # de código: con '=' a secas, una mayúscula distinta entre un
+            # pedido y el siguiente lo clasificaba como cliente nuevo otra
+            # vez). OJO: '=ilike' interpreta '%'/'_' del valor como
+            # comodines de SQL igual que 'ilike' (no es solo case-
+            # insensitive) -- mismo bug de fondo que el de
+            # consultar_pedido() más abajo si no se escapan. Se neutralizan
+            # acá antes de armar el dominio.
+            email_escapado = re.sub(r'([%_])', r'\\\1', partner.email)
+            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=ilike', email_escapado)]
         else:
             domain += [('partner_id', '=', partner.id)]
         return not request.env['sale.order'].sudo().search_count(domain, limit=1)
@@ -1176,10 +1205,25 @@ class WebsiteSaleHores(WebsiteSale):
             body='Oportunidad creada automáticamente: cliente nuevo desde el sitio web.',
             partner_ids=lead.team_id.member_ids.mapped('partner_id').ids,
         )
+        # A quién asignarle la actividad: el líder del equipo, o si no
+        # hay líder cargado, cualquier miembro del equipo -- NUNCA
+        # request.env.user acá (encontrado en revisión de código,
+        # 04/09/2026): esta ruta es pública/anónima, así que
+        # request.env.user en este contexto es el "Usuario Público" de
+        # Odoo, no una persona real -- si el equipo se queda sin líder
+        # (config que alguien podría cambiar sin querer), la actividad
+        # quedaba asignada a una cuenta que nadie mira, invisible en la
+        # práctica. Como último recurso, el admin en vez del usuario
+        # público. OJO: crm.team.member_ids YA es un recordset de
+        # res.users (no de crm.team.member) -- .user_id encima de eso
+        # revienta con AttributeError ("res.users no tiene user_id"),
+        # encontrado en una segunda revisión de código antes de
+        # confirmar este mismo cambio.
+        responsable = lead.team_id.user_id or lead.team_id.member_ids[:1]
         lead.activity_schedule(
             'mail.mail_activity_data_todo',
             summary='Cliente nuevo desde el sitio — armar presupuesto/seguimiento',
-            user_id=lead.team_id.user_id.id if lead.team_id and lead.team_id.user_id else request.env.user.id,
+            user_id=responsable.id if responsable else request.env.ref('base.user_admin').id,
         )
         return lead
 

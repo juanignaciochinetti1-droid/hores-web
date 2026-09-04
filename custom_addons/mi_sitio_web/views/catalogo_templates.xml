@@ -401,7 +401,7 @@
       </div>
     </div>
     <div style="background:#e6e6e4; border-top:1px solid #d7d7d3;">
-      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 Cartotécnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
+      <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 Cartotécnica Hores — Moldes de papel para panificación</span><span><a href="/privacidad" style="color:#5c5c58;">Política de Privacidad</a> · Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
     </div>
   </footer>
   <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20Cartot%C3%A9cnica%20Hores" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
@@ -958,6 +958,84 @@
               <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Escribinos y te enviamos los certificados y fichas técnicas correspondientes.</p>
             </div>
             <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </t>
+</template>
+
+<!-- ============ /privacidad ============ -->
+<!-- Aviso básico de privacidad (Ley 25.326 de Protección de Datos
+     Personales): redactado en lenguaje simple, cubre los 3 lugares
+     del sitio donde se piden datos personales (contacto, checkout,
+     postulación laboral). No reemplaza una revisión legal: es un aviso
+     de buena fe sobre qué se recolecta y para qué, no una certificación
+     de cumplimiento. -->
+<template id="privacidad_template" name="Mi Sitio - Privacidad">
+  <t t-call="website.layout">
+    <t t-set="no_header" t-value="True"/>
+    <t t-set="title">Política de Privacidad — Cartotécnica Hores</t>
+    <t t-set="website_meta_description">Qué datos personales recolecta Cartotécnica Hores, para qué se usan y cómo ejercer tus derechos según la Ley 25.326 de Protección de Datos Personales.</t>
+    <div id="wrap" class="oe_structure oe_empty">
+      <t t-call="mi_sitio_web.head_assets"/>
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+        <t t-call="mi_sitio_web.site_header"/>
+
+        <section style="border-bottom:1px solid #e8e3d9;">
+          <div style="max-width:840px; margin:0 auto; padding:34px 28px 0;">
+            <div style="font-size:13px; color:#8a7a67;"><a href="/mi-sitio" style="color:#8a7a67;">Inicio</a> <span style="opacity:.6;">/</span> Privacidad</div>
+          </div>
+          <div style="max-width:840px; margin:0 auto; padding:34px 28px 56px;">
+            <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:clamp(30px,4vw,42px); line-height:1.1; letter-spacing:-.015em; margin:0 0 14px; color:#241d17;">Política de Privacidad</h1>
+            <p style="font-size:15px; line-height:1.6; color:#8a7a67; margin:0;">Última actualización: septiembre de 2026</p>
+          </div>
+        </section>
+
+        <section class="reveal" style="max-width:840px; margin:0 auto; padding:48px 28px 70px;">
+          <div style="display:flex; flex-direction:column; gap:36px;">
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Qué datos pedimos y dónde</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0 0 12px;">Cartotécnica Hores SRL ("nosotros") recolecta datos personales en tres lugares del sitio, siempre porque el visitante los completa voluntariamente:</p>
+              <ul style="font-size:16px; line-height:1.8; color:#5a4f44; margin:0; padding-left:22px;">
+                <li><strong style="color:#241d17;">Formulario de contacto</strong>: nombre, empresa, email y el mensaje que escribís.</li>
+                <li><strong style="color:#241d17;">Pedido / checkout</strong>: nombre, empresa, email, teléfono y tipo/número de documento (DNI, CUIT, etc.), para poder coordinar el pedido con vos.</li>
+                <li><strong style="color:#241d17;">Postulación laboral</strong>: nombre, email, teléfono y el currículum (CV) que adjuntás.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Para qué los usamos</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0;">Únicamente para responder tu consulta, coordinar el pedido que hiciste (incluyendo la entrega, que se coordina por WhatsApp o email) o evaluar tu postulación laboral. No usamos estos datos para ningún otro fin.</p>
+            </div>
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Con quién los compartimos</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0;">No vendemos ni cedemos tus datos a terceros. Solo se comparten con quien haga falta para cumplir lo que pediste — por ejemplo, con el transporte al coordinar una entrega — y nada más que lo necesario para eso.</p>
+            </div>
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Cuánto tiempo los conservamos</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0;">Mientras dure la relación comercial o el proceso de postulación, y después el tiempo que exijan las obligaciones legales (por ejemplo, las impositivas o contables) que apliquen a cada caso.</p>
+            </div>
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Tus derechos</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0 0 12px;">De acuerdo a la Ley 25.326 de Protección de Datos Personales, tenés derecho a acceder, rectificar, actualizar o pedir la supresión de tus datos personales en cualquier momento. La Agencia de Acceso a la Información Pública, como órgano de control de la Ley 25.326, tiene la atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de las normas sobre protección de datos personales.</p>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0;">Para ejercer cualquiera de estos derechos, escribinos a <a href="mailto:administracion@hores.com.ar" style="color:#c26a1e; font-weight:600;">administracion@hores.com.ar</a>.</p>
+            </div>
+
+            <div>
+              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:#241d17;">Cookies</h2>
+              <p style="font-size:16px; line-height:1.7; color:#5a4f44; margin:0;">El sitio usa únicamente las cookies técnicas necesarias para que funcione el carrito de compras y la sesión de navegación — no usamos cookies de seguimiento ni publicidad.</p>
+            </div>
+
+            <div style="border-top:1px solid #e8e3d9; padding-top:24px;">
+              <p style="font-size:14px; line-height:1.6; color:#8a7a67; margin:0;">Esta política puede actualizarse; la fecha de la última actualización figura arriba de esta página.</p>
+            </div>
+
           </div>
         </section>
 
