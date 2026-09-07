@@ -9,6 +9,7 @@ from markupsafe import Markup
 from odoo import http
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.http import request
+from odoo.tools import escape_psql
 
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 NOMBRE_MAX_LEN = 200
@@ -1141,11 +1142,12 @@ class WebsiteSaleHores(WebsiteSale):
             # partner propio asignado al carrito) -- no hay con qué
             # buscar pedidos anteriores, se trata como nuevo.
             return True
-        # state='sale': solo cuenta como "ya compró antes" un pedido
-        # REALMENTE confirmado -- ni un carrito abandonado (draft) ni,
-        # sobre todo, uno cancelado. Encontrado el 04/09/2026 (bug real,
-        # reportado por el usuario: "no te pide los datos"): sin este
-        # filtro, el propio pedido que este método cancela un par de
+        # No cuenta como "ya compró antes" un carrito abandonado (draft/
+        # sent, nunca confirmado) ni, sobre todo, un pedido cancelado por
+        # el propio sitio al detectar un cliente nuevo (ver más abajo,
+        # mi_sitio_lead_cancelado). Encontrado el 04/09/2026 (bug real,
+        # reportado por el usuario: "no te pide los datos"): sin excluir
+        # esto último, el propio pedido que este método cancela un par de
         # líneas más abajo (para un cliente nuevo, ver
         # _crear_oportunidad_desde_carrito) quedaba contando como
         # "pedido anterior" -- la SEGUNDA vez que la misma persona (mismo
@@ -1156,7 +1158,28 @@ class WebsiteSaleHores(WebsiteSale):
         # de la misma sesión, comportamiento nativo), ni siquiera volvía
         # a pedirlos -- daba la sensación de que el pedido se hacía sin
         # ningún dato.
-        domain = [('id', '!=', order_sudo.id), ('state', '=', 'sale')]
+        #
+        # El primer arreglo de este bug (04/09/2026) filtraba por
+        # state='sale' a secas -- de paso resolvía lo de arriba, pero
+        # traía un efecto secundario real encontrado en una revisión de
+        # código posterior: un cliente que compró de verdad y DESPUÉS
+        # canceló su propio pedido (con el botón de autogestión, ver
+        # pedido_cancelar más abajo) también quedaba tratado como
+        # "nuevo" en su siguiente compra -- ya no está en 'sale', pasó a
+        # 'cancel' igual que el caso que se quería excluir, sin forma de
+        # distinguir los dos casos solo mirando el estado actual (los dos
+        # terminan en 'cancel', uno nunca fue un pedido real y el otro
+        # sí). Por eso mi_sitio_lead_cancelado existe como marca aparte
+        # (ver models/sale_order.py): en vez de basarse en el estado,
+        # excluye puntualmente los pedidos que ESTE método canceló -- así
+        # un pedido cancelado por cualquier otro motivo (el cliente lo
+        # canceló él mismo después de confirmarlo, o alguien de Ventas lo
+        # canceló) sigue contando como "ya es cliente".
+        domain = [
+            ('id', '!=', order_sudo.id),
+            ('state', 'not in', ('draft', 'sent')),
+            ('mi_sitio_lead_cancelado', '=', False),
+        ]
         if partner.email:
             # '=ilike' para que "Juan@Gmail.com" y "juan@gmail.com" cuenten
             # como el mismo cliente (encontrado el 04/09/2026 en revisión
@@ -1165,10 +1188,13 @@ class WebsiteSaleHores(WebsiteSale):
             # vez). OJO: '=ilike' interpreta '%'/'_' del valor como
             # comodines de SQL igual que 'ilike' (no es solo case-
             # insensitive) -- mismo bug de fondo que el de
-            # consultar_pedido() más abajo si no se escapan. Se neutralizan
-            # acá antes de armar el dominio.
-            email_escapado = re.sub(r'([%_])', r'\\\1', partner.email)
-            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=ilike', email_escapado)]
+            # consultar_pedido() más abajo si no se escapan. Se usa el
+            # escape_psql() de Odoo (odoo/tools/sql.py, el mismo que usa
+            # el propio res.users de Odoo para este mismo caso) en vez de
+            # reinventarlo a mano -- la primera versión de esto (regex
+            # propia) no escapaba barras invertidas, encontrado en
+            # segunda revisión de código el mismo día.
+            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=ilike', escape_psql(partner.email))]
         else:
             domain += [('partner_id', '=', partner.id)]
         return not request.env['sale.order'].sudo().search_count(domain, limit=1)
@@ -1239,6 +1265,12 @@ class WebsiteSaleHores(WebsiteSale):
             return redirection
         if self._es_cliente_nuevo(order_sudo):
             self._crear_oportunidad_desde_carrito(order_sudo)
+            # mi_sitio_lead_cancelado=True ANTES de cancelar (no importa
+            # el orden real de escritura, pero así queda junto al resto
+            # de los cambios de este mismo pedido) -- ver el comentario
+            # largo en _es_cliente_nuevo de por qué hace falta esta marca
+            # aparte del estado en sí.
+            order_sudo.sudo().write({'mi_sitio_lead_cancelado': True})
             order_sudo.sudo().action_cancel()
             return _redirect('/mi-sitio/gracias')
         return super().shop_payment(**post)

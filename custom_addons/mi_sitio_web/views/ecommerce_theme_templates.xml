@@ -65,6 +65,22 @@
                     --bs-link-color-rgb: 194, 106, 30;
                     --bs-link-hover-color: #a85a19;
                     --bs-border-color: #e8e3d9;
+
+                    /* Recetas de hover/foco compartidas por TODO el sitio
+                       (esta plantilla inyecta en website.layout, que
+                       aplica a todas las páginas) -- antes cada archivo
+                       (catalogo_templates.xml para las páginas propias,
+                       este para el carrito/checkout nativo) tenía su
+                       propia copia calcada de estos mismos valores;
+                       ahora las dos las leen de acá, así que cambiar el
+                       "look" del hover o el foco de todo el sitio es
+                       editar estas líneas nada más, no buscar cada
+                       copia. */
+                    --hc-hover-lift: translateY(-2px);
+                    --hc-hover-brightness: brightness(1.07);
+                    --hc-hover-shadow: 0 8px 18px rgba(0,0,0,.14);
+                    --hc-focus-outline: 2.5px solid #c26a1e;
+                    --hc-focus-offset: 2px;
                 }
                 /* El franjón blanco que quedaba a los costados en pantallas
                    anchas (contenedor de 1200px centrado, con blanco puro
@@ -279,19 +295,25 @@
                    activo es un div name="step_name" con clase fw-bold, el
                    paso pendiente es un div name="step_name" con clase
                    text-muted (website.step_wizard, ambos vía t-if
-                   is_current_step/not_completed_step), pero el paso YA
-                   RECORRIDO es un caso aparte: se renderiza en el t-else
-                   de esa plantilla como <a><div class="d-flex
-                   align-items-center">...</div></a>, SIN el atributo
-                   name="step_name" (confirmado en el fuente de Odoo,
-                   website/views/website_templates.xml). El primer intento
-                   de esto apuntaba todo por [name="step_name"] y el paso
-                   recorrido quedaba afuera —se notaba recién al volver
-                   atrás desde Dirección/Pago, cuando "Orden" pasa a ser
-                   ese caso. Se agrega "a > div" para cubrir también ese
-                   tercer estado. */
-                .oe_website_sale .o_wizard [name="step_name"],
-                .oe_website_sale .o_wizard a > div {
+                   is_current_step/not_completed_step). El paso YA
+                   RECORRIDO es un caso aparte en esa misma plantilla
+                   nativa -- se renderiza sin el atributo name="step_name"
+                   de fábrica. La primera versión de esto apuntaba todo
+                   por [name="step_name"] y el paso recorrido quedaba
+                   afuera (se notaba recién al volver atrás desde
+                   Dirección/Pago); un segundo intento cubrió ese caso
+                   con un selector aparte por posición ("a > div"), pero
+                   quedaba frágil a cualquier cambio futuro en cómo Odoo
+                   arma ese HTML. Ahora se le agrega el mismo atributo
+                   name="step_name" al paso recorrido por inheritance
+                   (ver el template step_wizard_chip_hook más abajo,
+                   mismo patrón que ya usa este archivo para
+                   navigation_buttons/address_on_checkout) -- un solo
+                   selector cubre los tres estados, y si una actualización
+                   de Odoo cambia esa plantilla lo suficiente, el xpath
+                   de acá abajo falla fuerte al actualizar el módulo, no
+                   en silencio como pasaba con el selector por CSS. */
+                .oe_website_sale .o_wizard [name="step_name"] {
                     padding: 7px 16px;
                     border-radius: 20px;
                     border: 1px solid #e8e3d9;
@@ -304,7 +326,7 @@
                 .oe_website_sale .o_wizard a:hover {
                     color: #c26a1e;
                 }
-                .oe_website_sale .o_wizard a:hover > div {
+                .oe_website_sale .o_wizard a:hover [name="step_name"] {
                     border-color: #c26a1e;
                 }
                 .oe_website_sale .o_wizard .fw-bold {
@@ -396,16 +418,16 @@
                    sobrio (fondo/color, ver más abajo) — no necesitan el
                    lift+sombra del resto de los botones. */
                 .oe_website_sale .btn:not(.input-group .btn):hover {
-                    transform: translateY(-2px);
-                    filter: brightness(1.07);
-                    box-shadow: 0 8px 18px rgba(0,0,0,.14);
+                    transform: var(--hc-hover-lift);
+                    filter: var(--hc-hover-brightness);
+                    box-shadow: var(--hc-hover-shadow);
                 }
                 .oe_website_sale a:focus-visible,
                 .oe_website_sale button:focus-visible,
                 .oe_website_sale input:focus-visible,
                 .oe_website_sale textarea:focus-visible {
-                    outline: 2.5px solid #c26a1e;
-                    outline-offset: 2px;
+                    outline: var(--hc-focus-outline);
+                    outline-offset: var(--hc-focus-offset);
                 }
             </style>
             <!-- Botón "Tienda" del carrito vacío: nativo de website_sale,
@@ -414,29 +436,63 @@
                  visitante, a pedido explícito (04/09/2026, con
                  screenshot): si estaba viendo la ficha de un producto
                  puntual, "Tienda" debería devolverlo ahí, no mandarlo al
-                 catálogo entero de nuevo. Se resuelve con JS liviano en
-                 vez de tocar la plantilla nativa del carrito vacío (mismo
-                 criterio del resto de este archivo): se toma
-                 document.referrer (la página desde la que llegó) y, si
-                 matchea /producto/<id>, se lo usa como destino; si no, va
-                 a la sección de productos de la home en vez del catálogo
-                 completo (a pedido explícito, mismo mensaje). El selector
-                 (".js_cart_lines a") agarra el único link del bloque de
-                 carrito vacío sin depender del texto del botón, que
-                 cambia según el idioma. -->
+                 catálogo entero de nuevo.
+
+                 Segunda vuelta (revisión de código, mismo día): la
+                 primera versión de esto reescribía el href al cargar la
+                 página, con dos problemas reales: (1) el selector
+                 ".js_cart_lines a" no es exclusivo del botón: Odoo
+                 reusa esa misma clase para el contenedor de las líneas
+                 del carrito CUANDO SÍ hay productos (#cart_products),
+                 así que con el carrito no vacío el script terminaba
+                 pisando el link de un producto real, no el botón
+                 "Tienda"; (2) Odoo reemplaza ese bloque entero por AJAX
+                 cuando el carrito cambia sin recargar la página (sacar
+                 el último producto, por ejemplo), y el evento
+                 DOMContentLoaded no vuelve a dispararse, así que el
+                 arreglo dejaba de funcionar en ese caso.
+
+                 Se resuelve con delegación de eventos en vez de tocar
+                 el href de antemano: un solo listener en document que
+                 intercepta el click bien acotado por el href real
+                 ("/shop", el que trae de fábrica el botón "Tienda";
+                 ningún link de producto usa ese href literal) y decide
+                 el destino recién en ese momento, sin importar cuándo
+                 se cargó o se reemplazó el bloque por AJAX. document.
+                 referrer también se valida contra el propio origen del
+                 sitio antes de usarlo como destino (un sitio externo
+                 podría, en teoría, controlar ese valor). -->
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var btn = document.querySelector('.js_cart_lines a');
+                document.addEventListener('click', function (ev) {
+                    var btn = ev.target.closest('.js_cart_lines a[href="/shop"]');
                     if (!btn) return;
+                    ev.preventDefault();
                     var ref = document.referrer || '';
-                    var vieneDeUnProducto = /\/producto\/\d+/.test(ref);
-                    if (vieneDeUnProducto) {
-                        btn.setAttribute('href', ref);
-                    } else {
-                        btn.setAttribute('href', '/mi-sitio#productos');
+                    var esDelMismoSitio = ref.indexOf(window.location.origin) === 0;
+                    var vieneDeUnProducto = false;
+                    if (esDelMismoSitio) {
+                        vieneDeUnProducto = /\/producto\/\d+/.test(ref);
                     }
+                    window.location.href = vieneDeUnProducto ? ref : '/mi-sitio#productos';
                 });
             </script>
+        </xpath>
+    </template>
+
+    <!-- website.step_wizard (Orden / Dirección / Pago, arriba del
+         carrito/checkout): el paso YA RECORRIDO se renderiza sin el
+         atributo name="step_name" que sí tienen el paso activo y el
+         pendiente. Se lo agrega acá para que la CSS de arriba pueda
+         apuntar a los tres estados con un solo selector, en vez de
+         adivinar la posición del div en el HTML (ver el comentario
+         largo junto a esa CSS). Si una actualización de Odoo cambia
+         esta estructura lo suficiente como para que el xpath no
+         encuentre el div, el módulo falla al actualizar: señal clara
+         de que hay que revisar esto, en vez de un chip que
+         silenciosamente deja de verse bien. -->
+    <template id="step_wizard_chip_hook" inherit_id="website.step_wizard">
+        <xpath expr="//a[@t-else='']/div[hasclass('d-flex', 'align-items-center')]" position="attributes">
+            <attribute name="name">step_name</attribute>
         </xpath>
     </template>
 
