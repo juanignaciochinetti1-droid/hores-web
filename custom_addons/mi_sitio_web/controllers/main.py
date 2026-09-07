@@ -727,12 +727,10 @@ class MiSitioWeb(http.Controller):
 
     @http.route('/compras', type='http', auth='public', website=True, sitemap=True)
     def compras(self, **kwargs):
-        categorias = request.env['mi_sitio_web.categoria'].sudo().search([], order='sequence')
         productos = request.env['mi_sitio_web.producto'].sudo().search([
             ('is_published', '=', True),
         ], order='sequence')
         return request.render('mi_sitio_web.compras_template', {
-            'categorias': categorias,
             'productos': productos,
         })
 

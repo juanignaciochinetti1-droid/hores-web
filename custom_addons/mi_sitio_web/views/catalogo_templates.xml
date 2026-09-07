@@ -440,11 +440,6 @@
           <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Catálogo</div>
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 10px; color:#241d17;">Nuestros productos</h1>
           <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0 0 20px; max-width:44em;">Elegí una línea, revisá la ficha técnica y consultanos por WhatsApp para tu pedido.</p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
-            <t t-foreach="categorias" t-as="c">
-              <a t-attf-href="/categoria/#{c.slug}" style="border:1px solid #d9ccb9; background:#ffffff; color:#5a4f44; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600;" t-esc="c.name"/>
-            </t>
-          </div>
         </section>
 
         <section class="reveal" style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
