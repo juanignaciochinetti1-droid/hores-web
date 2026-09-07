@@ -551,6 +551,7 @@
                       <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Cantidad</span>
                       <input type="number" name="cantidad" value="1" min="1" max="100000" style="width:80px; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17; outline:none;"/>
                     </label>
+                    <button type="button" id="add-to-cart-cancel" class="hc-btn-secondary" style="padding:12px 20px; flex-shrink:0;">Cancelar</button>
                     <button type="submit" style="flex:1; background:#c26a1e; color:#fff; border:none; padding:12px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;">Confirmar</button>
                   </div>
                   <p id="add-to-cart-msg" style="display:none; font-size:13px; margin:10px 0 0;"></p>
@@ -623,6 +624,21 @@
             if (!form) return;
             var msg = document.getElementById('add-to-cart-msg');
             var select = form.querySelector('select[name="variante"]');
+
+            // "Cancelar": cierra el formulario sin agregar nada y lo deja
+            // limpio para la próxima vez (mismo criterio que si nunca se
+            // hubiera abierto) -- sin esto, la única forma de cerrarlo era
+            // volver a scrollear arriba y tocar "Agregar al carrito" de
+            // nuevo, nada obvio una vez que ya se está mirando el
+            // formulario abierto.
+            var cancelar = document.getElementById('add-to-cart-cancel');
+            if (cancelar &amp;&amp; bloque) {
+              cancelar.addEventListener('click', function () {
+                form.reset();
+                if (msg) msg.style.display = 'none';
+                bloque.style.display = 'none';
+              });
+            }
 
             function mostrarMensaje(texto, ok) {
               if (!msg) return;

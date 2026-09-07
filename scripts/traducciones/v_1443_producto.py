@@ -42,6 +42,7 @@ ROWS = [
     (SPAN12.format("Cantidad"), SPAN12.format("Cantidad"), SPAN12.format("Quantity"), SPAN12.format("Quantidade"),
      SPAN12.format("Quantità"), SPAN12.format("Quantité"), SPAN12.format("Menge"), SPAN12.format("数量")),
     ("Confirmar", "Confirmar", "Confirm", "Confirmar", "Conferma", "Confirmer", "Bestätigen", "确认"),
+    ("Cancelar", "Cancelar", "Cancel", "Cancelar", "Annulla", "Annuler", "Abbrechen", "取消"),
     ("Características", "Características", "Features", "Características", "Caratteristiche",
      "Caractéristiques", "Merkmale", "特点"),
     ("Especificaciones técnicas", "Especificaciones técnicas", "Technical specifications", "Especificações técnicas",
