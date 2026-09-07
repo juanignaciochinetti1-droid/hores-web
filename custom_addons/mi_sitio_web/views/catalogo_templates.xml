@@ -445,17 +445,12 @@
               <a t-attf-href="/categoria/#{c.slug}" style="border:1px solid #d9ccb9; background:#ffffff; color:#5a4f44; padding:9px 16px; border-radius:20px; font-size:13px; font-weight:600;" t-esc="c.name"/>
             </t>
           </div>
-          <div style="position:relative; max-width:360px;">
-            <input id="compras-search" type="search" placeholder="Buscar producto (ej: budín, rosca...)"
-                   style="width:100%; border:1px solid #d9ccb9; background:#ffffff; border-radius:9px; padding:11px 14px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;"/>
-          </div>
         </section>
 
         <section class="reveal" style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
-          <p id="compras-sin-resultados" style="display:none; color:#8a7a67; font-size:15px;">No encontramos productos que coincidan con tu búsqueda.</p>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
             <t t-foreach="productos" t-as="p">
-              <div class="hc-product-card" t-attf-data-search-name="#{(p.name or '').lower()} #{(p.summary or '').lower()} #{(p.category_id.name or '').lower()}" style="display:block; color:inherit;">
+              <div class="hc-product-card" style="display:block; color:inherit;">
                 <a t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
                   <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8; margin-bottom:16px;">
                     <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
@@ -475,24 +470,6 @@
         </section>
 
       </div>
-      <script>
-        (function () {
-          var input = document.getElementById('compras-search');
-          if (!input) return;
-          var cards = document.querySelectorAll('.hc-product-card[data-search-name]');
-          var emptyMsg = document.getElementById('compras-sin-resultados');
-          input.addEventListener('input', function () {
-            var term = input.value.trim().toLowerCase();
-            var visibleCount = 0;
-            cards.forEach(function (card) {
-              var match = !term || card.getAttribute('data-search-name').indexOf(term) !== -1;
-              card.style.display = match ? '' : 'none';
-              if (match) visibleCount++;
-            });
-            if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? '' : 'none';
-          });
-        })();
-      </script>
     </div>
   </t>
 </template>
