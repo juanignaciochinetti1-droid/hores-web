@@ -127,6 +127,42 @@
                     background-color: #c26a1e !important;
                     color: #fff !important;
                 }
+                /* Portal nativo ("Mi cuenta", Direcciones, Seguridad, etc.,
+                   todo bajo .o_portal_wrap) -- a pedido explícito
+                   (07/09/2026, con screenshot: "se puede mejorar un poco
+                   más"), después del arreglo de color de más arriba. Los
+                   títulos pasan a la tipografía serif del resto del sitio
+                   (igual que hc-product-name y compañía); las tarjetas de
+                   accesos ("Sus órdenes", "Direcciones"...) dejan el gris
+                   plano de Bootstrap (bg-100) por el mismo tratamiento que
+                   ya usan las tarjetas de producto (hc-card: esquinas
+                   redondeadas, sombra suave, se levantan un poco al pasar
+                   el mouse -- reusa las mismas variables de hover que ya
+                   comparte todo el sitio, ver --hc-hover-* más arriba); los
+                   separadores (el de "Tu contacto", una regla horizontal)
+                   pasan del gris de Bootstrap al mismo tono beige que separa
+                   secciones en el resto del sitio. No se tocan los íconos
+                   de cada tarjeta (SVG de color fijo, de Odoo) ni el avatar
+                   del usuario (foto/inicial autogenerada por partner, no
+                   tiene sentido forzarle un color de marca). */
+                .o_portal_wrap h1, .o_portal_wrap h2, .o_portal_wrap h3,
+                .o_portal_wrap h4, .o_portal_wrap h5, .o_portal_wrap h6 {
+                    font-family: 'Source Serif 4', serif;
+                    color: #241d17;
+                }
+                .o_portal_wrap hr {
+                    border-color: #e8e3d9;
+                    opacity: 1;
+                }
+                .o_portal_index_card > a {
+                    background-color: #efe6d8 !important;
+                    border-radius: 14px !important;
+                    transition: transform .25s ease, box-shadow .25s ease;
+                }
+                .o_portal_index_card > a:hover {
+                    transform: var(--hc-hover-lift);
+                    box-shadow: var(--hc-hover-shadow);
+                }
                 /* El franjón blanco que quedaba a los costados en pantallas
                    anchas (contenedor de 1200px centrado, con blanco puro
                    alrededor) no era la etiqueta html (esa ya se pinta bien
