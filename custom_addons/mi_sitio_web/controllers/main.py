@@ -1263,6 +1263,15 @@ class WebsiteSaleHores(WebsiteSale):
         team = request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
         lead = request.env['crm.lead'].sudo().create({
             'name': 'Pedido web (cliente nuevo): %s' % (partner.name or order_sudo.name),
+            # partner_id, no solo contact_name/email_from/phone sueltos: el
+            # checkout ya creó (o reusó) un res.partner real para este
+            # pedido -- sin este link, la oportunidad quedaba con los
+            # datos de contacto sueltos pero sin conectar con la ficha del
+            # cliente, así que Ventas tenía que volver a buscarlo/crearlo a
+            # mano al convertir la oportunidad en cotización, en vez de que
+            # Odoo la complete sola (encontrado en revisión de código,
+            # 07/09/2026).
+            'partner_id': partner.id if partner != order_sudo.website_id.partner_id else False,
             'contact_name': partner.name,
             'partner_name': partner.commercial_company_name or '',
             'email_from': partner.email or '',
