@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--
-        Nuestras páginas (Home, Compras, Calidad, etc.) son renderizadas por
+        Nuestras páginas (Home, Categoría, Calidad, etc.) son renderizadas por
         controladores propios sin un "main_object"/"seo_object" detrás, así
         que el mecanismo estándar de Open Graph de website (basado en el
         mixin website.seo.metadata de un registro) no aplica acá. En vez de

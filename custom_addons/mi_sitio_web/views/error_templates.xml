@@ -21,7 +21,7 @@
     <template id="pagina_no_encontrada" name="Mi Sitio - Página no encontrada">
         <t t-call="website.layout">
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-                 comentario largo en catalogo_templates.xml (compras_template). -->
+                 comentario largo en catalogo_templates.xml (categoria_template). -->
             <t t-set="no_header" t-value="True"/>
             <t t-set="title">Página no encontrada — Cartotécnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
@@ -35,7 +35,7 @@
                         <p style="font-size:16px; line-height:1.6; color:#5a4f44; margin:0 0 30px;">El link puede estar roto o la página se movió. Volvé al inicio o mirá el catálogo completo de moldes.</p>
                         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
                             <a href="/mi-sitio" style="background:#c26a1e; color:#fff; padding:13px 26px; border-radius:9px; font-weight:600; font-size:15px;">Volver al inicio</a>
-                            <a href="/compras" style="background:#ffffff; border:1px solid #d9ccb9; color:#241d17; padding:13px 26px; border-radius:9px; font-weight:600; font-size:15px;">Ver catálogo</a>
+                            <a href="/mi-sitio#productos" style="background:#ffffff; border:1px solid #d9ccb9; color:#241d17; padding:13px 26px; border-radius:9px; font-weight:600; font-size:15px;">Ver catálogo</a>
                         </div>
                     </section>
 

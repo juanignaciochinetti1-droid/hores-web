@@ -5,7 +5,7 @@
     'description': """
         Módulo base para extender/personalizar el sitio web con Odoo.
         Incluye catálogo de productos propio, formulario de contacto
-        conectado al CRM y carrito de compras conectado a eCommerce.
+        conectado al CRM y carrito de pedidos conectado a eCommerce.
     """,
     'author': 'Juan Chinetti',
     'category': 'Website',
@@ -21,7 +21,8 @@
     # publicar búsquedas activas con kanban propio -- más de lo que se pidió
     # (una sola sección para recibir CVs). Se prefirió una página propia,
     # con el diseño del sitio, en vez de esa (mismo criterio que /shop
-    # redirige a /compras en vez de usarse tal cual).
+    # redirige a la sección de productos de la página principal en vez de
+    # usarse tal cual).
     # 'l10n_ar': ya venía instalado (la compañía es de Argentina), pero no
     # estaba declarado como dependencia acá -- se agrega por prolijidad
     # (el controlador de esta app referencia código específico de l10n_ar,

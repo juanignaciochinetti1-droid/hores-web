@@ -725,14 +725,16 @@ class MiSitioWeb(http.Controller):
             'hero_shift_pct': round(slides_count / track_images_count * 100, 4),
         })
 
-    @http.route('/compras', type='http', auth='public', website=True, sitemap=True)
+    # /compras (07/09/2026, a pedido explícito: "esta de más, ya muestra los
+    # productos en la página principal") -- la página de catálogo aparte se
+    # saca del todo (ver categoria_template y producto_detalle_template, que
+    # cubren lo mismo que hacía falta). Se deja la ruta como redirect, no se
+    # borra: estaba en el sitemap (Google puede tener el link indexado) y
+    # varios lugares del sitio la usaban como "volver al catálogo" -- mismo
+    # criterio que /trabaja-con-nosotros más abajo.
+    @http.route('/compras', type='http', auth='public', website=True, sitemap=False)
     def compras(self, **kwargs):
-        productos = request.env['mi_sitio_web.producto'].sudo().search([
-            ('is_published', '=', True),
-        ], order='sequence')
-        return request.render('mi_sitio_web.compras_template', {
-            'productos': productos,
-        })
+        return _redirect('/mi-sitio#productos')
 
     @http.route('/categoria/<string:slug>', type='http', auth='public', website=True, sitemap=True)
     def categoria(self, slug, **kwargs):
@@ -1324,16 +1326,17 @@ class WebsiteSaleHores(WebsiteSale):
         return super().shop_payment(**post)
 
     # /shop (la grilla de productos nativa de website_sale, distinta de
-    # nuestro catálogo propio en /compras) redirige derecho a /compras —
-    # a pedido explícito (28/08/2026, con screenshot: "no sirve y no lo
-    # quieren"). Mismas 4 variantes de ruta que declara el método
-    # original (con página, con categoría, con categoría + página) para
-    # taparlas todas — si se deja alguna sin redirigir, se sigue llegando
-    # a la grilla nativa por ese camino. El carrito y el checkout
-    # (/shop/cart, /shop/checkout, /shop/payment, etc.) son rutas
-    # aparte, no se tocan: "Agregar al carrito" nunca visita /shop en sí,
-    # así que nada de esto rompe el flujo de compra — ver
-    # DOCS/07-pedidos.md.
+    # nuestro catálogo propio) redirige derecho a la sección de productos de
+    # la página principal — a pedido explícito (28/08/2026, con screenshot:
+    # "no sirve y no lo quieren"; actualizado 07/09/2026 cuando se sacó la
+    # página de catálogo aparte, ver /compras más arriba). Mismas 4
+    # variantes de ruta que declara el método original (con página, con
+    # categoría, con categoría + página) para taparlas todas — si se deja
+    # alguna sin redirigir, se sigue llegando a la grilla nativa por ese
+    # camino. El carrito y el checkout (/shop/cart, /shop/checkout,
+    # /shop/payment, etc.) son rutas aparte, no se tocan: "Agregar al
+    # carrito" nunca visita /shop en sí, así que nada de esto rompe el flujo
+    # de pedido — ver DOCS/07-pedidos.md.
     @http.route([
         '/shop',
         '/shop/page/<int:page>',
@@ -1341,4 +1344,4 @@ class WebsiteSaleHores(WebsiteSale):
         '/shop/category/<model("product.public.category"):category>/page/<int:page>',
     ], type='http', auth='public', website=True, sitemap=False)
     def shop(self, *args, **kwargs):
-        return _redirect('/compras')
+        return _redirect('/mi-sitio#productos')

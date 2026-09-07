@@ -315,7 +315,7 @@
       </a>
       <nav style="flex:1; display:flex; justify-content:center; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
-        <a href="/compras" style="color:#5a4f44;">Productos</a>
+        <a href="/mi-sitio#productos" style="color:#5a4f44;">Productos</a>
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
         <a href="/mi-sitio#trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
         <!-- Historia/Compromiso/FAQ agrupados en un desplegable (01/09/2026,
@@ -387,7 +387,7 @@
         <div style="display:flex; flex-direction:column; gap:9px; font-size:14px;">
           <a href="/mi-sitio#empresa" style="color:#cfccc5;">Empresa</a>
           <a href="/historia" style="color:#cfccc5;">Historia</a>
-          <a href="/compras" style="color:#cfccc5;">Productos</a>
+          <a href="/mi-sitio#productos" style="color:#cfccc5;">Productos</a>
           <a href="/calidad" style="color:#cfccc5;">Calidad</a>
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
@@ -414,8 +414,8 @@
   <button class="hc-back-to-top" style="left:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
 </template>
 
-<!-- ============ /compras — catálogo completo ============ -->
-<template id="compras_template" name="Mi Sitio - Compras">
+<!-- ============ /categoria/<slug> ============ -->
+<template id="categoria_template" name="Mi Sitio - Categoría">
   <t t-call="website.layout">
     <!-- Suprime el header genérico de Odoo ("Your Logo", nav de fábrica,
          teléfono/login de ejemplo) que website.layout arma por fuera de
@@ -429,52 +429,6 @@
          website_sale se dejan con su header nativo a propósito (ver
          DOCS/07-pedidos.md). -->
     <t t-set="no_header" t-value="True"/>
-    <t t-set="title">Catálogo de moldes de papel — Cartotécnica Hores</t>
-    <t t-set="website_meta_description">Moldes de papel para pan dulce, budín, rosca, bizcochuelo y pan de pascua. Consultá ficha técnica y especificaciones de cada línea.</t>
-    <div id="wrap" class="oe_structure oe_empty">
-      <t t-call="mi_sitio_web.head_assets"/>
-      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
-        <t t-call="mi_sitio_web.site_header"/>
-
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
-          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Catálogo</div>
-          <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:0 0 10px; color:#241d17;">Nuestros productos</h1>
-          <p style="font-size:16px; line-height:1.55; color:#5a4f44; margin:0 0 20px; max-width:44em;">Elegí una línea, revisá la ficha técnica y consultanos por WhatsApp para tu pedido.</p>
-        </section>
-
-        <section class="reveal" style="max-width:1200px; margin:0 auto; padding:20px 28px 70px;">
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:36px 44px;">
-            <t t-foreach="productos" t-as="p">
-              <div class="hc-product-card" style="display:block; color:inherit;">
-                <a t-attf-href="/producto/#{p.id}" style="display:block; color:inherit;">
-                  <div class="hc-product-thumb" style="position:relative; aspect-ratio:1/1; border-radius:12px; background:#efe6d8; margin-bottom:16px;">
-                    <img t-attf-src="/web/image/mi_sitio_web.producto/#{p.id}/image" t-att-alt="p.name" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
-                    <span t-if="p.is_custom" class="hc-badge-custom">Personalizable</span>
-                  </div>
-                  <span style="display:block; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:4px;" t-esc="p.category_id.name"/>
-                  <span t-if="p.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-bottom:6px;">A pedido</span>
-                  <span t-elif="p.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:20px; margin-bottom:6px;">Sin stock</span>
-                  <span class="hc-product-name" style="font-family:'Source Serif 4',serif; font-size:21px; font-weight:600; color:#241d17;" t-esc="p.name"/>
-                  <span style="display:block; font-size:13px; line-height:1.5; color:#8a7a67; margin:5px 0 14px;" t-esc="p.summary"/>
-                </a>
-                <a t-attf-href="/producto/#{p.id}" class="hc-link-arrow" style="display:inline-flex; font-size:13px; font-weight:600; color:#c26a1e; margin-right:14px;">Ficha técnica <span class="hc-arrow">→</span></a>
-                <a t-att-href="p.whatsapp_url" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#1eb457;">Consultar por WhatsApp</a>
-              </div>
-            </t>
-          </div>
-        </section>
-
-      </div>
-    </div>
-  </t>
-</template>
-
-<!-- ============ /categoria/<slug> ============ -->
-<template id="categoria_template" name="Mi Sitio - Categoría">
-  <t t-call="website.layout">
-    <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-         comentario largo en compras_template más arriba. -->
-    <t t-set="no_header" t-value="True"/>
     <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por Cartotécnica Hores. Aptos para contacto alimentario, consultá por WhatsApp.</t>
     <div id="wrap" class="oe_structure oe_empty">
@@ -483,7 +437,7 @@
         <t t-call="mi_sitio_web.site_header"/>
 
         <section style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
-          <a href="/compras" style="font-size:13px; font-weight:600; color:#8a7a67;">← Todo el catálogo</a>
+          <a href="/mi-sitio#productos" style="font-size:13px; font-weight:600; color:#8a7a67;">← Todo el catálogo</a>
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:14px 0 30px; color:#241d17;" t-esc="categoria.name if categoria else 'Categoría'"/>
         </section>
 
@@ -491,7 +445,7 @@
           <div t-if="not productos" class="hc-empty-state">
             <div style="font-size:32px; margin-bottom:12px;">📦</div>
             <p style="color:#8a7a67; font-size:15px; margin:0 0 16px;">No hay productos publicados en esta categoría todavía.</p>
-            <a href="/compras" style="display:inline-block; background:#c26a1e; color:#fff; padding:11px 22px; border-radius:9px; font-weight:600; font-size:14px;">Ver todo el catálogo</a>
+            <a href="/mi-sitio#productos" style="display:inline-block; background:#c26a1e; color:#fff; padding:11px 22px; border-radius:9px; font-weight:600; font-size:14px;">Ver todo el catálogo</a>
           </div>
           <t t-foreach="productos" t-as="p">
             <div class="hc-product-card" style="display:grid; grid-template-columns:.8fr 1.2fr; gap:36px; align-items:start; padding:34px 0; border-bottom:1px solid #e8e3d9;">
@@ -524,7 +478,7 @@
 <template id="producto_detalle_template" name="Mi Sitio - Ficha de producto">
   <t t-call="website.layout">
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-         comentario largo en compras_template más arriba. -->
+         comentario largo en categoria_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title"><t t-esc="producto.name"/> — Cartotécnica Hores</t>
     <t t-set="website_meta_description"><t t-esc="producto.summary or producto.description or producto.name"/></t>
@@ -537,10 +491,10 @@
           <!-- Si la categoría tiene un solo producto publicado (este
                mismo), /categoria/<slug> redirige derecho de vuelta acá
                (ver controllers/main.py) — el breadcrumb apuntaría a un
-               loop sobre sí mismo, así que en ese caso va a /compras en
-               vez de a la categoría. -->
+               loop sobre sí mismo, así que en ese caso va a la sección de
+               productos de la página principal en vez de a la categoría. -->
           <a t-if="producto.category_id and len(producto.category_id.producto_ids.filtered('is_published')) > 1" t-attf-href="/categoria/#{producto.category_id.slug}" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
-          <a t-else="" href="/compras" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
+          <a t-else="" href="/mi-sitio#productos" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
 
           <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; margin-top:24px; align-items:start;">
             <div style="position:relative; aspect-ratio:1/1; border-radius:14px; overflow:hidden; background:#efe6d8;">
@@ -745,7 +699,7 @@
 <template id="calidad_template" name="Mi Sitio - Calidad">
   <t t-call="website.layout">
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-         comentario largo en compras_template más arriba. -->
+         comentario largo en categoria_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title">Calidad y certificaciones — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Gestión de inocuidad certificada ISO 22000:2018. Moldes de papel aptos para contacto directo con alimentos, con control de calidad en cada etapa de producción.</t>
@@ -932,7 +886,7 @@
               <div style="width:40px; height:40px; border-radius:9px; background:#f6ede1; color:#c26a1e; display:flex; align-items:center; justify-content:center; font-size:18px;">📄</div>
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:19px; color:var(--cal-texto);">Fichas técnicas</div>
               <p style="font-size:14.5px; line-height:1.55; color:var(--cal-texto2); margin:0; flex:1;">Especificaciones de cada producto: medidas, gramaje y material.</p>
-              <a href="/compras" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Ver catálogo <span class="hc-arrow">→</span></a>
+              <a href="/mi-sitio#productos" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:7px; color:#c26a1e; font-weight:600; font-size:14px;">Ver catálogo <span class="hc-arrow">→</span></a>
             </div>
           </div>
         </section>
@@ -1027,7 +981,7 @@
 
             <div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:var(--cal-texto);">Cookies</h2>
-              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">El sitio usa únicamente las cookies técnicas necesarias para que funcione el carrito de compras y la sesión de navegación — no usamos cookies de seguimiento ni publicidad.</p>
+              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">El sitio usa únicamente las cookies técnicas necesarias para que funcione el carrito de pedidos y la sesión de navegación — no usamos cookies de seguimiento ni publicidad.</p>
             </div>
 
             <div style="border-top:1px solid var(--cal-borde); padding-top:24px;">
@@ -1046,7 +1000,7 @@
 <template id="compromiso_template" name="Mi Sitio - Compromiso">
   <t t-call="website.layout">
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-         comentario largo en compras_template más arriba. -->
+         comentario largo en categoria_template más arriba. -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title">Compromiso ambiental — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap de papel para minimizar el impacto ambiental de nuestra producción.</t>
@@ -1246,7 +1200,7 @@
          mostrar los dos. -->
     <t t-set="no_footer" t-value="True"/>
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-         comentario largo en compras_template. -->
+         comentario largo en categoria_template. -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title">Nuestra historia — Cartotécnica Hores</t>
     <t t-set="website_meta_description">Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>

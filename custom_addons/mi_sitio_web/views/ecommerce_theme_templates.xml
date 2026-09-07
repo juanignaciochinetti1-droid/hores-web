@@ -23,7 +23,7 @@
             <!-- Nuestras propias páginas ya cargan estas mismas familias
                  (y más) vía mi_sitio_web.head_assets, t-call'eado dentro de
                  #wrap: todas ellas ponen no_header=True para suprimir el
-                 header genérico de Odoo (ver comentario de compras_template
+                 header genérico de Odoo (ver comentario de categoria_template
                  más abajo en catalogo_templates.xml). Repetir acá el mismo
                  <link> de Google Fonts en esas páginas duplicaba una
                  request bloqueante de render en el <head> de cada carga sin
@@ -512,8 +512,8 @@
                 }
             </style>
             <!-- Botón "Tienda" del carrito vacío: nativo de website_sale,
-                 apunta siempre a /shop (que ya redirige a /compras, el
-                 catálogo completo) sin importar de dónde venía el
+                 apunta siempre a /shop (que ya redirige a la sección de
+                 productos de la página principal) sin importar de dónde venía el
                  visitante, a pedido explícito (04/09/2026, con
                  screenshot): si estaba viendo la ficha de un producto
                  puntual, "Tienda" debería devolverlo ahí, no mandarlo al
@@ -660,7 +660,8 @@
          fijo en website_sale.navigation_buttons, no un campo de
          website.checkout.step (esos son "Pago"→"Pedido" y el resto de los
          breadcrumbs, ver más arriba). El link sigue yendo a /shop, que ya
-         redirige a /compras — no hace falta tocar el href.
+         redirige a la sección de productos de la página principal — no
+         hace falta tocar el href.
 
          OJO: el template tiene DOS <t t-else="">, uno para el botón
          principal de "siguiente paso" (icono fa-angle-right, href dinámico)

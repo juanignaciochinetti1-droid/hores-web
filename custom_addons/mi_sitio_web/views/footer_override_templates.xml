@@ -50,7 +50,7 @@
              HORES — no es solo un tema de color. En vez de completar esa
              ficha (afecta otras partes del backend, como facturas — se
              prefirió no tocarla sin confirmar antes) se saca directamente
-             esta barra en todo el flujo de compras (/shop, carrito,
+             esta barra en todo el flujo de pedido (/shop, carrito,
              checkout), para que no se vea. Con el header afuera, la
              navegación queda en el footer (siempre visible, real, en
              todas las páginas). No se toca en el resto del sitio — ahí ya

@@ -16,7 +16,7 @@
     <template id="pedido_gestionar_template" name="Mi Sitio - Gestionar pedido">
         <t t-call="website.layout">
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-                 comentario largo en compras_template (catalogo_templates.xml). -->
+                 comentario largo en categoria_template (catalogo_templates.xml). -->
             <t t-set="no_header" t-value="True"/>
             <t t-set="title">Pedido <t t-esc="order.name"/> — Cartotécnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
@@ -82,7 +82,7 @@
     <template id="consultar_pedido_template" name="Mi Sitio - Consultar pedido">
         <t t-call="website.layout">
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
-                 comentario largo en compras_template (catalogo_templates.xml). -->
+                 comentario largo en categoria_template (catalogo_templates.xml). -->
             <t t-set="no_header" t-value="True"/>
             <t t-set="title">Consultar mi pedido — Cartotécnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
