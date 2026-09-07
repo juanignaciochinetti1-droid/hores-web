@@ -14,6 +14,14 @@ from odoo.tools import escape_psql
 EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 NOMBRE_MAX_LEN = 200
 MENSAJE_MAX_LEN = 5000
+# EMAIL_RE no pone límite de longitud (cualquier cantidad de caracteres
+# sin @/espacio antes y después del punto matchea igual) -- sin este
+# límite aparte, un "email" técnicamente válido pero absurdamente largo
+# pasaba la validación entera y se guardaba tal cual (encontrado en
+# revisión de validaciones, 07/09/2026). 254 es el máximo práctico de un
+# email según RFC 5321 (más una cadena así de larga nunca es real).
+EMAIL_MAX_LEN = 254
+TELEFONO_MAX_LEN = 40
 
 # Bolsa de trabajo (/trabaja-con-nosotros) -- ver postulacion() más abajo.
 CV_EXTENSIONES_PERMITIDAS = ('.pdf', '.doc', '.docx')
@@ -804,6 +812,7 @@ class MiSitioWeb(http.Controller):
         # mal formados o absurdamente largos.
         if (not nombre or not email or not mensaje
                 or not EMAIL_RE.match(email)
+                or len(email) > EMAIL_MAX_LEN
                 or len(nombre) > NOMBRE_MAX_LEN
                 or len(empresa) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
@@ -861,6 +870,8 @@ class MiSitioWeb(http.Controller):
             return _redirect('/mi-sitio/postulacion/gracias')
 
         if (not nombre or not email or not EMAIL_RE.match(email)
+                or len(email) > EMAIL_MAX_LEN
+                or len(telefono) > TELEFONO_MAX_LEN
                 or len(nombre) > NOMBRE_MAX_LEN
                 or len(puesto) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
