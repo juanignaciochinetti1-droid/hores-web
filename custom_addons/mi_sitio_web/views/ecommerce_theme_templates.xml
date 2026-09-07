@@ -82,6 +82,51 @@
                     --hc-focus-outline: 2.5px solid #c26a1e;
                     --hc-focus-offset: 2px;
                 }
+                /* Botón "Contáctanos" del header genérico de Odoo y
+                   cualquier otro elemento .btn-primary/.btn-outline-primary/
+                   .bg-primary nativo por fuera de nuestras propias páginas
+                   (portal "Mi cuenta", /web/login, 404 nativo, etc. --
+                   páginas que sí pasan por website.layout, pero sin
+                   contenedor .oe_website_sale) quedaban con el violeta por
+                   defecto de Odoo (#714B67): --primary/--bs-primary de acá
+                   arriba NO alcanza para recolorearlos, porque el CSS
+                   compilado de Bootstrap 5.3 define ese color como una
+                   variable LOCAL de cada regla (--btn-bg, --badge-bg...),
+                   no algo que lea de --bs-primary en cascada -- confirmado
+                   abriendo el bundle compilado (web.assets_frontend.min.css)
+                   y viendo el valor real de esas variables. Mismo criterio
+                   que el bloque de acá abajo para .oe_website_sale (esas
+                   páginas SÍ necesitaban su propio refuerzo por la misma
+                   razón), pero sin ese scope, para cubrir todo lo demás
+                   (encontrado en revisión de código, 07/09/2026, a partir
+                   de un screenshot de "Mi cuenta" con el botón todavía
+                   violeta a pesar de este mismo archivo). */
+                .btn-primary {
+                    background-color: #c26a1e !important;
+                    border-color: #c26a1e !important;
+                }
+                .btn-primary:hover, .btn-primary:focus {
+                    background-color: #a85a19 !important;
+                    border-color: #a85a19 !important;
+                }
+                .btn-outline-primary {
+                    color: #c26a1e !important;
+                    border-color: #c26a1e !important;
+                }
+                .btn-outline-primary:hover {
+                    background-color: #c26a1e !important;
+                    color: #fff !important;
+                }
+                .bg-primary {
+                    background-color: #c26a1e !important;
+                }
+                .text-primary {
+                    color: #c26a1e !important;
+                }
+                .dropdown-item.active, .dropdown-item:active {
+                    background-color: #c26a1e !important;
+                    color: #fff !important;
+                }
                 /* El franjón blanco que quedaba a los costados en pantallas
                    anchas (contenedor de 1200px centrado, con blanco puro
                    alrededor) no era la etiqueta html (esa ya se pinta bien
