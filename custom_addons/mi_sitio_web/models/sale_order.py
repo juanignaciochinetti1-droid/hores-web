@@ -24,3 +24,17 @@ class SaleOrder(models.Model):
              'cliente nuevo -- no cuenta como "ya tuvo un pedido antes" '
              'para la clasificación de cliente nuevo/existente.',
     )
+
+    def action_confirm(self):
+        """Si alguien de Ventas reabre a mano uno de estos pedidos
+        auto-cancelados (en vez de armar uno nuevo desde la oportunidad
+        de CRM) y lo confirma de verdad, deja de ser "el carrito que
+        disparó una oportunidad" para pasar a ser un pedido real -- la
+        marca tiene que sacarse acá, si no, la próxima compra de ese
+        mismo cliente se sigue clasificando como "nuevo" para siempre
+        (encontrado en revisión de código, 07/09/2026)."""
+        con_marca = self.filtered('mi_sitio_lead_cancelado')
+        res = super().action_confirm()
+        if con_marca:
+            con_marca.write({'mi_sitio_lead_cancelado': False})
+        return res

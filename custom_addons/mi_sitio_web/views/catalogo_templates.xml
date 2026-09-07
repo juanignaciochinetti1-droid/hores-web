@@ -995,7 +995,18 @@
     <t t-set="website_meta_description">Qué datos personales recolecta Cartotécnica Hores, para qué se usan y cómo ejercer tus derechos según la Ley 25.326 de Protección de Datos Personales.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
-      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
+      <!-- Mismas variables que calidad_template (ver el comentario largo
+           ahí): esta página quedó usando esas mismas variables CSS (cal
+           texto/borde/divisor) sin definirlas acá (encontrado en
+           revisión de código: al agregar las variables se escaneó por
+           error todo el rango entre calidad_template y
+           compromiso_template, y esta página vive justo en el medio de
+           las dos, pero la definición de las variables solo se agregó
+           en el div raíz de calidad_template, no en el de esta). Sin
+           esto, los bordes salían de un color oscuro raro (el valor por
+           defecto de una variable CSS sin definir) en vez del tono suave
+           esperado. -->
+      <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef; --cal-texto:#241d17; --cal-texto2:#5a4f44; --cal-borde:#e8e3d9; --cal-divisor:#efe6d8;">
         <t t-call="mi_sitio_web.site_header"/>
 
         <section style="border-bottom:1px solid var(--cal-borde);">

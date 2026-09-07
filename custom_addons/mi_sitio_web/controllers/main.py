@@ -653,6 +653,33 @@ def _pedido_gestionable(order):
     return not any(m.state == 'posted' for m in order.invoice_ids)
 
 
+def _elegir_responsable_actividad(env, team=False, preferido=False):
+    """A quién asignarle una actividad ("A hacer") disparada desde una
+    ruta pública del sitio -- compartido entre el aviso de cliente nuevo
+    (_crear_oportunidad_desde_carrito) y el de pedido de cambio
+    (pedido_solicitar_cambio). NUNCA env.user acá salvo como último
+    recurso de todos: en una ruta auth='public', env.user es el "Usuario
+    Público" de Odoo, una cuenta técnica que nadie mira -- encontrado el
+    04/09/2026 en revisión de código, arreglado primero solo para
+    cliente nuevo y recién acá compartido para que el mismo bug no se
+    repita una tercera vez en otra ruta (como pasó con
+    pedido_solicitar_cambio, que seguía cayendo en env.user).
+
+    Prioridad: alguien ya elegido de antemano (ej. el vendedor asignado
+    al pedido) -> el líder del equipo -> cualquier miembro del equipo ->
+    el admin -> recién ahí, si todo lo anterior falta, env.user (mejor
+    una actividad mal asignada que una ruta pública que revienta)."""
+    if preferido:
+        return preferido
+    if team:
+        if team.user_id:
+            return team.user_id
+        if team.member_ids:
+            return team.member_ids[:1]
+    admin = env.ref('base.user_admin', raise_if_not_found=False)
+    return admin or env.user
+
+
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
@@ -990,10 +1017,18 @@ class MiSitioWeb(http.Controller):
             # confianza, las escribimos acá) se rendericen de verdad.
             cuerpo = 'Pedido de cambio del cliente, vía sitio web:<br/>' + html.escape(mensaje).replace('\n', '<br/>')
             order.message_post(body=Markup(cuerpo))
+            # Antes caía directo en request.env.user si el pedido no
+            # tenía vendedor asignado -- el mismo bug de "actividad
+            # asignada al Usuario Público" que se encontró y arregló
+            # para cliente nuevo (ver _elegir_responsable_actividad),
+            # sin que nadie hubiera notado que acá seguía igual
+            # (encontrado en revisión de código, 07/09/2026).
+            responsable = _elegir_responsable_actividad(
+                request.env, team=order.team_id, preferido=order.user_id)
             order.activity_schedule(
                 'mail.mail_activity_data_todo',
                 summary='Cliente pidió un cambio en este pedido (sitio web)',
-                user_id=order.user_id.id or request.env.user.id,
+                user_id=responsable.id,
             )
         return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s&ok=cambio' % (order_id, token or ''))
 
@@ -1180,7 +1215,8 @@ class WebsiteSaleHores(WebsiteSale):
             ('state', 'not in', ('draft', 'sent')),
             ('mi_sitio_lead_cancelado', '=', False),
         ]
-        if partner.email:
+        email = (partner.email or '').strip()
+        if email:
             # '=ilike' para que "Juan@Gmail.com" y "juan@gmail.com" cuenten
             # como el mismo cliente (encontrado el 04/09/2026 en revisión
             # de código: con '=' a secas, una mayúscula distinta entre un
@@ -1193,8 +1229,14 @@ class WebsiteSaleHores(WebsiteSale):
             # el propio res.users de Odoo para este mismo caso) en vez de
             # reinventarlo a mano -- la primera versión de esto (regex
             # propia) no escapaba barras invertidas, encontrado en
-            # segunda revisión de código el mismo día.
-            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=ilike', escape_psql(partner.email))]
+            # segunda revisión de código el mismo día. El .strip() de
+            # arriba es por lo mismo: un espacio de más al pegar el email
+            # (autocompletado, copiar/pegar) también rompía la
+            # comparación exacta de '=ilike' (encontrado en tercera
+            # revisión de código) -- no corrige un email que ya haya
+            # quedado guardado con espacios de antes, pero evita que este
+            # mismo pedido introduzca uno nuevo.
+            domain += ['|', ('partner_id', '=', partner.id), ('partner_id.email', '=ilike', escape_psql(email))]
         else:
             domain += [('partner_id', '=', partner.id)]
         return not request.env['sale.order'].sudo().search_count(domain, limit=1)
@@ -1239,17 +1281,14 @@ class WebsiteSaleHores(WebsiteSale):
         # Odoo, no una persona real -- si el equipo se queda sin líder
         # (config que alguien podría cambiar sin querer), la actividad
         # quedaba asignada a una cuenta que nadie mira, invisible en la
-        # práctica. Como último recurso, el admin en vez del usuario
-        # público. OJO: crm.team.member_ids YA es un recordset de
-        # res.users (no de crm.team.member) -- .user_id encima de eso
-        # revienta con AttributeError ("res.users no tiene user_id"),
-        # encontrado en una segunda revisión de código antes de
-        # confirmar este mismo cambio.
-        responsable = lead.team_id.user_id or lead.team_id.member_ids[:1]
+        # práctica. Ver _elegir_responsable_actividad() más arriba --
+        # compartida con pedido_solicitar_cambio, que tenía este mismo
+        # problema sin arreglar todavía.
+        responsable = _elegir_responsable_actividad(request.env, team=lead.team_id)
         lead.activity_schedule(
             'mail.mail_activity_data_todo',
             summary='Cliente nuevo desde el sitio — armar presupuesto/seguimiento',
-            user_id=responsable.id if responsable else request.env.ref('base.user_admin').id,
+            user_id=responsable.id,
         )
         return lead
 
