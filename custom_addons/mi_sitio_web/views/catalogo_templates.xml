@@ -289,6 +289,30 @@
     }
   });
 </script>
+<script>
+  // Links "← Todo el catálogo" / "← Catálogo" / "← nombre de categoría"
+  // (categoria_template y producto_detalle_template, marcados con esta
+  // clase): el href fijo que
+  // traen es solo el destino por defecto para cuando no hay de dónde volver
+  // (visita directa, link externo, buscador) -- a pedido explícito
+  // (07/09/2026, con screenshot): si el visitante ya venía navegando por acá
+  // adentro (por ejemplo, entró a esta categoría desde un producto puntual,
+  // o a este producto desde la portada) y toca "volver", tiene que
+  // devolverlo a la página real de la que vino, no siempre al mismo destino
+  // fijo -- mismo criterio que ya se usa para el botón "Tienda" del carrito
+  // vacío (ver ecommerce_theme_templates.xml). Delegado en document (no en
+  // cada link) para cubrir estos y cualquier otro "volver" que se agregue
+  // después con la misma clase, sin tener que repetir el script.
+  document.addEventListener('click', function (ev) {
+    var link = ev.target.closest('.hc-back-link');
+    if (!link) return;
+    var ref = document.referrer || '';
+    if (ref.indexOf(window.location.origin) === 0) {
+      ev.preventDefault();
+      history.back();
+    }
+  });
+</script>
 </template>
 
 <!-- ============ Header compartido ============ -->
@@ -437,7 +461,7 @@
         <t t-call="mi_sitio_web.site_header"/>
 
         <section style="max-width:1200px; margin:0 auto; padding:56px 28px 20px;">
-          <a href="/mi-sitio#productos" style="font-size:13px; font-weight:600; color:#8a7a67;">← Todo el catálogo</a>
+          <a href="/mi-sitio#productos" class="hc-back-link" style="font-size:13px; font-weight:600; color:#8a7a67;">← Todo el catálogo</a>
           <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:36px; margin:14px 0 30px; color:#241d17;" t-esc="categoria.name if categoria else 'Categoría'"/>
         </section>
 
@@ -493,8 +517,8 @@
                (ver controllers/main.py) — el breadcrumb apuntaría a un
                loop sobre sí mismo, así que en ese caso va a la sección de
                productos de la página principal en vez de a la categoría. -->
-          <a t-if="producto.category_id and len(producto.category_id.producto_ids.filtered('is_published')) > 1" t-attf-href="/categoria/#{producto.category_id.slug}" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
-          <a t-else="" href="/mi-sitio#productos" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
+          <a t-if="producto.category_id and len(producto.category_id.producto_ids.filtered('is_published')) > 1" t-attf-href="/categoria/#{producto.category_id.slug}" class="hc-back-link" style="font-size:13px; font-weight:600; color:#8a7a67;">← <t t-esc="producto.category_id.name"/></a>
+          <a t-else="" href="/mi-sitio#productos" class="hc-back-link" style="font-size:13px; font-weight:600; color:#8a7a67;">← Catálogo</a>
 
           <div style="display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; margin-top:24px; align-items:start;">
             <div style="position:relative; aspect-ratio:1/1; border-radius:14px; overflow:hidden; background:#efe6d8;">
