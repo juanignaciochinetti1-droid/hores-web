@@ -568,22 +568,49 @@
                  producto puntual, o al carrito desde la ficha de un
                  producto) y toca "volver", tiene que devolverlo a la página
                  real de la que vino, no siempre al mismo destino fijo,
-                 mismo criterio que el botón "Tienda" de arriba, pero más
-                 simple (siempre history.back(), sin adivinar de qué tipo de
-                 página vino). Vive acá (no en head_assets, que solo
-                 t-callean nuestras propias páginas) porque tiene que
-                 alcanzar también al carrito/checkout nativo de website_sale:
-                 este template sí llega a todas las páginas por igual
-                 (ver el comentario largo al principio del archivo). -->
+                 mismo criterio que el botón "Tienda" de arriba. Vive acá
+                 (no en head_assets, que solo t-callean nuestras propias
+                 páginas) porque tiene que alcanzar también al
+                 carrito/checkout nativo de website_sale: este template sí
+                 llega a todas las páginas por igual (ver el comentario
+                 largo al principio del archivo).
+
+                 Bug real (08/09/2026, reportado por el usuario): cambiar de
+                 idioma con el selector del header ES una navegación real
+                 del navegador (un link normal a la misma página con otro
+                 prefijo de idioma, de /producto/7 a /en/producto/7): si el
+                 visitante cambiaba de idioma estando en la ficha de un
+                 producto y ahí nomás tocaba "volver", history.back()
+                 deshacía ESE cambio de idioma en vez de llevarlo a la
+                 categoría/portada: volvía al idioma viejo, no al que
+                 estaba usando. Se detecta comparando el referrer con la
+                 página actual sacándoles el prefijo de idioma a los dos
+                 (Odoo sirve el idioma por defecto sin prefijo y el resto
+                 con su propio código de URL, ver res.lang.url_code): si
+                 dan la misma página, el referrer no es una página anterior
+                 de verdad, es solo el cambio de idioma, así que se deja
+                 el href fijo de siempre (que Odoo ya sirve en el idioma
+                 correcto solo con renderizar la página). -->
             <script>
                 document.addEventListener('click', function (ev) {
                     var link = ev.target.closest('.hc-back-link');
                     if (!link) return;
                     var ref = document.referrer || '';
-                    if (ref.indexOf(window.location.origin) === 0) {
-                        ev.preventDefault();
-                        history.back();
+                    if (ref.indexOf(window.location.origin) !== 0) return;
+                    var sinIdioma = function (pathname) {
+                        return pathname.replace(/^\/(en|fr|de|it|pt|zh_CN)(\/|$)/, '/');
+                    };
+                    var refPath;
+                    try {
+                        refPath = new URL(ref).pathname;
+                    } catch (err) {
+                        return;
                     }
+                    if (sinIdioma(refPath) === sinIdioma(window.location.pathname)) {
+                        return;
+                    }
+                    ev.preventDefault();
+                    history.back();
                 });
             </script>
         </xpath>
