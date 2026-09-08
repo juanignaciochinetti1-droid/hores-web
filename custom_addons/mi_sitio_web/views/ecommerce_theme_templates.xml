@@ -557,6 +557,35 @@
                     window.location.href = vieneDeUnProducto ? ref : '/mi-sitio#productos';
                 });
             </script>
+            <!-- Links "volver" marcados con esta clase (categoria_template y
+                 producto_detalle_template en catalogo_templates.xml, y acá
+                 mismo el "Realizar otro pedido" del carrito, más abajo): el
+                 href fijo que traen es solo el destino por defecto para
+                 cuando no hay de dónde volver (visita directa, link externo,
+                 buscador), a pedido explícito (07/09/2026, con
+                 screenshot): si el visitante ya venía navegando por acá
+                 adentro (por ejemplo, entró a esta categoría desde un
+                 producto puntual, o al carrito desde la ficha de un
+                 producto) y toca "volver", tiene que devolverlo a la página
+                 real de la que vino, no siempre al mismo destino fijo,
+                 mismo criterio que el botón "Tienda" de arriba, pero más
+                 simple (siempre history.back(), sin adivinar de qué tipo de
+                 página vino). Vive acá (no en head_assets, que solo
+                 t-callean nuestras propias páginas) porque tiene que
+                 alcanzar también al carrito/checkout nativo de website_sale:
+                 este template sí llega a todas las páginas por igual
+                 (ver el comentario largo al principio del archivo). -->
+            <script>
+                document.addEventListener('click', function (ev) {
+                    var link = ev.target.closest('.hc-back-link');
+                    if (!link) return;
+                    var ref = document.referrer || '';
+                    if (ref.indexOf(window.location.origin) === 0) {
+                        ev.preventDefault();
+                        history.back();
+                    }
+                });
+            </script>
         </xpath>
     </template>
 
@@ -659,9 +688,14 @@
          pedido" (31/08/2026, a pedido explícito, con screenshot). Es texto
          fijo en website_sale.navigation_buttons, no un campo de
          website.checkout.step (esos son "Pago"→"Pedido" y el resto de los
-         breadcrumbs, ver más arriba). El link sigue yendo a /shop, que ya
-         redirige a la sección de productos de la página principal — no
-         hace falta tocar el href.
+         breadcrumbs, ver más arriba). El link sigue yendo a /shop (que ya
+         redirige a la sección de productos de la página principal) como
+         destino por defecto, pero se le suma la clase hc-back-link
+         (07/09/2026, mismo pedido que categoria_template/
+         producto_detalle_template): si el visitante llegó al carrito desde
+         la ficha de un producto puntual, este link lo devuelve ahí en vez
+         de mandarlo siempre al mismo lado; el listener que hace esto
+         vive en el script de más arriba en este archivo, no acá.
 
          OJO: el template tiene DOS <t t-else="">, uno para el botón
          principal de "siguiente paso" (icono fa-angle-right, href dinámico)
@@ -670,7 +704,7 @@
          primer t-else a secas rompe el botón principal de avanzar. -->
     <template id="volver_al_carrito_texto" inherit_id="website_sale.navigation_buttons">
         <xpath expr="//a[@t-att-href=&quot;'/shop'&quot;]" position="replace">
-            <a t-att-href="'/shop'" class="mt-2 mt-lg-0 text-center">
+            <a t-att-href="'/shop'" class="mt-2 mt-lg-0 text-center hc-back-link">
                 <i class="fa fa-angle-left me-2 fw-light"/>
                 Realizar otro pedido
             </a>

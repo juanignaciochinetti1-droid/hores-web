@@ -289,30 +289,6 @@
     }
   });
 </script>
-<script>
-  // Links "← Todo el catálogo" / "← Catálogo" / "← nombre de categoría"
-  // (categoria_template y producto_detalle_template, marcados con esta
-  // clase): el href fijo que
-  // traen es solo el destino por defecto para cuando no hay de dónde volver
-  // (visita directa, link externo, buscador) -- a pedido explícito
-  // (07/09/2026, con screenshot): si el visitante ya venía navegando por acá
-  // adentro (por ejemplo, entró a esta categoría desde un producto puntual,
-  // o a este producto desde la portada) y toca "volver", tiene que
-  // devolverlo a la página real de la que vino, no siempre al mismo destino
-  // fijo -- mismo criterio que ya se usa para el botón "Tienda" del carrito
-  // vacío (ver ecommerce_theme_templates.xml). Delegado en document (no en
-  // cada link) para cubrir estos y cualquier otro "volver" que se agregue
-  // después con la misma clase, sin tener que repetir el script.
-  document.addEventListener('click', function (ev) {
-    var link = ev.target.closest('.hc-back-link');
-    if (!link) return;
-    var ref = document.referrer || '';
-    if (ref.indexOf(window.location.origin) === 0) {
-      ev.preventDefault();
-      history.back();
-    }
-  });
-</script>
 </template>
 
 <!-- ============ Header compartido ============ -->
