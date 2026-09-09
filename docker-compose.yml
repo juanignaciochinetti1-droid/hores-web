@@ -18,7 +18,13 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - ./odoo:/odoo
+      # ./odoo ya NO se monta acá -- el código de Odoo se copia adentro de
+      # la imagen (ver el comentario largo en Dockerfile: un bind mount de
+      # Windows es ~20 veces más lento por archivo que el disco del
+      # contenedor, y con 50 mil archivos eso se sentía en cada reinicio).
+      # custom_addons sigue con bind mount a propósito -- es la carpeta que
+      # se edita en vivo todo el tiempo, y son unos pocos archivos, no pesa
+      # nada compararlo con /odoo entero.
       - ./custom_addons:/custom_addons
       - odoo-web-data:/var/lib/odoo
     restart: unless-stopped

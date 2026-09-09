@@ -1,0 +1,12 @@
+# Se excluye del build context de Docker -- sin esto, cada build (y cada vez
+# que Docker calcula si necesita rebuildear) tiene que leer/enviar carpetas
+# enormes que no hacen falta adentro de la imagen (el historial de git de
+# Odoo, cachés de Python, etc.). Ver el comentario largo en Dockerfile sobre
+# por qué el código de Odoo pasa a copiarse a la imagen en vez de montarse
+# desde Windows.
+.git
+odoo/.git
+**/__pycache__
+**/*.pyc
+**/*.pyo
+node_modules
