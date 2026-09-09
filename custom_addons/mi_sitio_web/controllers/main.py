@@ -651,6 +651,83 @@ def _normalizar_identificacion(valor):
     return re.sub(r'[^0-9A-Za-z]', '', valor or '').upper()
 
 
+def _normalizar_telefono(valor):
+    """Deja solo dígitos -- para comparar teléfonos sin que importe el
+    formato con el que haya quedado guardado (espacios, guiones, '+54',
+    '0' inicial de larga distancia, etc.). No intenta validar ni separar
+    código de país/área: alcanza con que dos números iguales, escritos
+    distinto, comparen igual -- el mismo criterio que ya usa
+    _normalizar_identificacion() para DNI/CUIT."""
+    return re.sub(r'\D', '', valor or '')
+
+
+# Un dato demasiado corto (ej. '123') compara igual entre casi cualquier
+# par de números reales una vez que se les sacan los separadores -- sin
+# este piso, _pedidos_por_dato() podía traer pedidos de otra persona con
+# un dato de pocos dígitos. Ni un DNI (7-8 dígitos) ni un teléfono
+# argentino (8+ dígitos sin el 0/15) bajan de esto.
+DATO_MIN_LEN = 6
+
+
+def _pedidos_por_dato(env, dato):
+    """Busca los sale.order de un cliente por CUALQUIER dato que haya
+    cargado en el formulario de pedido -- documento (DNI/CUIT), email o
+    teléfono -- a pedido explícito (09/09/2026): no todos los pedidos
+    tienen documento cargado (es opcional en el checkout, ver
+    WebsiteSaleHores más abajo), así que exigir siempre documento +
+    número de pedido dejaba afuera a quien no lo cargó.
+
+    Compara los TRES formatos a la vez, sin intentar adivinar de qué
+    tipo es `dato` -- si normalizado coincide EXACTO (nunca por
+    substring/ilike, para no repetir el bug de '%'/'_' como comodín de
+    SQL que ya se encontró en este mismo archivo) con el documento, el
+    email o el teléfono de un cliente, ese pedido cuenta.
+    Devuelve TODOS los pedidos de esa persona, no uno solo -- distinto
+    del comportamiento viejo (pedía además el número de un pedido
+    puntual)."""
+    dato = (dato or '').strip()
+    if not dato:
+        return env['sale.order']
+    dato_doc = _normalizar_identificacion(dato)
+    dato_mail = dato.lower()
+    dato_tel = _normalizar_telefono(dato)
+
+    def coincide(order):
+        partner = order.partner_id
+        if len(dato_doc) >= DATO_MIN_LEN and _normalizar_identificacion(partner.vat) == dato_doc:
+            return True
+        if '@' in dato_mail and (partner.email or '').strip().lower() == dato_mail:
+            return True
+        # Solo phone -- res.partner no tiene un campo mobile aparte en
+        # esta versión de Odoo (era así en versiones viejas; acá tirá
+        # AttributeError, encontrado probando esta misma ruta).
+        #
+        # Termina en / empieza con, no '==': Odoo suele reformatear el
+        # teléfono al guardar el partner agregándole el código de país
+        # ('3537650821' cargado -> '+54 3537650821' guardado) -- con
+        # igualdad estricta, el cliente que carga el mismo número que
+        # escribió en el checkout (sin el +54) nunca matcheaba contra lo
+        # que quedó guardado (encontrado probando esta misma ruta con un
+        # teléfono real). Se exige el piso de largo en AMBOS lados, no
+        # solo en el dato ingresado, para que un número corto guardado
+        # (ej. un interno mal cargado) no matchee por ser sufijo/prefijo
+        # de casi cualquier cosa.
+        tel_guardado = _normalizar_telefono(partner.phone)
+        if (len(dato_tel) >= DATO_MIN_LEN and len(tel_guardado) >= DATO_MIN_LEN
+                and (dato_tel == tel_guardado
+                     or dato_tel.endswith(tel_guardado)
+                     or tel_guardado.endswith(dato_tel))):
+            return True
+        return False
+
+    # mi_sitio_lead_cancelado=True: el carrito que _crear_oportunidad_
+    # desde_carrito cancela para mandar al cliente nuevo a CRM en vez de
+    # a pago (ver shop_payment) -- nunca fue un pedido real, no tiene
+    # que aparecer acá como si lo fuera.
+    candidatos = env['sale.order'].sudo().search([('mi_sitio_lead_cancelado', '=', False)])
+    return candidatos.filtered(coincide)
+
+
 def _pedido_gestionable(order):
     """Un pedido se puede cancelar / pedir cambios desde el sitio solo si
     todavía no se facturó de verdad (una factura confirmada ya generada
@@ -956,38 +1033,40 @@ class MiSitioWeb(http.Controller):
     # (sin pago online, sin stock automatizado). Ver DOCS/07-pedidos.md.
     # -----------------------------------------------------------------
 
-    # Buscador de pedido sin cuenta (31/08/2026, a pedido explícito) --
-    # complementa el link con token de /shop/confirmation ("Gestionar mi
-    # pedido") para quien ya no lo tiene a mano. El DNI/CUIT solo no
-    # alcanza para buscar -- no es un dato secreto, cualquiera que lo
-    # sepa podría consultar el pedido de otra persona (dirección,
-    # teléfono, qué compró). Se pide junto con el número de pedido (ej.
-    # "S00057", visible en la página de gracias y en el email de
-    # confirmación) -- hacen falta las dos cosas, como en un rastreo de
-    # paquetería. Si coinciden, redirige a la misma página de gestión de
-    # siempre (con el token real), no arma una vista aparte.
+    # Buscador de pedido sin cuenta (31/08/2026, a pedido explícito;
+    # rehecho el 09/09/2026, también a pedido explícito) -- complementa
+    # el link con token de /shop/confirmation ("Gestionar mi pedido")
+    # para quien ya no lo tiene a mano.
+    #
+    # Primera versión: pedía número de pedido + documento juntos (como
+    # un rastreo de paquetería), porque el documento solo no es un dato
+    # secreto. Cambiado a pedido explícito del usuario: el documento es
+    # OPCIONAL en el checkout (ver WebsiteSaleHores, más abajo, "todo
+    # opcional salvo nombre/email/teléfono") -- exigirlo siempre dejaba
+    # afuera a cualquiera que no lo haya cargado, y encima el cliente no
+    # necesariamente se acuerda del número de pedido. Ahora alcanza con
+    # UN solo dato -- el que sea de los que se piden en el checkout
+    # (documento, email o teléfono) -- y trae TODOS los pedidos de esa
+    # persona, no uno solo. Sigue siendo el mismo criterio de fondo que
+    # antes (algo que el cliente cargó al pedir, no algo secreto de
+    # verdad) -- ver _pedidos_por_dato() por cómo se compara sin repetir
+    # el bug de '%'/'_' como comodín de SQL ya encontrado acá antes.
     @http.route('/mi-sitio/consultar-pedido', type='http', auth='public',
                 website=True, methods=['GET', 'POST'], sitemap=False)
     def consultar_pedido(self, **post):
         error = False
+        pedidos = request.env['sale.order']
         if request.httprequest.method == 'POST':
-            # Mayúsculas a mano + '=' exacto, no '=ilike' -- '=ilike' no
-            # escapa los comodines de SQL ('%', '_') que vengan en el
-            # texto del cliente, así que un "número de pedido" como '%'
-            # matcheaba CUALQUIER pedido (bug real, encontrado y probado
-            # contra la base) y de paso anulaba el sentido de pedir
-            # las dos cosas juntas (ver el comentario de más arriba).
-            numero = (post.get('numero_pedido') or '').strip().upper()
-            identificacion = _normalizar_identificacion(post.get('identificacion'))
-            order = request.env['sale.order'].sudo()
-            if numero and identificacion:
-                order = order.search([('name', '=', numero)], limit=1)
-            if (order and identificacion
-                    and _normalizar_identificacion(order.partner_id.vat) == identificacion):
+            pedidos = _pedidos_por_dato(request.env, post.get('dato'))
+            if len(pedidos) == 1:
+                order = pedidos
                 return _redirect('/mi-sitio/pedido/%d/gestionar?token=%s'
                                   % (order.id, order._portal_ensure_token()))
-            error = True
-        return request.render('mi_sitio_web.consultar_pedido_template', {'error': error})
+            error = not pedidos
+        return request.render('mi_sitio_web.consultar_pedido_template', {
+            'error': error,
+            'pedidos': pedidos.sorted(key=lambda o: o.date_order, reverse=True),
+        })
 
     @http.route('/mi-sitio/pedido/<int:order_id>/gestionar', type='http', auth='public', website=True, sitemap=False)
     def pedido_gestionar(self, order_id, token=None, ok=None, **kwargs):
@@ -1298,18 +1377,11 @@ class WebsiteSaleHores(WebsiteSale):
         # de ese solo se usa el .id más abajo, nunca se leen sus campos.
         team = (request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
                 or request.env['crm.team']).sudo()
-        # Se elige el responsable ANTES de crear la oportunidad (no
-        # después, como se hacía antes) para poder pasarlo como user_id
-        # en el propio create() -- encontrado el 09/09/2026, probando el
-        # flujo de verdad sin sesión iniciada: sin esto, crm.lead usa su
-        # propio default para user_id (el vendedor de la oportunidad),
-        # que en una ruta pública resuelve al mismo "Usuario Público" que
-        # ya se había encontrado y arreglado para la actividad más abajo
-        # -- se había arreglado quién recibe el aviso, pero no quién
-        # queda como vendedor asignado de la oportunidad en sí, así que
-        # esta nunca aparecía en el "Mi flujo" de nadie (ese filtro
-        # busca por vendedor asignado, no por quién recibió la
-        # actividad).
+        # El responsable de la ACTIVIDAD (el aviso de "hay un cliente
+        # nuevo") no es lo mismo que el vendedor asignado a la
+        # oportunidad -- ver el 'user_id': False de abajo para el
+        # porqué. Igual hace falta elegirlo acá antes, no solo para la
+        # actividad más abajo.
         responsable = _elegir_responsable_actividad(request.env, team=team)
         lead = request.env['crm.lead'].sudo().create({
             'name': 'Pedido web (cliente nuevo): %s' % (partner.name or order_sudo.name),
@@ -1330,7 +1402,23 @@ class WebsiteSaleHores(WebsiteSale):
                             'primero pasa por acá):\n%s' % (order_sudo.name, lineas),
             'medium_id': medium.id if medium else False,
             'team_id': team.id if team else False,
-            'user_id': responsable.id,
+            # SIN vendedor asignado, a propósito -- a pedido explícito
+            # del usuario (09/09/2026): el sitio no tiene que decidir
+            # quién de Ventas se hace cargo, eso lo elige Ventas mismo
+            # desde Odoo (se la asignan a sí mismos cuando la ven). Si
+            # se deja este campo afuera del create() sin más, crm.lead
+            # cae en su propio default (lambda: self.env.user) -- y
+            # como esto corre bajo sudo() (que cambia los PERMISOS pero
+            # no la identidad de "usuario actual" para calcular
+            # defaults), en una ruta pública ese default sigue
+            # resolviendo al "Usuario Público" de Odoo, el mismo bug de
+            # fondo que ya se había encontrado y arreglado FIJANDO un
+            # responsable acá (ver historial de este archivo) -- ahora
+            # se corrige distinto, poniendo False explícito para que
+            # quede realmente sin nadie (no "Usuario Público" tampoco),
+            # y quien reciba el AVISO (más abajo, la actividad) sigue
+            # siendo una persona real de todos modos.
+            'user_id': False,
         })
         # Notificación de Odoo para todo el equipo (campanita) -- se
         # postea el mensaje CON partner_ids en vez de solo suscribirlos:
