@@ -1287,7 +1287,17 @@ class WebsiteSaleHores(WebsiteSale):
             if not line.display_type
         )
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
-        team = request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
+        # .sudo() acá es necesario, no solo prolijo: más abajo se leen
+        # team.user_id y team.member_ids (dentro de
+        # _elegir_responsable_actividad) para elegir el responsable, y
+        # 'Sales Team' (crm.team) no es un modelo con lectura pública --
+        # sin sudo(), un visitante realmente anónimo (sin ninguna sesión
+        # previa) se encontraba con un 403 al llegar a /shop/payment como
+        # cliente nuevo (bug real, reportado por el usuario probando en
+        # incógnito, 09/09/2026). medium (arriba) no necesita lo mismo:
+        # de ese solo se usa el .id más abajo, nunca se leen sus campos.
+        team = (request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
+                or request.env['crm.team']).sudo()
         # Se elige el responsable ANTES de crear la oportunidad (no
         # después, como se hacía antes) para poder pasarlo como user_id
         # en el propio create() -- encontrado el 09/09/2026, probando el
