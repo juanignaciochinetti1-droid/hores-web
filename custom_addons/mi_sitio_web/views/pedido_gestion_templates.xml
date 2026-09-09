@@ -46,6 +46,16 @@
                             </t>
                         </div>
 
+                        <div t-if="facturas" style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:22px 24px; margin-bottom:26px;">
+                            <div style="font-size:12.5px; font-weight:700; color:#5a4f44; text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px;">Facturas</div>
+                            <t t-foreach="facturas" t-as="factura">
+                                <div style="display:flex; justify-content:space-between; align-items:center; gap:14px; padding:9px 0; border-top:1px solid #e8e3d9;">
+                                    <span style="font-size:14.5px; color:#241d17;" t-esc="factura.name"/>
+                                    <a t-attf-href="/mi-sitio/pedido/#{order.id}/factura/#{factura.id}?token=#{token}" target="_blank" style="font-size:13.5px; font-weight:600; color:#c26a1e; flex-shrink:0;">Ver factura →</a>
+                                </div>
+                            </t>
+                        </div>
+
                         <div t-if="gestionable">
                             <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:22px 24px; margin-bottom:18px;">
                                 <div style="font-size:15px; font-weight:600; color:#241d17; margin-bottom:6px;">¿Necesitás cambiar algo?</div>

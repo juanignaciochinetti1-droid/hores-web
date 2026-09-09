@@ -998,8 +998,35 @@ class MiSitioWeb(http.Controller):
             'order': order,
             'token': token,
             'gestionable': _pedido_gestionable(order),
+            # Solo facturas ya confirmadas (state='posted') -- un borrador
+            # todavía puede cambiar de monto/fecha, no es lo que el cliente
+            # tiene que ver ni descargar como si fuera definitivo.
+            'facturas': order.invoice_ids.filtered(lambda m: m.state == 'posted'),
             'ok': ok,
         })
+
+    @http.route('/mi-sitio/pedido/<int:order_id>/factura/<int:move_id>', type='http', auth='public', sitemap=False)
+    def pedido_factura_pdf(self, order_id, move_id, token=None, **kwargs):
+        """Descarga el PDF de una factura ya confirmada de este pedido --
+        mismo mecanismo de token que el resto de la autogestión (sin
+        login). No alcanza con validar el token contra el pedido solo:
+        hay que confirmar además que esa factura puntual pertenece a ESTE
+        pedido (si no, alguien con un link válido de un pedido propio
+        podría cambiar el número de factura en la URL y bajarse la de
+        cualquier otro cliente) y que ya está confirmada -- un borrador no
+        se expone nunca por acá, ver pedido_gestionar()."""
+        order = _pedido_por_token(order_id, token)
+        if not order:
+            raise request.not_found()
+        factura = order.invoice_ids.filtered(lambda m: m.id == move_id and m.state == 'posted')
+        if not factura:
+            raise request.not_found()
+        pdf_content, _ = request.env['ir.actions.report'].sudo()._render_qweb_pdf(
+            'account.account_invoices', factura.ids)
+        return request.make_response(pdf_content, headers=[
+            ('Content-Type', 'application/pdf'),
+            ('Content-Disposition', 'inline; filename="%s.pdf"' % factura.name.replace('/', '-')),
+        ])
 
     @http.route('/mi-sitio/pedido/<int:order_id>/cancelar', type='http', auth='public',
                 website=True, methods=['POST'], sitemap=False)
