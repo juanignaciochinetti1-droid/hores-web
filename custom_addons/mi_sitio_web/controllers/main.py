@@ -1288,6 +1288,19 @@ class WebsiteSaleHores(WebsiteSale):
         )
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
         team = request.env.ref('sales_team.team_sales_department', raise_if_not_found=False)
+        # Se elige el responsable ANTES de crear la oportunidad (no
+        # después, como se hacía antes) para poder pasarlo como user_id
+        # en el propio create() -- encontrado el 09/09/2026, probando el
+        # flujo de verdad sin sesión iniciada: sin esto, crm.lead usa su
+        # propio default para user_id (el vendedor de la oportunidad),
+        # que en una ruta pública resuelve al mismo "Usuario Público" que
+        # ya se había encontrado y arreglado para la actividad más abajo
+        # -- se había arreglado quién recibe el aviso, pero no quién
+        # queda como vendedor asignado de la oportunidad en sí, así que
+        # esta nunca aparecía en el "Mi flujo" de nadie (ese filtro
+        # busca por vendedor asignado, no por quién recibió la
+        # actividad).
+        responsable = _elegir_responsable_actividad(request.env, team=team)
         lead = request.env['crm.lead'].sudo().create({
             'name': 'Pedido web (cliente nuevo): %s' % (partner.name or order_sudo.name),
             # partner_id, no solo contact_name/email_from/phone sueltos: el
@@ -1307,6 +1320,7 @@ class WebsiteSaleHores(WebsiteSale):
                             'primero pasa por acá):\n%s' % (order_sudo.name, lineas),
             'medium_id': medium.id if medium else False,
             'team_id': team.id if team else False,
+            'user_id': responsable.id,
         })
         # Notificación de Odoo para todo el equipo (campanita) -- se
         # postea el mensaje CON partner_ids en vez de solo suscribirlos:
@@ -1320,18 +1334,9 @@ class WebsiteSaleHores(WebsiteSale):
             body='Oportunidad creada automáticamente: cliente nuevo desde el sitio web.',
             partner_ids=lead.team_id.member_ids.mapped('partner_id').ids,
         )
-        # A quién asignarle la actividad: el líder del equipo, o si no
-        # hay líder cargado, cualquier miembro del equipo -- NUNCA
-        # request.env.user acá (encontrado en revisión de código,
-        # 04/09/2026): esta ruta es pública/anónima, así que
-        # request.env.user en este contexto es el "Usuario Público" de
-        # Odoo, no una persona real -- si el equipo se queda sin líder
-        # (config que alguien podría cambiar sin querer), la actividad
-        # quedaba asignada a una cuenta que nadie mira, invisible en la
-        # práctica. Ver _elegir_responsable_actividad() más arriba --
-        # compartida con pedido_solicitar_cambio, que tenía este mismo
-        # problema sin arreglar todavía.
-        responsable = _elegir_responsable_actividad(request.env, team=lead.team_id)
+        # Misma persona que ya quedó como vendedor asignado más arriba --
+        # ver ese comentario para el porqué (nunca request.env.user acá,
+        # es una ruta pública/anónima).
         lead.activity_schedule(
             'mail.mail_activity_data_todo',
             summary='Cliente nuevo desde el sitio — armar presupuesto/seguimiento',
