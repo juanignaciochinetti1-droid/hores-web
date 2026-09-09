@@ -296,47 +296,71 @@ La página de gracias ofrece "Registrate" (crear cuenta con login) y
 "Gestionar mi pedido" (link con token, sin cuenta) — quedó sin resolver
 si conviene sacar el primero, no se tocó. En cambio se sumó un tercer
 camino para quien ya no tiene ese link a mano (lo perdió, borró el
-mail): un formulario que busca el pedido por **número de pedido +
-documento (DNI/CUIT/etc.)**.
+mail): un formulario de búsqueda.
 
-El documento solo no alcanza para buscar — a diferencia del token del
-link, no es un dato secreto, cualquiera que lo supiera podría consultar
-el pedido de otra persona (dirección, teléfono, qué compró). Pedir las
-dos cosas juntas (mismo patrón que un rastreo de paquetería) resuelve
-eso sin necesitar cuenta ni login.
+**Primera versión (31/08/2026)**: pedía **número de pedido + documento
+(DNI/CUIT/etc.) juntos**, mismo patrón que un rastreo de paquetería —
+el documento solo no alcanza para buscar porque no es un dato secreto
+(a diferencia del token del link), cualquiera que lo supiera podría
+consultar el pedido de otra persona.
 
-Implementación en `controllers/main.py` (`consultar_pedido()`) y
-`views/pedido_gestion_templates.xml`
-(`consultar_pedido_template`): busca el pedido por `name` (sin
-importar mayúsculas), compara el documento normalizado (saca guiones,
-puntos y espacios antes de comparar — "20-12345678-9" y "20123456789"
-matchean igual) contra `partner_id.vat`, y si coincide redirige a la
-misma página de gestión de siempre
-(`/mi-sitio/pedido/<id>/gestionar?token=...`), generando el token real
-en el momento — no arma una vista aparte. El campo de documento y su
-tipo (DNI/CUIT/etc.) ya existían en el checkout, vía la localización
-argentina (`l10n_latam_identification_type_id` + `vat`) — no hizo falta
-agregar nada nuevo ahí, solo esta pantalla de consulta.
+**Rehecho (09/09/2026, a pedido explícito)**: exigir las dos cosas
+dejaba afuera a cualquiera que no se acordara del número de pedido, y
+sobre todo, al documento (`vat`) es **opcional** en este checkout (ver
+"Sin dirección de entrega" y `WebsiteSaleHores._validate_address_values`
+más abajo) — mucha gente simplemente nunca lo cargó. Ahora el
+formulario pide **un solo dato, cualquiera de los que se piden en el
+checkout** (documento, email o teléfono — el campo se llama `dato` a
+propósito, no fuerza un tipo) y trae **todos** los pedidos de esa
+persona, no uno solo — antes redirigía siempre a un pedido puntual, y
+ahora, si hay más de un resultado, se lista para elegir.
 
-Link agregado en el footer del sitio ("Consultar mi pedido"), visible
-en todas las páginas — no solo en la de gracias, para quien vuelve
-días después. Traducido a los 3 idiomas.
+Implementación:
 
-**Bug de seguridad real, encontrado y corregido en el momento**: la
-primera versión buscaba el pedido con `('name', '=ilike', numero)`.
-`=ilike` en Odoo NO escapa los comodines de SQL (`%`, `_`) que vengan
-en el texto del cliente — un "número de pedido" de `%` o `S%`
-matcheaba **cualquier pedido de la base**, no uno puntual. Eso anulaba
-el motivo entero de pedir número + documento juntos: alcanzaba con
-saber (o adivinar) el documento de alguien y escribir `%` en el otro
-campo para llegar a un pedido suyo. Confirmado el problema probando
-directo contra la base antes de tocar nada. Se corrigió cambiando a
-mayúsculas + `'='` exacto (`numero.strip().upper()`, dominio con `=`
-en vez de `=ilike`) — sigue siendo insensible a mayúsculas/minúsculas
-(lo hacemos nosotros en Python, no SQL) pero ya no interpreta ningún
-carácter del cliente como comodín. Reverificado: `%` y `S%` ahora caen
-al mensaje de "no encontramos", `s00057` en minúsculas sigue
-encontrando el pedido bien.
+- `controllers/main.py`, `_pedidos_por_dato(env, dato)`: normaliza el
+  dato de tres formas a la vez (documento — solo alfanumérico
+  mayúsculas, mismo criterio que `_normalizar_identificacion`; email —
+  minúsculas; teléfono — solo dígitos, `_normalizar_telefono`) y busca,
+  entre los `sale.order` que no sean el "pedido fantasma" de un cliente
+  nuevo (`mi_sitio_lead_cancelado = True`, ver más abajo), cuáles
+  coinciden **exacto** con alguno de los tres campos del partner de ese
+  pedido. Nunca por `ilike`/substring — mismo cuidado con comodines de
+  SQL que ya causó el bug de abajo.
+- El teléfono compara por **sufijo/prefijo**, no igualdad estricta:
+  Odoo suele guardar el teléfono con el código de país agregado
+  (`'3537650821'` cargado → `'+54 3537650821'` guardado), y el cliente
+  lo escribe tal cual lo tipeó, sin el `+54`. Se exige un piso de largo
+  (`DATO_MIN_LEN = 6`) en ambos lados para que un dato corto no matchee
+  por ser sufijo de casi cualquier número real.
+- `consultar_pedido()`: si el resultado es un solo pedido, redirige
+  directo a `/mi-sitio/pedido/<id>/gestionar?token=...` (mismo
+  comportamiento que la versión vieja); si son varios, renderiza
+  `consultar_pedido_template` con la lista (nombre + fecha, cada uno
+  linkeando a su propia página de gestión); si no hay ninguno, muestra
+  el mensaje de error de siempre.
+- El campo de documento/email/teléfono ya existían en el checkout — no
+  hizo falta agregar nada ahí, solo reescribir esta pantalla de
+  consulta.
+
+Link en el footer del sitio ("Consultar mi pedido"), visible en todas
+las páginas. Traducido a los 3 idiomas (`scripts/traducciones/
+v_2245_consultar.py`).
+
+**Bug de seguridad real (versión original, 31/08/2026), encontrado y
+corregido en el momento**: la primera versión buscaba el pedido con
+`('name', '=ilike', numero)`. `=ilike` en Odoo NO escapa los comodines
+de SQL (`%`, `_`) que vengan en el texto del cliente — un "número de
+pedido" de `%` o `S%` matcheaba **cualquier pedido de la base**, no uno
+puntual, anulando el motivo entero de pedir número + documento juntos.
+Se corrigió cambiando a mayúsculas + `'='` exacto — este bug ya no
+puede repetirse en la versión actual, `_pedidos_por_dato()` no arma
+ningún `ilike`, compara todo en Python contra el valor ya normalizado.
+
+**Bug encontrado al reescribir esto (09/09/2026)**: `res.partner` ya
+**no tiene un campo `mobile` separado** en esta versión de Odoo (existía
+en versiones viejas) — el primer intento de comparar también contra
+`partner.mobile` tiraba `AttributeError` (500) en cualquier búsqueda.
+Sacado; solo se compara contra `phone`.
 
 ## /shop redirige a /compras — se saca la grilla nativa (28/08/2026, a pedido explícito)
 
@@ -648,6 +672,99 @@ que queda escapado y no se ejecuta), token inválido (404), y las 3
 plantillas del set (`pedido_gestionar_template`, el link en
 `/shop/confirmation`) traducidas a los 3 idiomas.
 
+## Cliente nuevo → oportunidad en CRM, cliente conocido → pedido directo
+
+A pedido explícito de Leandro (02/09/2026, vía WhatsApp): el sitio
+separa el flujo de compra en dos caminos según si quien está comprando
+ya hizo algún pedido antes o no (`WebsiteSaleHores._es_cliente_nuevo()`,
+`controllers/main.py`).
+
+- **Cliente con algún pedido anterior real** (mismo `partner_id` o
+  mismo email, en un pedido que no esté en `draft`/`sent` ni sea el
+  "pedido fantasma" de abajo) sigue el camino de siempre: llega derecho
+  a `/shop/payment`, el pedido queda como cotización/orden pendiente en
+  Ventas (ver "Sin precios ni pago online" arriba).
+- **Cliente nuevo** (primera vez, ninguna coincidencia): al llegar a
+  `/shop/payment` NO ve el paso de pago. En su lugar
+  (`_crear_oportunidad_desde_carrito`) se le crea una **oportunidad en
+  CRM** (`crm.lead`) con el detalle de lo que eligió (productos +
+  cantidades en la descripción, `partner_id` linkeado al cliente real
+  del checkout — no solo datos de contacto sueltos), se avisa al equipo
+  comercial, y se lo manda a la página de agradecimiento sin dejarlo
+  pagar. El pedido en sí (`sale.order`, todavía sin confirmar en ese
+  punto) se cancela — no tiene que quedar un "pedido por facturar"
+  fantasma dando vueltas en Ventas por algo que en realidad tiene que
+  pasar por Preventas primero. Se marca con
+  `mi_sitio_lead_cancelado = True` (campo propio, `models/sale_order.py`)
+  para poder distinguir después este cancelado-por-el-sitio de uno que
+  el cliente canceló de verdad después de confirmarlo — sin esa marca,
+  ese mismo pedido volvía a contar como "ya es cliente" la segunda vez
+  que la misma persona pedía algo (bug real, encontrado el 04/09/2026:
+  "no te pide los datos").
+
+### Quién queda como vendedor asignado — tres vueltas hasta llegar bien
+
+Mismo problema de fondo, encontrado tres veces en tres lugares
+distintos porque una ruta pública (`auth='public'`) nunca tiene un
+usuario real logueado — `env.user`, incluso bajo `.sudo()` (que cambia
+los **permisos**, no la identidad de "usuario actual" para calcular
+valores por defecto), resuelve al **"Usuario Público"** de Odoo, una
+cuenta técnica que nadie mira:
+
+1. **Quién recibe el AVISO** (la actividad "A hacer" de "hay un cliente
+   nuevo") — arreglado primero, con `_elegir_responsable_actividad()`
+   (compartida entre este flujo y `pedido_solicitar_cambio`): prioridad
+   al líder del equipo, después cualquier miembro, después el admin, y
+   recién como último recurso `env.user`.
+2. **Quién queda como vendedor asignado de la oportunidad en sí**
+   (`crm.lead.user_id`) — encontrado el 09/09/2026 probando el flujo de
+   verdad sin sesión iniciada: arreglar (1) arregla quién se entera,
+   pero `crm.lead.user_id` tiene su propio default
+   (`lambda: self.env.user`) que se aplica igual si no se pasa nada en
+   el `create()` — la oportunidad quedaba asignada al Usuario Público,
+   invisible en el "Mi flujo" de cualquier vendedor real (ese filtro
+   busca por vendedor asignado, no por quién recibió el aviso).
+3. **`crm.team` no es de lectura pública** — el primer arreglo del punto
+   2 buscaba el equipo con `request.env.ref('sales_team.
+   team_sales_department', ...)` sin `.sudo()`, y más abajo se leen
+   `team.user_id`/`team.member_ids` para elegir el responsable del
+   punto 1 — un visitante público real (sesión 100% anónima, sin
+   ninguna cookie previa) se encontraba con un **403** justo al llegar
+   a `/shop/payment` como cliente nuevo. No se había visto antes porque
+   hasta este punto nunca se había probado el flujo con una sesión
+   realmente anónima. Arreglado agregando `.sudo()` a esa referencia.
+
+**Decisión final (09/09/2026, a pedido explícito)**: la oportunidad
+queda **sin vendedor asignado** (`user_id: False` explícito en el
+`create()` — no simplemente omitido, omitirlo cae de nuevo en el
+default y reproduce el bug del punto 2). El sitio no tiene que decidir
+quién de Ventas se hace cargo — eso lo elige Ventas desde Odoo mismo
+(se la asignan a sí mismos cuando la ven en el pool del equipo). El
+aviso (punto 1) sigue yendo a una persona real de todos modos, para que
+no se pierda.
+
+## Ver la factura del pedido (`/mi-sitio/pedido/<id>/factura/<id>`)
+
+Agregado a pedido explícito (09/09/2026): el cliente puede ver/descargar
+el PDF de una factura ya emitida por Ventas para su pedido, desde la
+misma página de autogestión sin login (`pedido_gestionar_template`,
+sección "Facturas") — no hay portal de cliente activado, así que no
+usa el mecanismo nativo de Odoo (`/my/invoices`).
+
+- `pedido_gestionar()` pasa `order.invoice_ids.filtered(lambda m:
+  m.state == 'posted')` a la plantilla — **solo** facturas ya
+  confirmadas, nunca un borrador (todavía puede cambiar de monto/fecha,
+  no es algo definitivo para mostrarle al cliente).
+- `pedido_factura_pdf(order_id, move_id, token)`: mismo mecanismo de
+  token que el resto de la autogestión (`_pedido_por_token`), **más**
+  una verificación extra — confirma que la factura puntual (`move_id`)
+  pertenece a ESE pedido y sigue `posted`. Sin esto, alguien con un link
+  válido de su propio pedido podría cambiar el número de factura en la
+  URL y bajarse la de cualquier otro cliente. Genera el PDF con
+  `ir.actions.report._render_qweb_pdf('account.account_invoices',
+  factura.ids)` y lo devuelve inline (`Content-Disposition: inline`).
+- Traducido a los 3 idiomas (`scripts/traducciones/v_2238_pedido.py`).
+
 ## Multi-idioma
 
 Los nombres de los 30 productos de venta se cargaron en los 3 idiomas
@@ -659,9 +776,34 @@ Odoo de fábrica para esos textos, no hace falta traducir nada ahí.
 
 ## Qué falta / decisiones pendientes
 
-- **Precios reales** — ver arriba, es lo primero que hay que cargar.
-- **Moneda de la empresa en USD en vez de ARS** — ver arriba, bloqueado
-  por apuntes contables existentes, hay que resolverlo en el backend.
+- **Precios reales** — los 30 productos migrados siguen en `list_price
+  = 0.0` (ver arriba). Aparte, el 09/09/2026 se cargaron ~47 moldes más
+  (del conteo de pallets del cliente) como **datos de ejemplo** para
+  poder probar CRM/Ventas/Facturación con un catálogo más parecido al
+  real — todos con un precio de prueba parejo ($100), no precios reales
+  — y se activó "Controlar inventario" (`is_storable`) en los 30 + 47.
+  Sigue pendiente cargar precios de verdad en todos.
+- **Impuesto de venta duplicado** (encontrado el 09/09/2026 revisando
+  Ventas/Facturación, no algo de esta sesión): 60 de 68 moldes —
+  incluidos los que ya existían antes, no solo los nuevos — tienen DOS
+  impuestos de venta puestos a la vez (`taxes_id`): un "15%" que
+  además es el impuesto por defecto configurado en la compañía
+  ("Cartotécnica Hores"), y un "VAT 21%" que en realidad pertenece a
+  otra compañía de demo distinta ("(AR) Responsable Inscripto",
+  datos de ejemplo de la localización argentina de Odoo). Cualquier
+  factura real hoy cobraría ~36% de impuesto. **A pedido explícito del
+  usuario, no se tocó todavía** — depende de qué régimen fiscal
+  corresponde de verdad a Hores, decisión de negocio, no algo para
+  adivinar por script.
+- **Sin lista de precios en pesos** (mismo relevamiento, 09/09/2026): la
+  moneda de la compañía está bien configurada (ARS), pero **ninguna**
+  lista de precios de Cartotécnica Hores está en pesos — las únicas que
+  tiene son "Default"/"Christmas"/"Benelux" en USD y "EUR" en euros, y
+  esas mismas son las que ofrece el sitio a los visitantes. Todo pedido
+  y factura, de siempre, se cotiza en dólares/euros en vez de pesos.
+  Mismo origen que el punto anterior (datos genéricos de Odoo nunca
+  adaptados del todo a Argentina) — **a pedido explícito, queda para la
+  misma conversación donde se defina el régimen fiscal**.
 - **Checkout con paleta del sitio, pero layout nativo** — colores y
   tipografía ya combinan (ver "Checkout y pago" arriba), pero el
   header/nav y la estructura de esas pantallas siguen siendo las de Odoo,
@@ -673,7 +815,10 @@ Odoo de fábrica para esos textos, no hace falta traducir nada ahí.
   las tarjetas — el carrito solo se puede armar desde la ficha de cada
   producto (`/producto/<id>`). Se podría sumar un "agregar rápido" desde
   el listado más adelante si hace falta.
-- **Disponibilidad sigue siendo manual** — no hay Inventario (`stock`)
-  instalado; si el catálogo crece, evaluar activarlo para que la
-  disponibilidad (y el bloqueo de "Agregar al carrito") salga de stock
-  real en vez de un campo cargado a mano.
+- **Disponibilidad (`mi_sitio_web.producto.disponibilidad`) sigue
+  siendo manual, sin relación con el stock real** — `stock` sí está
+  instalado y en uso (`is_storable` + `stock.quant`, ver el punto de
+  precios arriba), pero nada conecta ese stock con el badge
+  "Disponible"/"A pedido"/"Sin stock" del sitio ni con el bloqueo de
+  "Agregar al carrito" — eso sigue siendo un campo cargado a mano. Se
+  podría conectar de verdad más adelante si hace falta.

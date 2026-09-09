@@ -126,19 +126,21 @@ equivocado a quien no conoce el nombre legal.
   español sin importar el idioma de la página — ver
   [idiomas](06-idiomas.md#qué-falta--gaps-conocidos).
 - **eCommerce (carrito/checkout)**: conectado y funcionando, pero **todos
-  los productos están a $0** — falta cargar precios reales, y la empresa
-  está mal configurada en dólares (USD) en vez de pesos (ARS), bloqueado
-  por apuntes contables existentes. Sin pago online (transferencia manual
-  a propósito) ni portal de cliente. Ver
+  los 30 productos migrados están en $0** — falta cargar precios
+  reales. La compañía real ("Cartotécnica Hores") sí tiene la moneda
+  bien configurada (ARS), pero ninguna de sus listas de precios está en
+  pesos (solo USD/EUR, datos genéricos de Odoo) y buena parte del
+  catálogo tiene un impuesto de venta duplicado (15% + 21% a la vez,
+  otro resabio de datos de ejemplo) — **decisiones de negocio
+  pendientes, no tocado a propósito** (09/09/2026). Sin pago online
+  (transferencia manual a propósito) ni portal de cliente. Ver
   [pedidos](07-pedidos.md#qué-falta--decisiones-pendientes) para el
   detalle completo.
-- **Ficha de la empresa en Odoo (`res.company`) sin completar**: nombre
-  "YourCompany", teléfono `+1 555-555-5556`, logo y sitio web genéricos
-  de fábrica — nunca se cargaron los datos reales de HORES ahí. No se
-  tocó porque puede afectar otras partes del backend (facturas, etc.) y
-  no estaba confirmado con la Dirección — ver el header genérico que
-  esto causaba en
-  [arquitectura](02-arquitectura-proyecto.md#header-genérico-duplicado-mismo-bug-que-el-footer-del-otro-lado).
+- **Ficha de la empresa en Odoo (`res.company`)**: ya tiene el nombre
+  real ("Cartotécnica Hores") y país Argentina — pero conviene revisar
+  el resto de los datos de contacto/fiscales antes de dar por
+  "terminado" el backend, en la misma pasada donde se resuelva lo de
+  impuestos/moneda de arriba.
 
 ## Credenciales / seguridad
 
