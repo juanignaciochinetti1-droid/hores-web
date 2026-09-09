@@ -156,20 +156,6 @@
     </div>
   </section>
 
-  <!-- Solución a medida -->
-  <section id="cta-medida" class="reveal" style="background:#c26a1e; color:#fff;">
-    <div style="max-width:1200px; margin:0 auto; padding:56px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
-      <div>
-        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 8px; color:#fff;">¿Necesitás una solución a medida?</h2>
-        <p style="font-size:16.5px; line-height:1.5; color:#fbe6d2; margin:0; max-width:38em;">Contactanos y desarrollamos el molde que tu producción necesita.</p>
-      </div>
-      <div style="display:flex; gap:14px; flex-wrap:wrap;">
-        <a href="tel:543537427085" style="background:#ffffff; color:#241d17; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Línea directa 3537 427085</a>
-        <a href="mailto:administracion@hores.com.ar" style="background:#2a2b2e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Escribinos</a>
-      </div>
-    </div>
-  </section>
-
   <!-- Sustentabilidad -->
   <section id="sustentabilidad" class="reveal" style="background:#20301f; color:#e7ecdf;">
     <div style="max-width:1200px; margin:0 auto; padding:52px 28px;">
