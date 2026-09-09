@@ -156,6 +156,20 @@
     </div>
   </section>
 
+  <!-- Solución a medida -->
+  <section id="cta-medida" class="reveal" style="background:#c26a1e; color:#fff;">
+    <div style="max-width:1200px; margin:0 auto; padding:56px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 8px; color:#fff;">¿Necesitás una solución a medida?</h2>
+        <p style="font-size:16.5px; line-height:1.5; color:#fbe6d2; margin:0; max-width:38em;">Contactanos y desarrollamos el molde que tu producción necesita.</p>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <a href="tel:543537427085" style="background:#ffffff; color:#241d17; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Línea directa 3537 427085</a>
+        <a href="mailto:administracion@hores.com.ar" style="background:#2a2b2e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Escribinos</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Sustentabilidad -->
   <section id="sustentabilidad" class="reveal" style="background:#20301f; color:#e7ecdf;">
     <div style="max-width:1200px; margin:0 auto; padding:52px 28px;">
@@ -216,6 +230,66 @@
           <div style="padding:0 22px 22px; font-size:15px; line-height:1.6; color:#5a4f44;">Cada producto del catálogo tiene su ficha técnica descargable en PDF, con medidas, capacidad, gramaje y material.</div>
         </details>
       </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div style="max-width:1200px; margin:0 auto; padding:52px 28px 64px;">
+    <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:stretch;">
+      <div style="display:flex; flex-direction:column;">
+        <p style="font-size:16px; line-height:1.6; color:#5a4f44; margin:0 0 26px;">Completá el formulario y te respondemos a la brevedad. También podés escribirnos por WhatsApp, email o acercarte a la planta.</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <a href="https://wa.me/543537427085" target="_blank" rel="noopener" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <img src="/mi_sitio_web/static/src/img/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="WhatsApp" style="width:38px; height:38px; border-radius:9px; object-fit:contain;"/>
+            <span><strong style="display:block; color:#241d17;">WhatsApp</strong>+54 3537 427085</span>
+          </a>
+          <a href="mailto:administracion@hores.com.ar" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <span style="width:38px; height:38px; border-radius:9px; background:#f6e0c2; display:flex; align-items:center; justify-content:center; color:#c26a1e; font-weight:700;">@</span>
+            <span><strong style="display:block; color:#241d17;">Email</strong>administracion@hores.com.ar</span>
+          </a>
+          <div style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
+            <span style="width:38px; height:38px; border-radius:9px; background:#efe6d8; display:flex; align-items:center; justify-content:center; color:#8a7a67; font-weight:700;">◎</span>
+            <span><strong style="display:block; color:#241d17;">Planta</strong>Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
+          </div>
+        </div>
+        <div style="margin-top:22px; flex:1; display:flex; flex-direction:column; border:1px solid #e8e3d9; border-radius:12px; overflow:hidden;">
+          <iframe title="Ubicación Cartotécnica Hores — Bell Ville" src="https://www.openstreetmap.org/export/embed.html?bbox=-62.7090%2C-32.6380%2C-62.6690%2C-32.6180&amp;layer=mapnik&amp;marker=-32.6284%2C-62.6890" style="width:100%; flex:1; min-height:200px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.openstreetmap.org/?mlat=-32.6284&amp;mlon=-62.6890#map=15/-32.6284/-62.6890" target="_blank" rel="noopener" style="display:block; text-align:center; padding:9px; font-size:13px; font-weight:600; color:#c26a1e; background:#ffffff;">Cómo llegar →</a>
+        </div>
+      </div>
+      <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px;">
+        <div t-if="contacto_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:18px;">
+          Revisá el formulario: completá nombre, email y mensaje, con un email válido.
+        </div>
+        <form action="/mi-sitio/contacto" method="post">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <!-- Honeypot anti-bot: invisible para una persona, un bot que
+               autocompleta todos los inputs suele caer en la trampa. -->
+          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
+                 style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true"/>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <label style="display:block;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Nombre*</span>
+              <input required="required" name="nombre" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
+            </label>
+            <label style="display:block;">
+              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Empresa</span>
+              <input name="empresa" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
+            </label>
+          </div>
+          <label style="display:block; margin-top:16px;">
+            <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Email*</span>
+            <input required="required" type="email" name="email" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
+          </label>
+          <label style="display:block; margin-top:16px;">
+            <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Mensaje*</span>
+            <textarea required="required" rows="4" name="mensaje" maxlength="5000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
+          </label>
+          <button type="submit" style="margin-top:20px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer;">Enviar consulta</button>
+        </form>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -319,78 +393,6 @@
           </form>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Contacto -->
-  <section id="contacto">
-    <div style="background:#c26a1e; color:#fff;">
-    <div style="max-width:1200px; margin:0 auto; padding:56px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
-      <div>
-        <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 8px; color:#fff;">¿Necesitás una solución a medida?</h2>
-        <p style="font-size:16.5px; line-height:1.5; color:#fbe6d2; margin:0; max-width:38em;">Contactanos y desarrollamos el molde que tu producción necesita.</p>
-      </div>
-      <div style="display:flex; gap:14px; flex-wrap:wrap;">
-        <a href="tel:543537427085" style="background:#ffffff; color:#241d17; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Línea directa 3537 427085</a>
-        <a href="mailto:administracion@hores.com.ar" style="background:#2a2b2e; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Escribinos</a>
-      </div>
-    </div>
-    </div>
-    <div style="max-width:1200px; margin:0 auto; padding:52px 28px 64px;">
-    <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:stretch;">
-      <div style="display:flex; flex-direction:column;">
-        <p style="font-size:16px; line-height:1.6; color:#5a4f44; margin:0 0 26px;">Completá el formulario y te respondemos a la brevedad. También podés escribirnos por WhatsApp, email o acercarte a la planta.</p>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <a href="https://wa.me/543537427085" target="_blank" rel="noopener" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
-            <img src="/mi_sitio_web/static/src/img/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="WhatsApp" style="width:38px; height:38px; border-radius:9px; object-fit:contain;"/>
-            <span><strong style="display:block; color:#241d17;">WhatsApp</strong>+54 3537 427085</span>
-          </a>
-          <a href="mailto:administracion@hores.com.ar" style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
-            <span style="width:38px; height:38px; border-radius:9px; background:#f6e0c2; display:flex; align-items:center; justify-content:center; color:#c26a1e; font-weight:700;">@</span>
-            <span><strong style="display:block; color:#241d17;">Email</strong>administracion@hores.com.ar</span>
-          </a>
-          <div style="display:flex; align-items:flex-start; gap:12px; color:#4a4038; font-size:15px; line-height:1.4;">
-            <span style="width:38px; height:38px; border-radius:9px; background:#efe6d8; display:flex; align-items:center; justify-content:center; color:#8a7a67; font-weight:700;">◎</span>
-            <span><strong style="display:block; color:#241d17;">Planta</strong>Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
-          </div>
-        </div>
-        <div style="margin-top:22px; flex:1; display:flex; flex-direction:column; border:1px solid #e8e3d9; border-radius:12px; overflow:hidden;">
-          <iframe title="Ubicación Cartotécnica Hores — Bell Ville" src="https://www.openstreetmap.org/export/embed.html?bbox=-62.7090%2C-32.6380%2C-62.6690%2C-32.6180&amp;layer=mapnik&amp;marker=-32.6284%2C-62.6890" style="width:100%; flex:1; min-height:200px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          <a href="https://www.openstreetmap.org/?mlat=-32.6284&amp;mlon=-62.6890#map=15/-32.6284/-62.6890" target="_blank" rel="noopener" style="display:block; text-align:center; padding:9px; font-size:13px; font-weight:600; color:#c26a1e; background:#ffffff;">Cómo llegar →</a>
-        </div>
-      </div>
-      <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px;">
-        <div t-if="contacto_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:18px;">
-          Revisá el formulario: completá nombre, email y mensaje, con un email válido.
-        </div>
-        <form action="/mi-sitio/contacto" method="post">
-          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-          <!-- Honeypot anti-bot: invisible para una persona, un bot que
-               autocompleta todos los inputs suele caer en la trampa. -->
-          <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
-                 style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true"/>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-            <label style="display:block;">
-              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Nombre*</span>
-              <input required="required" name="nombre" maxlength="200" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
-            </label>
-            <label style="display:block;">
-              <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Empresa</span>
-              <input name="empresa" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
-            </label>
-          </div>
-          <label style="display:block; margin-top:16px;">
-            <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Email*</span>
-            <input required="required" type="email" name="email" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none;"/>
-          </label>
-          <label style="display:block; margin-top:16px;">
-            <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Mensaje*</span>
-            <textarea required="required" rows="4" name="mensaje" maxlength="5000" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
-          </label>
-          <button type="submit" style="margin-top:20px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer;">Enviar consulta</button>
-        </form>
-      </div>
-    </div>
     </div>
   </section>
 
