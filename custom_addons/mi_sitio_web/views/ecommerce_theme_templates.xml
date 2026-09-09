@@ -435,10 +435,20 @@
                     height: 6px !important;
                     margin: 0 6px !important;
                     vertical-align: middle;
-                    border-right: 2px solid #8a7a67;
-                    border-top: 2px solid #8a7a67;
-                    border-bottom: none;
-                    border-left: none;
+                    /* !important en los 4 lados (no solo en las otras
+                       propiedades de acá arriba): esta flechita SIEMPRE
+                       lleva la clase text-muted de Bootstrap (es el
+                       separador entre chips, ver el comentario de arriba),
+                       y .text-muted más arriba en este mismo archivo le
+                       pone border-style:dashed a los 4 lados con la misma
+                       especificidad exacta que este selector -- sin
+                       !important, cuál de las dos gana depende únicamente
+                       del orden en el archivo, no de nada más robusto
+                       (encontrado en revisión de código, 09/09/2026). */
+                    border-right: 2px solid #8a7a67 !important;
+                    border-top: 2px solid #8a7a67 !important;
+                    border-bottom: none !important;
+                    border-left: none !important;
                     transform: rotate(45deg);
                     opacity: .6;
                 }
@@ -542,17 +552,27 @@
                  se cargó o se reemplazó el bloque por AJAX. document.
                  referrer también se valida contra el propio origen del
                  sitio antes de usarlo como destino (un sitio externo
-                 podría, en teoría, controlar ese valor). -->
+                 podría, en teoría, controlar ese valor): se compara el
+                 pathname ya parseado con new URL(), no el string entero
+                 del referrer, para que un query string o hash que
+                 casualmente contenga "/producto/123" (ej. viniendo de
+                 ?next=/producto/5) no cuente como si el visitante hubiera
+                 estado viendo esa ficha de verdad (encontrado en revisión
+                 de código, 09/09/2026: el link "volver" de más abajo ya
+                 lo hacía bien, este quedó con la versión vieja). -->
             <script>
                 document.addEventListener('click', function (ev) {
                     var btn = ev.target.closest('.js_cart_lines a[href="/shop"]');
                     if (!btn) return;
                     ev.preventDefault();
                     var ref = document.referrer || '';
-                    var esDelMismoSitio = ref.indexOf(window.location.origin) === 0;
                     var vieneDeUnProducto = false;
-                    if (esDelMismoSitio) {
-                        vieneDeUnProducto = /\/producto\/\d+/.test(ref);
+                    if (ref.indexOf(window.location.origin) === 0) {
+                        try {
+                            vieneDeUnProducto = /^\/producto\/\d+$/.test(new URL(ref).pathname);
+                        } catch (err) {
+                            vieneDeUnProducto = false;
+                        }
                     }
                     window.location.href = vieneDeUnProducto ? ref : '/mi-sitio#productos';
                 });
@@ -590,11 +610,24 @@
                  dan la misma página, el referrer no es una página anterior
                  de verdad, es solo el cambio de idioma, así que se deja
                  el href fijo de siempre (que Odoo ya sirve en el idioma
-                 correcto solo con renderizar la página). -->
+                 correcto solo con renderizar la página).
+
+                 OJO (encontrado en revisión de código, 09/09/2026):
+                 history.back() no sirve de nada si esta pestaña se abrió
+                 recién (long-press/"abrir en pestaña nueva" en mobile, o
+                 middle-click): el referrer queda seteado igual que en
+                 una navegación normal, pero el historial de ESA pestaña
+                 tiene una sola entrada, así que "volver" no tiene a dónde
+                 ir y el link queda muerto (ni pasa a la página anterior
+                 ni cae al href de siempre, porque ya se hizo
+                 preventDefault). Se chequea history.length antes de
+                 comprometerse a este camino. -->
             <script>
                 document.addEventListener('click', function (ev) {
                     var link = ev.target.closest('.hc-back-link');
                     if (!link) return;
+                    var hayHistorial = history.length > 1;
+                    if (!hayHistorial) return;
                     var ref = document.referrer || '';
                     if (ref.indexOf(window.location.origin) !== 0) return;
                     var sinIdioma = function (pathname) {

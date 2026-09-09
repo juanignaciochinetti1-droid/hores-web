@@ -1005,7 +1005,7 @@ class MiSitioWeb(http.Controller):
             'ok': ok,
         })
 
-    @http.route('/mi-sitio/pedido/<int:order_id>/factura/<int:move_id>', type='http', auth='public', sitemap=False)
+    @http.route('/mi-sitio/pedido/<int:order_id>/factura/<int:move_id>', type='http', auth='public', website=True, sitemap=False)
     def pedido_factura_pdf(self, order_id, move_id, token=None, **kwargs):
         """Descarga el PDF de una factura ya confirmada de este pedido --
         mismo mecanismo de token que el resto de la autogestión (sin
