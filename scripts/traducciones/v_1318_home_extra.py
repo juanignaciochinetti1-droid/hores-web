@@ -12,13 +12,8 @@ def label(es, en, pt, it, fr, de, zh):
 ROWS = [
     label('Nombre*', 'Name*', 'Nome*', 'Nome*', 'Nom*', 'Name*', '姓名*'),
     label('Email*', 'Email*', 'Email*', 'Email*', 'Email*', 'E-Mail*', '邮箱*'),
-    label('Teléfono', 'Phone', 'Telefone', 'Telefono', 'Téléphone', 'Telefon', '电话'),
     label('Empresa', 'Company', 'Empresa', 'Azienda', 'Entreprise', 'Unternehmen', '公司'),
     label('Mensaje*', 'Message*', 'Mensagem*', 'Messaggio*', 'Message*', 'Nachricht*', '留言*'),
-    label('Área de interés', 'Area of interest', 'Área de interesse', 'Area di interesse',
-          "Domaine d'intérêt", 'Interessengebiet', '关注领域'),
-    label('Currículum*', 'Résumé*', 'Currículo*', 'Curriculum*', 'CV*', 'Lebenslauf*', '简历*'),
-    label('Comentario', 'Comment', 'Comentário', 'Commento', 'Commentaire', 'Kommentar', '留言'),
 
     ('+31 años', '+31 años', '31+ years', '+31 anos', '+31 anni', '+31 ans', '31+ Jahre', '31+ 年'),
 

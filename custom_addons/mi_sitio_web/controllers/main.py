@@ -768,7 +768,7 @@ def _elegir_responsable_actividad(env, team=False, preferido=False):
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
-    def home(self, contacto_error=None, postulacion_error=None, **kwargs):
+    def home(self, contacto_error=None, **kwargs):
         productos = request.env['mi_sitio_web.producto'].sudo().search([
             ('is_published', '=', True),
         ], order='sequence')
@@ -794,7 +794,6 @@ class MiSitioWeb(http.Controller):
         return request.render('mi_sitio_web.home_template', {
             'productos': productos,
             'contacto_error': bool(contacto_error),
-            'postulacion_error': postulacion_error,
             'hero_slides': hero_slides,
             'hero_total_seconds': total_seconds,
             'hero_img_width_pct': round(100.0 / track_images_count, 4),
@@ -918,19 +917,19 @@ class MiSitioWeb(http.Controller):
     # -----------------------------------------------------------------
     # Bolsa de trabajo (01/09/2026, a pedido explícito) -- "una sección
     # donde la gente pueda cargar su currículum para buscar trabajo en la
-    # fábrica". Vive como una sección más de /mi-sitio (#trabaja-con-nosotros
-    # en website_templates.xml, mismo patrón que #contacto) -- a pedido
-    # explícito (01/09/2026): "que esta nueva sección esté en la página
-    # principal y no esté apartado". Antes era una página propia
-    # (/trabaja-con-nosotros); esa ruta se deja como redirect por si quedó
-    # algún link guardado. Crea un hr.applicant real (app de Selección de
-    # Personal), no un modelo propio -- mismo criterio que pedidos/facturas.
-    # Ver el comentario largo en postulacion_templates.xml.
+    # fábrica". Página propia otra vez desde el 10/09/2026 (a pedido
+    # explícito, con screenshot: "hacele una sección aparte y sacalo de
+    # la página principal") -- ver el comentario largo con la historia
+    # completa en postulacion_templates.xml. Crea un hr.applicant real
+    # (app de Selección de Personal), no un modelo propio -- mismo
+    # criterio que pedidos/facturas.
     # -----------------------------------------------------------------
 
-    @http.route('/trabaja-con-nosotros', type='http', auth='public', website=True, sitemap=False)
-    def trabaja_con_nosotros(self, **kwargs):
-        return _redirect('/mi-sitio#trabaja-con-nosotros')
+    @http.route('/trabaja-con-nosotros', type='http', auth='public', website=True, sitemap=True)
+    def trabaja_con_nosotros(self, postulacion_error=None, **kwargs):
+        return request.render('mi_sitio_web.trabaja_con_nosotros_template', {
+            'postulacion_error': postulacion_error,
+        })
 
     @http.route('/mi-sitio/postulacion', type='http', auth='public',
                 website=True, methods=['POST'], csrf=True)
@@ -952,17 +951,17 @@ class MiSitioWeb(http.Controller):
                 or len(nombre) > NOMBRE_MAX_LEN
                 or len(puesto) > NOMBRE_MAX_LEN
                 or len(mensaje) > MENSAJE_MAX_LEN):
-            return _redirect('/mi-sitio?postulacion_error=campos#trabaja-con-nosotros')
+            return _redirect('/trabaja-con-nosotros?postulacion_error=campos')
 
         # El input file llega en request.httprequest.files (werkzeug), no
         # en **post -- ahí solo caen los campos de texto del form.
         cv = request.httprequest.files.get('cv')
         if not cv or not cv.filename:
-            return _redirect('/mi-sitio?postulacion_error=archivo#trabaja-con-nosotros')
+            return _redirect('/trabaja-con-nosotros?postulacion_error=archivo')
 
         extension = os.path.splitext(cv.filename)[1].lower()
         if extension not in CV_EXTENSIONES_PERMITIDAS:
-            return _redirect('/mi-sitio?postulacion_error=formato#trabaja-con-nosotros')
+            return _redirect('/trabaja-con-nosotros?postulacion_error=formato')
 
         # Se lee como mucho CV_MAX_BYTES + 1 -- no CV_MAX_BYTES en sí, que
         # dejaría pasar un archivo un byte más grande sin darse cuenta --
@@ -970,9 +969,9 @@ class MiSitioWeb(http.Controller):
         # antes de rechazarlo por tamaño.
         contenido = cv.read(CV_MAX_BYTES + 1)
         if not contenido:
-            return _redirect('/mi-sitio?postulacion_error=archivo#trabaja-con-nosotros')
+            return _redirect('/trabaja-con-nosotros?postulacion_error=archivo')
         if len(contenido) > CV_MAX_BYTES:
-            return _redirect('/mi-sitio?postulacion_error=tamano#trabaja-con-nosotros')
+            return _redirect('/trabaja-con-nosotros?postulacion_error=tamano')
 
         job = request.env.ref('mi_sitio_web.hr_job_postulacion_espontanea', raise_if_not_found=False)
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)

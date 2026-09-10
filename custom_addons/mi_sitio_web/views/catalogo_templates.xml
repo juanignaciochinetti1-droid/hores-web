@@ -317,7 +317,7 @@
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
         <a href="/mi-sitio#productos" style="color:#5a4f44;">Productos</a>
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
-        <a href="/mi-sitio#trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
+        <a href="/trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
         <!-- Historia/Compromiso/FAQ agrupados en un desplegable (01/09/2026,
              a pedido explícito: "que no ocupen tanto espacio") — mismo
              mecanismo de Bootstrap (data-bs-toggle="dropdown") que ya usa
@@ -392,7 +392,7 @@
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
           <a href="/mi-sitio/consultar-pedido" style="color:#cfccc5;">Consultar mi pedido</a>
-          <a href="/mi-sitio#trabaja-con-nosotros" style="color:#cfccc5;">Trabajá con nosotros</a>
+          <a href="/trabaja-con-nosotros" style="color:#cfccc5;">Trabajá con nosotros</a>
         </div>
       </div>
       <div>
