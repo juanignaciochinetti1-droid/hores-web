@@ -156,37 +156,6 @@
     </div>
   </section>
 
-  <!-- Sustentabilidad -->
-  <section id="sustentabilidad" class="reveal" style="background:#20301f; color:#e7ecdf;">
-    <div style="max-width:1200px; margin:0 auto; padding:52px 28px;">
-      <div style="display:grid; grid-template-columns:1.15fr 1fr; gap:44px; align-items:center;">
-        <div>
-          <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#a9c48f; margin-bottom:14px;">Compromiso</div>
-          <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; line-height:1.12; margin:0 0 14px; color:#fff;">Compromiso con el medioambiente</h2>
-          <p style="font-size:16px; line-height:1.6; color:#cbd6bd; margin:0 0 22px; max-width:34em;">Valorizamos el papel como materia prima renovable: trabajamos con proveedores responsables, diseñamos envases eficientes y recuperamos el scrap para minimizar el impacto ambiental.</p>
-          <div style="display:flex; gap:26px; flex-wrap:wrap; margin-bottom:26px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:8px; height:8px; border-radius:50%; background:#a9c48f; flex-shrink:0;"></span>
-              <span style="font-size:14px; font-weight:600; color:#e7ecdf;">Bosques responsables</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:8px; height:8px; border-radius:50%; background:#a9c48f; flex-shrink:0;"></span>
-              <span style="font-size:14px; font-weight:600; color:#e7ecdf;">Menos desperdicio</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:8px; height:8px; border-radius:50%; background:#a9c48f; flex-shrink:0;"></span>
-              <span style="font-size:14px; font-weight:600; color:#e7ecdf;">Materia prima secundaria</span>
-            </div>
-          </div>
-          <a href="/compromiso" class="hc-link-arrow" style="display:inline-flex; align-items:center; gap:9px; background:#a9c48f; color:#1a2718; padding:13px 24px; border-radius:9px; font-weight:600; font-size:15px;">Conocé nuestro compromiso <span class="hc-arrow">→</span></a>
-        </div>
-        <div style="position:relative; aspect-ratio:5/4; border-radius:16px; overflow:hidden; border:1px solid #3a4a37;">
-          <img src="/mi_sitio_web/static/src/img/jpeg-optimizer_low-angle-view-tree-covered-green-leaves-sunlight-daytime.jpg" alt="Árbol y follaje — compromiso ambiental Cartotécnica Hores" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- FAQ -->
   <section id="faq" class="reveal" style="border-top:1px solid #e8e3d9;">
     <div style="max-width:840px; margin:0 auto; padding:64px 28px;">
