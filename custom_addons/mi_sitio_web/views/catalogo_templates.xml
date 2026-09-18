@@ -505,7 +505,13 @@
               <img t-attf-src="/web/image/mi_sitio_web.producto/#{producto.id}/image" t-att-alt="producto.name" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"/>
             </div>
             <div>
-              <div style="font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#c26a1e; margin-bottom:8px;" t-esc="producto.code"/>
+              <!-- El código interno (HC-PD-001, etc.) se sacó de acá a
+                   pedido explícito (18/09/2026) — molestaba visualmente
+                   arriba del badge de disponibilidad, y no es un dato
+                   que el cliente necesite ver (es un código interno de
+                   la línea de producto, no el código de cada tamaño/
+                   variante, que sí se sigue mostrando más abajo en
+                   "Variantes disponibles"). -->
               <div t-if="producto.disponibilidad == 'disponible'" style="display:inline-block; background:#e7f0dc; color:#3f7d38; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">Disponible</div>
               <div t-elif="producto.disponibilidad == 'a_pedido'" style="display:inline-block; background:#f6e0c2; color:#c26a1e; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">A pedido</div>
               <div t-elif="producto.disponibilidad == 'sin_stock'" style="display:inline-block; background:#f6e2df; color:#b23b3b; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px;">Sin stock</div>
