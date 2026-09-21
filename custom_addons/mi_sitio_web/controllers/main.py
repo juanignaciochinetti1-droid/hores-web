@@ -768,7 +768,7 @@ def _elegir_responsable_actividad(env, team=False, preferido=False):
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
-    def home(self, contacto_error=None, pedido_personalizado_error=None, **kwargs):
+    def home(self, contacto_error=None, **kwargs):
         productos = request.env['mi_sitio_web.producto'].sudo().search([
             ('is_published', '=', True),
         ], order='sequence')
@@ -794,7 +794,6 @@ class MiSitioWeb(http.Controller):
         return request.render('mi_sitio_web.home_template', {
             'productos': productos,
             'contacto_error': bool(contacto_error),
-            'pedido_personalizado_error': bool(pedido_personalizado_error),
             'hero_slides': hero_slides,
             'hero_total_seconds': total_seconds,
             'hero_img_width_pct': round(100.0 / track_images_count, 4),
@@ -915,6 +914,23 @@ class MiSitioWeb(http.Controller):
     def contacto_gracias(self, **kwargs):
         return request.render('mi_sitio_web.contacto_gracias_template', {})
 
+    # -----------------------------------------------------------------
+    # Pedidos personalizados (21/09/2026, a pedido explícito: "haria
+    # falta una seccion donde la gente pueda hacer pedidos
+    # personalizados"). Primera vuelta: sección en la home
+    # (#pedido-personalizado). Segunda vuelta, mismo día, a pedido
+    # explícito de nuevo ("hacele una seccion apartada") -- página
+    # propia, mismo criterio que /trabaja-con-nosotros (ver el
+    # comentario largo en postulacion_templates.xml con la historia de
+    # ese mismo vaivén).
+    # -----------------------------------------------------------------
+
+    @http.route('/pedido-personalizado', type='http', auth='public', website=True, sitemap=True)
+    def pedido_personalizado_page(self, pedido_personalizado_error=None, **kwargs):
+        return request.render('mi_sitio_web.pedido_personalizado_template', {
+            'pedido_personalizado_error': bool(pedido_personalizado_error),
+        })
+
     @http.route('/mi-sitio/pedido-personalizado', type='http', auth='public',
                 website=True, methods=['POST'], csrf=True)
     def pedido_personalizado(self, **post):
@@ -935,7 +951,7 @@ class MiSitioWeb(http.Controller):
                 or len(empresa) > NOMBRE_MAX_LEN
                 or len(telefono) > TELEFONO_MAX_LEN
                 or len(detalle) > MENSAJE_MAX_LEN):
-            return _redirect('/mi-sitio?pedido_personalizado_error=1#pedido-personalizado')
+            return _redirect('/pedido-personalizado?pedido_personalizado_error=1')
 
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
 

@@ -46,6 +46,7 @@
         'views/ecommerce_theme_templates.xml',
         'views/pedido_gestion_templates.xml',
         'views/postulacion_templates.xml',
+        'views/pedido_personalizado_templates.xml',
     ],
     'installable': True,
     'application': True,
