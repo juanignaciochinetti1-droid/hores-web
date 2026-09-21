@@ -589,9 +589,19 @@
 
           <div t-if="producto.variante_ids" class="reveal" style="margin-top:56px;">
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:24px; margin:0 0 20px; color:#241d17;">Variantes disponibles</h2>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+            <!-- flex + wrap en vez de grid de 4 columnas fijas — con
+                 grid, una familia cuya cantidad de tamaños no es
+                 múltiplo de 4 (ej. 5) dejaba la última fila con una
+                 sola tarjeta pegada a la izquierda, con un hueco vacío
+                 al lado que se veía como un error de layout (encontrado
+                 el 21/09/2026, con la línea nueva de Budín — Funditas,
+                 5 variantes). Con flex-wrap + justify-content:center,
+                 una fila incompleta queda centrada en vez de pegada a
+                 un costado — se ve como una elección de diseño, no
+                 como que falta algo. -->
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
               <t t-foreach="producto.variante_ids" t-as="v">
-                <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#ffffff;">
+                <div class="hc-card" style="flex:0 0 calc(25% - 15px); border:1px solid #e8e3d9; border-radius:12px; overflow:hidden; background:#ffffff;">
                   <img t-if="v.image" t-attf-src="/web/image/mi_sitio_web.producto.variante/#{v.id}/image" t-att-alt="v.dimensions" loading="lazy" style="width:100%; aspect-ratio:1/1; object-fit:cover; display:block;"/>
                   <div style="padding:12px 14px;">
                     <div style="font-size:13px; font-weight:600; color:#241d17;" t-esc="v.code"/>
