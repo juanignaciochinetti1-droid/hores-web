@@ -331,6 +331,7 @@
           <div class="dropdown-menu hc-more-menu" role="menu">
             <a class="dropdown-item" href="/historia" role="menuitem">Historia</a>
             <a class="dropdown-item" href="/compromiso" role="menuitem">Compromiso</a>
+            <a class="dropdown-item" href="/mi-sitio#pedido-personalizado" role="menuitem">Pedido a medida</a>
             <a class="dropdown-item" href="/mi-sitio#faq" role="menuitem">FAQ</a>
             <a class="dropdown-item" href="/trabaja-con-nosotros" role="menuitem">Empleo</a>
           </div>
@@ -392,6 +393,7 @@
           <a href="/mi-sitio#empresa" style="color:#cfccc5;">Empresa</a>
           <a href="/historia" style="color:#cfccc5;">Historia</a>
           <a href="/mi-sitio#productos" style="color:#cfccc5;">Productos</a>
+          <a href="/mi-sitio#pedido-personalizado" style="color:#cfccc5;">Pedido a medida</a>
           <a href="/calidad" style="color:#cfccc5;">Calidad</a>
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>

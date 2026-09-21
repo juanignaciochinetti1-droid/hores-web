@@ -768,7 +768,7 @@ def _elegir_responsable_actividad(env, team=False, preferido=False):
 class MiSitioWeb(http.Controller):
 
     @http.route('/mi-sitio', type='http', auth='public', website=True, sitemap=True)
-    def home(self, contacto_error=None, **kwargs):
+    def home(self, contacto_error=None, pedido_personalizado_error=None, **kwargs):
         productos = request.env['mi_sitio_web.producto'].sudo().search([
             ('is_published', '=', True),
         ], order='sequence')
@@ -794,6 +794,7 @@ class MiSitioWeb(http.Controller):
         return request.render('mi_sitio_web.home_template', {
             'productos': productos,
             'contacto_error': bool(contacto_error),
+            'pedido_personalizado_error': bool(pedido_personalizado_error),
             'hero_slides': hero_slides,
             'hero_total_seconds': total_seconds,
             'hero_img_width_pct': round(100.0 / track_images_count, 4),
@@ -913,6 +914,49 @@ class MiSitioWeb(http.Controller):
     @http.route('/mi-sitio/gracias', type='http', auth='public', website=True)
     def contacto_gracias(self, **kwargs):
         return request.render('mi_sitio_web.contacto_gracias_template', {})
+
+    @http.route('/mi-sitio/pedido-personalizado', type='http', auth='public',
+                website=True, methods=['POST'], csrf=True)
+    def pedido_personalizado(self, **post):
+        nombre = (post.get('nombre') or '').strip()
+        empresa = (post.get('empresa') or '').strip()
+        email = (post.get('email') or '').strip()
+        telefono = (post.get('telefono') or '').strip()
+        detalle = (post.get('detalle') or '').strip()
+
+        # Honeypot anti-bot: mismo patrón que /mi-sitio/contacto.
+        if (post.get('sitio_web') or '').strip():
+            return _redirect('/mi-sitio/gracias')
+
+        if (not nombre or not email or not detalle
+                or not EMAIL_RE.match(email)
+                or len(email) > EMAIL_MAX_LEN
+                or len(nombre) > NOMBRE_MAX_LEN
+                or len(empresa) > NOMBRE_MAX_LEN
+                or len(telefono) > TELEFONO_MAX_LEN
+                or len(detalle) > MENSAJE_MAX_LEN):
+            return _redirect('/mi-sitio?pedido_personalizado_error=1#pedido-personalizado')
+
+        medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
+
+        # Prefijo distinto al de /mi-sitio/contacto ("Consulta web: ...")
+        # para que Ventas distinga a simple vista, en la lista de
+        # Oportunidades, un pedido a medida (con medidas/cantidad propias,
+        # sin producto de catálogo asociado) de una consulta genérica.
+        request.env['crm.lead'].sudo().create({
+            'name': 'Pedido personalizado: %s' % nombre,
+            'contact_name': nombre,
+            'partner_name': empresa,
+            'email_from': email,
+            'phone': telefono,
+            'description': detalle,
+            'medium_id': medium.id if medium else False,
+        })
+
+        # Mismo patrón Post/Redirect/Get que /mi-sitio/contacto, y misma
+        # página de agradecimiento -- no hace falta una propia solo para
+        # cambiar el prefijo del Lead.
+        return _redirect('/mi-sitio/gracias')
 
     # -----------------------------------------------------------------
     # Bolsa de trabajo (01/09/2026, a pedido explícito) -- "una sección
