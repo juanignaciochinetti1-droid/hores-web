@@ -91,6 +91,17 @@ class MiSitioWebProductoVariante(models.Model):
     _name = 'mi_sitio_web.producto.variante'
     _description = 'Variante de tamaño de producto'
     _order = 'sequence, id'
+    # A diferencia de mi_sitio_web.producto.code (que sí tiene esta misma
+    # restricción desde el principio), acá faltaba -- nada impedía cargar
+    # dos variantes con el mismo código de SKU, ni siquiera dentro del
+    # mismo producto (encontrado en la auditoría de errores del
+    # 21/09/2026, después de toda la reconciliación de códigos de esta
+    # misma sesión). NULL no colisiona en Postgres, así que sigue
+    # permitiendo dejar el código vacío en más de una fila.
+    _code_unique = models.Constraint(
+        'unique(code)',
+        'Ya existe una variante con ese código.',
+    )
 
     producto_id = fields.Many2one('mi_sitio_web.producto', required=True, ondelete='cascade')
     code = fields.Char(string='Código')

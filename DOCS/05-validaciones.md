@@ -1,7 +1,8 @@
 # Validaciones
 
 Catálogo de todas las validaciones del sitio: qué existe, dónde vive cada
-una, y qué se corrigió en la revisión del 25/08/2026.
+una, y qué se corrigió en la revisión del 25/08/2026 (y en la del
+21/09/2026, ver la nota sobre `producto.variante` más abajo).
 
 ## A nivel modelo (Odoo ORM)
 
@@ -10,6 +11,7 @@ una, y qué se corrigió en la revisión del 25/08/2026.
 | `mi_sitio_web.producto` | `name` | Obligatorio | `required=True` |
 | `mi_sitio_web.producto` | `category_id` | Obligatorio (todo producto debe tener categoría real) | `required=True` |
 | `mi_sitio_web.producto` | `code` | Único (permite vacío en más de un registro — NULL no colisiona en Postgres) | `models.Constraint('unique(code)', ...)` |
+| `mi_sitio_web.producto.variante` | `code` | Único, mismo criterio que arriba — **faltaba** hasta la auditoría del 21/09/2026 (nada impedía cargar dos SKUs iguales, ni dentro del mismo producto) | `models.Constraint('unique(code)', ...)` |
 | `mi_sitio_web.producto` | `disponibilidad` | Obligatorio, uno de `disponible`/`a_pedido`/`sin_stock` | `required=True` + `Selection` (ver [pedidos](07-pedidos.md)) |
 | `mi_sitio_web.categoria` | `name` | Obligatorio | `required=True` |
 | `mi_sitio_web.categoria` | `slug` | Obligatorio, único, **y con formato válido** (`^[a-z0-9]+(-[a-z0-9]+)*$` — minúsculas/números/guiones, sin espacios ni acentos) | `required=True` + `models.Constraint` + `@api.constrains` |
