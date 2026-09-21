@@ -27,6 +27,14 @@ TELEFONO_MAX_LEN = 40
 CV_EXTENSIONES_PERMITIDAS = ('.pdf', '.doc', '.docx')
 CV_MAX_BYTES = 5 * 1024 * 1024  # 5 MB
 
+# Pedido personalizado (/pedido-personalizado) -- imagen de referencia
+# opcional adjunta al Lead (ej. una foto del molde a replicar o un
+# boceto). Mismo criterio de validación que el CV de arriba (extensión +
+# tamaño), pero optativo -- a diferencia del CV, no adjuntar nada es
+# válido acá.
+IMAGEN_EXTENSIONES_PERMITIDAS = ('.jpg', '.jpeg', '.png', '.webp', '.gif')
+IMAGEN_MAX_BYTES = 8 * 1024 * 1024  # 8 MB
+
 # Estados de sale.order desde los que un cliente puede cancelar/pedir un
 # cambio por su cuenta, sin pasar por Ventas primero — ver
 # _pedido_gestionable() más abajo.
@@ -928,7 +936,7 @@ class MiSitioWeb(http.Controller):
     @http.route('/pedido-personalizado', type='http', auth='public', website=True, sitemap=True)
     def pedido_personalizado_page(self, pedido_personalizado_error=None, **kwargs):
         return request.render('mi_sitio_web.pedido_personalizado_template', {
-            'pedido_personalizado_error': bool(pedido_personalizado_error),
+            'pedido_personalizado_error': pedido_personalizado_error,
         })
 
     @http.route('/mi-sitio/pedido-personalizado', type='http', auth='public',
@@ -951,7 +959,22 @@ class MiSitioWeb(http.Controller):
                 or len(empresa) > NOMBRE_MAX_LEN
                 or len(telefono) > TELEFONO_MAX_LEN
                 or len(detalle) > MENSAJE_MAX_LEN):
-            return _redirect('/pedido-personalizado?pedido_personalizado_error=1')
+            return _redirect('/pedido-personalizado?pedido_personalizado_error=campos')
+
+        # Imagen de referencia -- opcional, a diferencia del CV de la
+        # bolsa de trabajo (obligatorio). Mismo patrón de validación que
+        # postulacion() más abajo: extensión primero, después tamaño
+        # (leyendo un byte de más para detectar "demasiado grande" sin
+        # cargar el archivo entero de más en memoria).
+        imagen = request.httprequest.files.get('imagen')
+        contenido_imagen = None
+        if imagen and imagen.filename:
+            extension = os.path.splitext(imagen.filename)[1].lower()
+            if extension not in IMAGEN_EXTENSIONES_PERMITIDAS:
+                return _redirect('/pedido-personalizado?pedido_personalizado_error=formato')
+            contenido_imagen = imagen.read(IMAGEN_MAX_BYTES + 1)
+            if len(contenido_imagen) > IMAGEN_MAX_BYTES:
+                return _redirect('/pedido-personalizado?pedido_personalizado_error=tamano')
 
         medium = request.env.ref('utm.utm_medium_website', raise_if_not_found=False)
 
@@ -959,7 +982,7 @@ class MiSitioWeb(http.Controller):
         # para que Ventas distinga a simple vista, en la lista de
         # Oportunidades, un pedido a medida (con medidas/cantidad propias,
         # sin producto de catálogo asociado) de una consulta genérica.
-        request.env['crm.lead'].sudo().create({
+        lead = request.env['crm.lead'].sudo().create({
             'name': 'Pedido personalizado: %s' % nombre,
             'contact_name': nombre,
             'partner_name': empresa,
@@ -968,6 +991,14 @@ class MiSitioWeb(http.Controller):
             'description': detalle,
             'medium_id': medium.id if medium else False,
         })
+
+        if contenido_imagen:
+            request.env['ir.attachment'].sudo().create({
+                'name': imagen.filename,
+                'datas': base64.b64encode(contenido_imagen),
+                'res_model': 'crm.lead',
+                'res_id': lead.id,
+            })
 
         # Mismo patrón Post/Redirect/Get que /mi-sitio/contacto, y misma
         # página de agradecimiento -- no hace falta una propia solo para

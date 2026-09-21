@@ -48,6 +48,28 @@
               #pedido-personalizado .hc-custom-submit:hover {
                 background: #a85a19;
               }
+              /* Botón nativo de "elegir archivo" restylado con
+                 ::file-selector-button en vez de esconder el input real
+                 con display:none -- mismo patrón que la bolsa de trabajo
+                 (postulacion_templates.xml), para que el input siga
+                 siendo el real y no uno de mentira armado con JS. */
+              #pedido-personalizado input[type="file"]::file-selector-button {
+                background: #ffffff;
+                border: 1px solid #d9ccb9;
+                color: #5a4f44;
+                border-radius: 7px;
+                padding: 9px 16px;
+                font-family: 'Archivo', sans-serif;
+                font-weight: 600;
+                font-size: 13.5px;
+                margin-right: 12px;
+                cursor: pointer;
+                transition: border-color .18s ease, color .18s ease;
+              }
+              #pedido-personalizado input[type="file"]::file-selector-button:hover {
+                border-color: #c26a1e;
+                color: #c26a1e;
+              }
             </style>
             <div id="pedido-personalizado" style="max-width:1200px; margin:0 auto; padding:36px 28px 64px;">
               <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:start;">
@@ -65,10 +87,16 @@
                   </div>
                 </div>
                 <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px; box-shadow:0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);">
-                  <div t-if="pedido_personalizado_error" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
+                  <div t-if="pedido_personalizado_error == 'campos'" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
                     Revisá el formulario: completá nombre, email y el detalle del pedido, con un email válido.
                   </div>
-                  <form action="/mi-sitio/pedido-personalizado" method="post">
+                  <div t-if="pedido_personalizado_error == 'formato'" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
+                    La imagen tiene que ser JPG, PNG, WEBP o GIF.
+                  </div>
+                  <div t-if="pedido_personalizado_error == 'tamano'" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
+                    La imagen pesa demasiado — el límite es 8 MB.
+                  </div>
+                  <form action="/mi-sitio/pedido-personalizado" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <!-- Honeypot anti-bot: mismo patrón que /mi-sitio/contacto. -->
                     <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"
@@ -96,6 +124,11 @@
                     <label style="display:block; margin-top:16px;">
                       <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Contanos qué necesitás*</span>
                       <textarea required="required" rows="4" name="detalle" maxlength="5000" placeholder="Tipo de molde, medidas, capacidad, cantidad aproximada, impresión, plazos..." class="hc-custom-input" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
+                    </label>
+                    <label style="display:block; margin-top:16px;">
+                      <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Imagen de referencia (opcional)</span>
+                      <input type="file" name="imagen" accept="image/*" class="hc-custom-input" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:9px 13px; font-family:'Archivo',sans-serif; font-size:13.5px; color:#8a7a67; background:#fff;"/>
+                      <span style="display:block; font-size:12px; color:#8a7a67; margin-top:6px;">Una foto del molde que querés replicar o un boceto. JPG, PNG, WEBP o GIF, hasta 8 MB.</span>
                     </label>
                     <button type="submit" class="hc-custom-submit" style="margin-top:22px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:background .18s ease;">Pedir presupuesto</button>
                   </form>
