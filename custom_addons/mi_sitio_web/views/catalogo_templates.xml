@@ -1222,9 +1222,6 @@
 <!-- ============ /historia ============ -->
 <template id="historia_template" name="Mi Sitio - Historia">
   <t t-call="website.layout">
-    <!-- Historia tiene su propio <footer> chico (abajo) — se suprime el
-         footer compartido para no mostrar los dos. -->
-    <t t-set="no_footer" t-value="True"/>
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en categoria_template. -->
     <t t-set="no_header" t-value="True"/>
@@ -1418,16 +1415,15 @@
 
         </div>
 
-        <!-- 11. Footer simple -->
-        <footer style="border-top:1px solid var(--h-border); padding:34px 28px;">
-          <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:space-between;">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotécnica Hores" style="height:32px; width:auto;"/>
-              <span style="font-size:13.5px; color:var(--h-text2);">Ruta Prov. 3, Km. 183.5, Bell Ville, Córdoba</span>
-            </div>
-            <a href="/mi-sitio" class="hc-link-arrow" style="font-size:13px; font-weight:600; color:var(--h-accent);">Volver al sitio <span class="hc-arrow">→</span></a>
-          </div>
-        </footer>
+        <!-- Footer propio sacado (22/09/2026, a pedido explícito: "esto
+             tiene que estar al final de cada sector de la pagina sin
+             esepciones", con captura del footer compartido real) — esta
+             era la única página con no_footer=True, mostrando este mini
+             footer casero en vez del footer compartido real
+             (mi_sitio_web.site_footer, ver footer_override_templates.xml).
+             Con no_footer sacado de arriba, el footer compartido ya
+             aparece acá solo, sin necesidad de repetir logo/dirección a
+             mano. -->
         <button class="hc-back-to-top" style="right:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
       </div>
 
