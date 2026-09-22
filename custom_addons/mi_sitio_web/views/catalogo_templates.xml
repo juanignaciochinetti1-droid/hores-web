@@ -1267,7 +1267,9 @@
         <!-- 1. Header compartido del sitio (igual en todas las páginas) -->
         <t t-call="mi_sitio_web.site_header"/>
 
-        <!-- 2. Hero + 3. Stats rápidas: misma foto de fondo, sin corte entre ambas -->
+        <!-- 2. Hero (a pedido explícito, 22/09/2026, se sacan las "3. Stats
+             rápidas" que iban acá debajo — +31 años de experiencia / +500
+             moldes por año / +150 clientes / 8 países) -->
         <section style="position:relative; overflow:hidden; padding:90px 28px 64px; background:linear-gradient(rgba(28,22,17,.68),rgba(28,22,17,.68)), url('/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg'); background-size:cover; background-position:center;">
           <div style="position:relative; z-index:1; max-width:840px; margin:0 auto; text-align:center;">
             <div style="display:inline-flex; align-items:center; gap:9px; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#f0b878; margin-bottom:20px;">
@@ -1275,15 +1277,6 @@
             </div>
             <h1 style="font-weight:700; font-size:clamp(32px,4.4vw,50px); line-height:1.1; margin:0 0 18px; color:#fff;">Más de 30 años construyendo <span style="color:#e08a34;">confianza</span></h1>
             <p style="font-size:17px; line-height:1.6; color:#dcd2c4; max-width:36em; margin:0 auto;">Desde Bell Ville, Córdoba, hasta el resto de la región: así fuimos creciendo, molde a molde.</p>
-          </div>
-          <div class="h-grid-4" style="max-width:1200px; margin:44px auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:18px; position:relative; z-index:2;">
-            <t t-foreach="stats" t-as="s">
-              <div class="h-card" style="text-align:center; padding:32px 18px;">
-                <div class="h-stat-icon" style="width:54px; height:54px; margin:0 auto 16px; border-radius:50%; background:radial-gradient(circle at 32% 28%, #fdf6ea, #f2e2c8); border:1px solid rgba(194,106,30,.18); box-shadow:0 4px 10px rgba(194,106,30,.14); display:flex; align-items:center; justify-content:center; font-size:22px;" t-esc="s['icon']"/>
-                <div class="historia-stat-value" t-att-data-target="s['value']" style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; line-height:1.1; color:var(--h-accent);" t-esc="s['value']"/>
-                <div style="font-size:12.5px; font-weight:500; letter-spacing:.02em; color:var(--h-text2); margin-top:7px;" t-esc="s['label']"/>
-              </div>
-            </t>
           </div>
         </section>
 
@@ -1430,46 +1423,6 @@
              botón flotante de WhatsApp del footer compartido — los dos
              se superponían exactos. -->
       </div>
-
-      <script>
-        (function () {
-          var root = document.querySelector('.historia-page');
-          if (!root) return;
-
-          // Contadores animados de las stats (+40, +500, +150, 6): cuentan
-          // desde 0 hasta el valor real la primera vez que entran en pantalla.
-          var statEls = root.querySelectorAll('.historia-stat-value');
-          if (statEls.length &amp;&amp; 'IntersectionObserver' in window) {
-            var animateCount = function (el) {
-              var target = el.getAttribute('data-target') || '';
-              var match = target.match(/^(\D*)(\d+)(\D*)$/);
-              if (!match) return; // sin dígitos, se deja el texto tal cual
-              var prefix = match[1], endNum = parseInt(match[2], 10), suffix = match[3];
-              var duration = 1200, startTime = null;
-              var step = function (timestamp) {
-                if (!startTime) startTime = timestamp;
-                var progress = Math.min((timestamp - startTime) / duration, 1);
-                el.textContent = prefix + Math.floor(progress * endNum) + suffix;
-                if (progress &lt; 1) {
-                  window.requestAnimationFrame(step);
-                } else {
-                  el.textContent = target; // valor final exacto, sin redondeos
-                }
-              };
-              window.requestAnimationFrame(step);
-            };
-            var statsObserver = new IntersectionObserver(function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                  animateCount(entry.target);
-                  statsObserver.unobserve(entry.target);
-                }
-              });
-            }, { threshold: 0.4 });
-            statEls.forEach(function (el) { statsObserver.observe(el); });
-          }
-        })();
-      </script>
     </div>
   </t>
 </template>

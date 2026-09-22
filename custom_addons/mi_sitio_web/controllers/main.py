@@ -56,21 +56,6 @@ PEDIDO_ESTADOS_GESTIONABLES = ('draft', 'sent', 'sale')
 # ---------------------------------------------------------------------------
 
 _HISTORIA_ES = {
-    # Actualizado el 28/08/2026 con datos reales tomados de hores.com.ar/wp
-    # (Empresa, Clientes) — 'stats.moldes por año' y 'stats.clientes' NO
-    # tienen fuente real (el sitio real no publica esos dos números) y
-    # quedan igual que antes. 'años de experiencia' usa el "31 años de
-    # operaciones" que el sitio real muestra hoy mismo, en vez de
-    # recalcularlo a mano — evita asumir desde qué año exacto cuentan
-    # ellos (¿1992, la primera máquina? ¿1999, la constitución de la
-    # SRL?). 'países' pasa de 6 a 8 para que coincida con la lista real
-    # de 'paises' más abajo (que ya estaba bien, pero el contador no).
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'años de experiencia'},
-        {'icon': '📦', 'value': '+500', 'label': 'moldes por año'},
-        {'icon': '🤝', 'value': '+150', 'label': 'clientes'},
-        {'icon': '🌎', 'value': '8', 'label': 'países'},
-    ],
     # Timeline reescrito el 22/09/2026 con el texto real y completo de
     # "Sobre Nosotros" (hores.com.ar/wp), pasado a mano por el usuario --
     # reemplaza la versión resumida anterior, que dejaba afuera datos
@@ -158,12 +143,6 @@ _HISTORIA_EN = {
     # Updated 08/28/2026 with real data from hores.com.ar/wp — see the
     # es_AR block above for the sourcing notes (same numbers/years,
     # translated).
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'years of experience'},
-        {'icon': '📦', 'value': '+500', 'label': 'molds per year'},
-        {'icon': '🤝', 'value': '+150', 'label': 'clients'},
-        {'icon': '🌎', 'value': '8', 'label': 'countries'},
-    ],
     'timeline': [
         {'year': '1992', 'title': 'First automatic machine', 'text': 'Gabriel Markarian and Oscar Urbano build the first automatic machine for panettone paper molds — the beginning of what would become Cartotécnica Hores.'},
         {'year': '1999', 'title': 'Company incorporated', 'text': 'Formally incorporated as Cartotécnica Hores SRL, taking the first step into the baking industry market.'},
@@ -236,12 +215,6 @@ _HISTORIA_PT = {
     # Atualizado em 28/08/2026 com dados reais de hores.com.ar/wp — ver
     # as notas de fonte no bloco es_AR acima (mesmos números/anos,
     # traduzidos).
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'anos de experiência'},
-        {'icon': '📦', 'value': '+500', 'label': 'moldes por ano'},
-        {'icon': '🤝', 'value': '+150', 'label': 'clientes'},
-        {'icon': '🌎', 'value': '8', 'label': 'países'},
-    ],
     'timeline': [
         {'year': '1992', 'title': 'Primeira máquina automática', 'text': 'Gabriel Markarian e Oscar Urbano constroem a primeira máquina automática para moldes de papel de panetone — o início do que se tornaria a Cartotécnica Hores.'},
         {'year': '1999', 'title': 'Constituição da empresa', 'text': 'Constituição formal como Cartotécnica Hores SRL, dando o primeiro passo para se instalar no mercado da indústria de panificação.'},
@@ -314,12 +287,6 @@ _HISTORIA_IT = {
     # Aggiunto il 02/09/2026 insieme a francese, tedesco e cinese
     # semplificato -- vedi le note sulle fonti nel blocco es_AR più sopra
     # (stessi numeri/anni, tradotti).
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'anni di esperienza'},
-        {'icon': '📦', 'value': '+500', 'label': 'stampi all\'anno'},
-        {'icon': '🤝', 'value': '+150', 'label': 'clienti'},
-        {'icon': '🌎', 'value': '8', 'label': 'paesi'},
-    ],
     'timeline': [
         {'year': '1992', 'title': 'Prima macchina automatica', 'text': 'Gabriel Markarian e Oscar Urbano costruiscono la prima macchina automatica per stampi da panettone.'},
         {'year': '1999', 'title': 'Costituzione della società', 'text': 'Costituzione formale come Cartotécnica Hores SRL.'},
@@ -389,12 +356,6 @@ _HISTORIA_IT = {
 }
 
 _HISTORIA_FR = {
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'ans d\'expérience'},
-        {'icon': '📦', 'value': '+500', 'label': 'moules par an'},
-        {'icon': '🤝', 'value': '+150', 'label': 'clients'},
-        {'icon': '🌎', 'value': '8', 'label': 'pays'},
-    ],
     'timeline': [
         {'year': '1992', 'title': 'Première machine automatique', 'text': 'Gabriel Markarian et Oscar Urbano construisent la première machine automatique pour moules à panettone.'},
         {'year': '1999', 'title': 'Constitution de la société', 'text': 'Constitution formelle en tant que Cartotécnica Hores SRL.'},
@@ -464,12 +425,6 @@ _HISTORIA_FR = {
 }
 
 _HISTORIA_DE = {
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': 'Jahre Erfahrung'},
-        {'icon': '📦', 'value': '+500', 'label': 'Formen pro Jahr'},
-        {'icon': '🤝', 'value': '+150', 'label': 'Kunden'},
-        {'icon': '🌎', 'value': '8', 'label': 'Länder'},
-    ],
     'timeline': [
         {'year': '1992', 'title': 'Erste automatische Maschine', 'text': 'Gabriel Markarian und Oscar Urbano bauen die erste automatische Maschine für Panettone-Formen.'},
         {'year': '1999', 'title': 'Gründung der Gesellschaft', 'text': 'Formelle Gründung als Cartotécnica Hores SRL.'},
@@ -539,12 +494,6 @@ _HISTORIA_DE = {
 }
 
 _HISTORIA_ZH_CN = {
-    'stats': [
-        {'icon': '📅', 'value': '+31', 'label': '年经验'},
-        {'icon': '📦', 'value': '+500', 'label': '年产模具数'},
-        {'icon': '🤝', 'value': '+150', 'label': '客户'},
-        {'icon': '🌎', 'value': '8', 'label': '国家'},
-    ],
     'timeline': [
         {'year': '1992', 'title': '第一台自动化机器', 'text': 'Gabriel Markarian 和 Oscar Urbano 制造了第一台意式圣诞面包纸模自动化生产机器。'},
         {'year': '1999', 'title': '公司成立', 'text': '正式成立为 Cartotécnica Hores SRL。'},
@@ -874,7 +823,6 @@ class MiSitioWeb(http.Controller):
     def historia(self, **kwargs):
         data = _historia_data(request.env.lang)
         return request.render('mi_sitio_web.historia_template', {
-            'stats': data['stats'],
             'timeline': data['timeline'],
             'mision_vision': data['mision_vision'],
             'valores': data['valores'],
