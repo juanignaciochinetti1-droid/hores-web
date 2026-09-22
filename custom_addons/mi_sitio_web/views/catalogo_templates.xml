@@ -1423,8 +1423,12 @@
              (mi_sitio_web.site_footer, ver footer_override_templates.xml).
              Con no_footer sacado de arriba, el footer compartido ya
              aparece acá solo, sin necesidad de repetir logo/dirección a
-             mano. -->
-        <button class="hc-back-to-top" style="right:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
+             mano. Se saca también el botón "volver arriba" propio de acá
+             abajo (encontrado en auditoría del 22/09/2026): el footer
+             compartido ya trae el suyo (site_footer, izquierda), y este
+             quedaba duplicado en la misma esquina derecha donde vive el
+             botón flotante de WhatsApp del footer compartido — los dos
+             se superponían exactos. -->
       </div>
 
       <script>
