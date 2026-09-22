@@ -929,17 +929,6 @@
           </div>
         </section>
 
-        <!-- CTA -->
-        <section style="background:#c26a1e; color:#fff;">
-          <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
-            <div>
-              <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff;">¿Necesitás la documentación de calidad?</h2>
-              <p style="font-size:16px; line-height:1.5; color:#fbe6d2; margin:0; max-width:40em;">Escribinos y te enviamos los certificados y fichas técnicas correspondientes.</p>
-            </div>
-            <a href="mailto:administracion@hores.com.ar?subject=Solicitud%20de%20documentaci%C3%B3n%20de%20calidad" style="background:#211e1b; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Solicitar documentación</a>
-          </div>
-        </section>
-
       </div>
     </div>
   </t>
