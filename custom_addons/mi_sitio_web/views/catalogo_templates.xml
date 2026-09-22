@@ -1222,9 +1222,8 @@
 <!-- ============ /historia ============ -->
 <template id="historia_template" name="Mi Sitio - Historia">
   <t t-call="website.layout">
-    <!-- Historia tiene su propio <footer> chico (abajo, con el toggle de
-         tema claro/oscuro) — se suprime el footer compartido para no
-         mostrar los dos. -->
+    <!-- Historia tiene su propio <footer> chico (abajo) — se suprime el
+         footer compartido para no mostrar los dos. -->
     <t t-set="no_footer" t-value="True"/>
     <!-- Header genérico de Odoo duplicado con el nuestro — ver el
          comentario largo en categoria_template. -->
@@ -1239,10 +1238,6 @@
           --h-text:#241d17; --h-text2:#5a4f44; --h-accent:#c26a1e;
           background:var(--h-bg); color:var(--h-text);
           font-family:'Archivo', system-ui, sans-serif;
-        }
-        .historia-page[data-theme="dark"] {
-          --h-bg:#1a1510; --h-card:#241d17; --h-border:rgba(255,255,255,.09);
-          --h-text:#f5f1ea; --h-text2:#b9ac9a; --h-accent:#e08a34;
         }
         .historia-page * { box-sizing:border-box; }
         .historia-page h1, .historia-page h2, .historia-page h3 { font-family:'Source Serif 4',serif; }
@@ -1259,15 +1254,6 @@
           transform:translateY(-5px);
           box-shadow:0 10px 24px rgba(0,0,0,.12), 0 28px 60px rgba(0,0,0,.16);
         }
-        .historia-page[data-theme="dark"] .h-card {
-          /* Las sombras negras casi no se ven sobre fondo oscuro — se
-             oscurecen más (alpha más alto) en vez de aclararlas, para que
-             sigan marcando elevación en el tema oscuro. */
-          box-shadow:0 6px 18px rgba(0,0,0,.35), 0 20px 46px rgba(0,0,0,.45);
-        }
-        .historia-page[data-theme="dark"] .h-card:hover {
-          box-shadow:0 10px 24px rgba(0,0,0,.45), 0 28px 60px rgba(0,0,0,.55);
-        }
         .historia-page .h-stat-icon { transition:transform .25s ease; }
         .historia-page .h-card:hover .h-stat-icon { transform:scale(1.08); }
         .historia-page .h-bar-track { background:var(--h-border); border-radius:20px; overflow:hidden; height:9px; }
@@ -1279,14 +1265,10 @@
         }
       </style>
 
-      <div class="historia-page" data-theme="light">
+      <div class="historia-page">
 
         <!-- 1. Header compartido del sitio (igual en todas las páginas) -->
         <t t-call="mi_sitio_web.site_header"/>
-
-        <!-- Toggle de tema, flotante — específico de esta página -->
-        <button id="historia-theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro"
-                style="position:fixed; left:22px; bottom:22px; z-index:60; background:var(--h-card); border:1px solid var(--h-border); color:var(--h-text); width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:18px; box-shadow:0 6px 16px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center;">🌙</button>
 
         <!-- 2. Hero + 3. Stats rápidas: misma foto de fondo, sin corte entre ambas -->
         <section style="position:relative; overflow:hidden; padding:90px 28px 64px; background:linear-gradient(rgba(28,22,17,.68),rgba(28,22,17,.68)), url('/mi_sitio_web/static/src/img/planta-aerea_1200-1024x576.jpg'); background-size:cover; background-position:center;">
@@ -1453,22 +1435,6 @@
         (function () {
           var root = document.querySelector('.historia-page');
           if (!root) return;
-
-          var toggle = document.getElementById('historia-theme-toggle');
-          if (toggle) {
-            var saved = null;
-            try { saved = localStorage.getItem('historia-theme'); } catch (e) {}
-            if (saved === 'dark') {
-              root.setAttribute('data-theme', 'dark');
-              toggle.textContent = '☀️';
-            }
-            toggle.addEventListener('click', function () {
-              var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-              root.setAttribute('data-theme', next);
-              toggle.textContent = next === 'dark' ? '☀️' : '🌙';
-              try { localStorage.setItem('historia-theme', next); } catch (e) {}
-            });
-          }
 
           // Contadores animados de las stats (+40, +500, +150, 6): cuentan
           // desde 0 hasta el valor real la primera vez que entran en pantalla.
