@@ -62,7 +62,7 @@ class MiSitioWebProducto(models.Model):
             if rec.name:
                 texto = f"Hola, quiero consultar por {rec.name}" + (f" ({rec.code})" if rec.code else "")
             else:
-                texto = "Hola, quiero consultar por un producto de Cartotécnica Hores"
+                texto = "Hola, quiero consultar por un producto de Cartotecnica Hores"
             rec.whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={quote(texto)}"
 
 

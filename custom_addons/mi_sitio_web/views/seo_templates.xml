@@ -14,7 +14,7 @@
     <template id="og_meta_extra" inherit_id="website.layout">
         <xpath expr="//head/meta[last()]" position="after">
             <meta property="og:type" content="website"/>
-            <meta property="og:site_name" content="Cartotécnica Hores"/>
+            <meta property="og:site_name" content="Cartotecnica Hores"/>
             <meta property="og:title" t-att-content="title"/>
             <meta t-if="meta_description" property="og:description" t-att-content="meta_description"/>
             <meta t-attf-property="og:image" t-attf-content="#{request.httprequest.host_url.rstrip('/')}/mi_sitio_web/static/src/img/logo_hores.png"/>

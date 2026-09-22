@@ -42,7 +42,7 @@ PEDIDO_ESTADOS_GESTIONABLES = ('draft', 'sent', 'sale')
 
 # ---------------------------------------------------------------------------
 # Contenido de ejemplo para /historia — NO son datos reales confirmados de
-# Cartotécnica Hores. Reemplazar por la información verificada de la empresa
+# Cartotecnica Hores. Reemplazar por la información verificada de la empresa
 # antes de que la página se considere definitiva (ver DOCS/04-pendientes...).
 #
 # Traducido a los 3 idiomas activos del sitio (es_AR/en_US/pt_BR): a
@@ -65,15 +65,15 @@ _HISTORIA_ES = {
     # el sitio real da para la certificación ISO no tiene el año
     # completo (viene cortado así en la fuente) -- no se inventa acá.
     'timeline': [
-        {'year': '1992', 'title': 'Primera máquina automática', 'text': 'Gabriel Markarian y Oscar Urbano construyen la primera máquina automática para moldes de papel de pan dulce — el inicio de lo que después sería Cartotécnica Hores.'},
-        {'year': '1999', 'title': 'Constitución de la SRL', 'text': 'Se constituye formalmente como Cartotécnica Hores SRL, dando el primer paso para instalarse en el mercado de la industria panificadora.'},
+        {'year': '1992', 'title': 'Primera máquina automática', 'text': 'Gabriel Markarian y Oscar Urbano construyen la primera máquina automática para moldes de papel de pan dulce — el inicio de lo que después sería Cartotecnica Hores.'},
+        {'year': '1999', 'title': 'Constitución de la SRL', 'text': 'Se constituye formalmente como Cartotecnica Hores SRL, dando el primer paso para instalarse en el mercado de la industria panificadora.'},
         {'year': '2002', 'title': 'Budín sin Fleje', 'text': 'Se pone en marcha la línea de moldes de Budín sin Fleje, que reduce costos y facilita la detección de metales en la industria alimenticia. Registro de modelo industrial n.° 68.399.'},
         {'year': '2003–2005', 'title': 'Diversificación de líneas', 'text': 'Se diversifican las líneas de producción: moldes para pan dulce, para rosca y bizcochuelo, para budines y de pan de pascua. La demanda creciente lleva a construir nuevas conformadoras propias.'},
         {'year': '2006–2009', 'title': 'Ampliación de planta', 'text': 'La planta en Bell Ville, Córdoba, se amplía a 5.000 m². Se incorporan una supercalandra, papel micro corrugado y máquinas flexográficas de 4 colores para impresión.'},
         {'year': '2011–2012', 'title': 'Certificación ISO 22000:2005', 'text': 'Se certifica el sistema de gestión de inocuidad ISO 22000:2005, con Bureau Veritas.'},
         {'year': '2015', 'title': 'Nuevo predio', 'text': 'Se adquiere un predio de 4,50 hectáreas para trasladar la planta, ante la necesidad de más capacidad de producción y almacenamiento.'},
         {'year': '2018–2020', 'title': 'Nueva planta', 'text': 'El 9 de marzo de 2020 se completa la mudanza a la nueva planta de 12.000 m², organizada en las áreas de Proceso de Materia Prima, Producción, Mantenimiento y Logística.'},
-        {'year': 'Hoy', 'title': 'Actualidad', 'text': 'Más de 31 años de trayectoria. La producción de Cartotécnica Hores se comercializa en distintos países, entre ellos Uruguay, Chile, Paraguay, Colombia y México.'},
+        {'year': 'Hoy', 'title': 'Actualidad', 'text': 'Más de 31 años de trayectoria. La producción de Cartotecnica Hores se comercializa en distintos países, entre ellos Uruguay, Chile, Paraguay, Colombia y México.'},
     ],
     # Texto real, tomado palabra por palabra de hores.com.ar/wp/empresa/
     # (confirmado de nuevo el 22/09/2026 contra el texto que pasó el usuario).
@@ -144,15 +144,15 @@ _HISTORIA_EN = {
     # es_AR block above for the sourcing notes (same numbers/years,
     # translated).
     'timeline': [
-        {'year': '1992', 'title': 'First automatic machine', 'text': 'Gabriel Markarian and Oscar Urbano build the first automatic machine for panettone paper molds — the beginning of what would become Cartotécnica Hores.'},
-        {'year': '1999', 'title': 'Company incorporated', 'text': 'Formally incorporated as Cartotécnica Hores SRL, taking the first step into the baking industry market.'},
+        {'year': '1992', 'title': 'First automatic machine', 'text': 'Gabriel Markarian and Oscar Urbano build the first automatic machine for panettone paper molds — the beginning of what would become Cartotecnica Hores.'},
+        {'year': '1999', 'title': 'Company incorporated', 'text': 'Formally incorporated as Cartotecnica Hores SRL, taking the first step into the baking industry market.'},
         {'year': '2002', 'title': 'Strapless pound cake mold', 'text': 'Launch of the strapless pound cake mold line, which lowers costs and makes metal detection easier for food producers. Industrial design registration No. 68.399.'},
         {'year': '2003–2005', 'title': 'Product line diversification', 'text': 'Production lines diversify: panettone, ring cake and sponge cake, pound cake, and Christmas bread molds. Growing demand leads the company to build its own new mold-forming machines.'},
         {'year': '2006–2009', 'title': 'Plant expansion', 'text': 'The plant in Bell Ville, Córdoba, expands to 5,000 m². A super-calender, micro-corrugated paper, and 4-color flexographic printing machines are added.'},
         {'year': '2011–2012', 'title': 'ISO 22000:2005 certification', 'text': 'The ISO 22000:2005 food-safety management system is certified, with Bureau Veritas.'},
         {'year': '2015', 'title': 'New site acquired', 'text': 'A 4.50-hectare site is acquired to relocate the plant, driven by the need for more production and storage capacity.'},
         {'year': '2018–2020', 'title': 'New plant', 'text': 'On March 9, 2020, the move into the new 12,000 m² plant is completed, organized into Raw Material, Production, Maintenance and Logistics areas.'},
-        {'year': 'Today', 'title': 'Today', 'text': 'More than 31 years in business. Cartotécnica Hores products are sold in several countries, including Uruguay, Chile, Paraguay, Colombia and Mexico.'},
+        {'year': 'Today', 'title': 'Today', 'text': 'More than 31 years in business. Cartotecnica Hores products are sold in several countries, including Uruguay, Chile, Paraguay, Colombia and Mexico.'},
     ],
     'mision_vision': [
         {'icon': '🎯', 'title': 'Mission', 'text': 'To produce and provide safe paper molds for the food industry, meeting the needs of our clients and providing the conditions for the growth of the people who make up the company.'},
@@ -216,15 +216,15 @@ _HISTORIA_PT = {
     # as notas de fonte no bloco es_AR acima (mesmos números/anos,
     # traduzidos).
     'timeline': [
-        {'year': '1992', 'title': 'Primeira máquina automática', 'text': 'Gabriel Markarian e Oscar Urbano constroem a primeira máquina automática para moldes de papel de panetone — o início do que se tornaria a Cartotécnica Hores.'},
-        {'year': '1999', 'title': 'Constituição da empresa', 'text': 'Constituição formal como Cartotécnica Hores SRL, dando o primeiro passo para se instalar no mercado da indústria de panificação.'},
+        {'year': '1992', 'title': 'Primeira máquina automática', 'text': 'Gabriel Markarian e Oscar Urbano constroem a primeira máquina automática para moldes de papel de panetone — o início do que se tornaria a Cartotecnica Hores.'},
+        {'year': '1999', 'title': 'Constituição da empresa', 'text': 'Constituição formal como Cartotecnica Hores SRL, dando o primeiro passo para se instalar no mercado da indústria de panificação.'},
         {'year': '2002', 'title': 'Bolo inglês sem fita', 'text': 'Lançamento da linha de moldes de bolo inglês sem fita, que reduz custos e facilita a detecção de metais na indústria alimentícia. Registro de desenho industrial n.° 68.399.'},
         {'year': '2003–2005', 'title': 'Diversificação de linhas', 'text': 'Diversificação das linhas de produção: panetone, rosca e pão de ló, bolo inglês, e pão de Natal. A demanda crescente leva a empresa a construir suas próprias novas máquinas formadoras.'},
         {'year': '2006–2009', 'title': 'Ampliação da fábrica', 'text': 'A fábrica em Bell Ville, Córdoba, se amplia para 5.000 m². São incorporadas uma supercalandra, papel micro corrugado e máquinas flexográficas de 4 cores para impressão.'},
         {'year': '2011–2012', 'title': 'Certificação ISO 22000:2005', 'text': 'Certificação do sistema de gestão de inocuidade ISO 22000:2005, com a Bureau Veritas.'},
         {'year': '2015', 'title': 'Novo terreno', 'text': 'Aquisição de um terreno de 4,50 hectares para transferir a fábrica, diante da necessidade de mais capacidade de produção e armazenamento.'},
         {'year': '2018–2020', 'title': 'Nova fábrica', 'text': 'Em 9 de março de 2020, conclui-se a mudança para a nova fábrica de 12.000 m², organizada nas áreas de Processo de Matéria-Prima, Produção, Manutenção e Logística.'},
-        {'year': 'Hoje', 'title': 'Atualidade', 'text': 'Mais de 31 anos de trajetória. A produção da Cartotécnica Hores é comercializada em diversos países, entre eles Uruguai, Chile, Paraguai, Colômbia e México.'},
+        {'year': 'Hoje', 'title': 'Atualidade', 'text': 'Mais de 31 anos de trajetória. A produção da Cartotecnica Hores é comercializada em diversos países, entre eles Uruguai, Chile, Paraguai, Colômbia e México.'},
     ],
     'mision_vision': [
         {'icon': '🎯', 'title': 'Missão', 'text': 'Produzir e fornecer moldes de papel inócuos para a indústria de alimentação, atendendo às necessidades dos clientes e proporcionando condições para o desenvolvimento das pessoas que formam a empresa.'},
@@ -289,7 +289,7 @@ _HISTORIA_IT = {
     # (stessi numeri/anni, tradotti).
     'timeline': [
         {'year': '1992', 'title': 'Prima macchina automatica', 'text': 'Gabriel Markarian e Oscar Urbano costruiscono la prima macchina automatica per stampi da panettone.'},
-        {'year': '1999', 'title': 'Costituzione della società', 'text': 'Costituzione formale come Cartotécnica Hores SRL.'},
+        {'year': '1999', 'title': 'Costituzione della società', 'text': 'Costituzione formale come Cartotecnica Hores SRL.'},
         {'year': '2002', 'title': 'Plumcake senza fascetta', 'text': 'Lancio della linea di plumcake senza fascetta, con registrazione del disegno industriale n. 68.399.'},
         {'year': '2003–2005', 'title': 'Diversificazione delle linee', 'text': 'Si aggiungono le linee di panettone, ciambella, pan di Spagna, plumcake e pane di Pasqua.'},
         {'year': '2006–2009', 'title': 'Ampliamento dello stabilimento', 'text': 'Lo stabilimento di Bell Ville, Córdoba, cresce fino a 5.000 m².'},
@@ -358,7 +358,7 @@ _HISTORIA_IT = {
 _HISTORIA_FR = {
     'timeline': [
         {'year': '1992', 'title': 'Première machine automatique', 'text': 'Gabriel Markarian et Oscar Urbano construisent la première machine automatique pour moules à panettone.'},
-        {'year': '1999', 'title': 'Constitution de la société', 'text': 'Constitution formelle en tant que Cartotécnica Hores SRL.'},
+        {'year': '1999', 'title': 'Constitution de la société', 'text': 'Constitution formelle en tant que Cartotecnica Hores SRL.'},
         {'year': '2002', 'title': 'Cake sans sangle', 'text': 'Lancement de la gamme de cakes sans sangle, avec enregistrement de dessin industriel n° 68.399.'},
         {'year': '2003–2005', 'title': 'Diversification des gammes', 'text': 'Ajout des gammes panettone, couronne, génoise, cake et pain de Pâques.'},
         {'year': '2006–2009', 'title': 'Agrandissement de l\'usine', 'text': 'L\'usine de Bell Ville, Córdoba, atteint 5 000 m².'},
@@ -427,7 +427,7 @@ _HISTORIA_FR = {
 _HISTORIA_DE = {
     'timeline': [
         {'year': '1992', 'title': 'Erste automatische Maschine', 'text': 'Gabriel Markarian und Oscar Urbano bauen die erste automatische Maschine für Panettone-Formen.'},
-        {'year': '1999', 'title': 'Gründung der Gesellschaft', 'text': 'Formelle Gründung als Cartotécnica Hores SRL.'},
+        {'year': '1999', 'title': 'Gründung der Gesellschaft', 'text': 'Formelle Gründung als Cartotecnica Hores SRL.'},
         {'year': '2002', 'title': 'Kastenform ohne Banderole', 'text': 'Einführung der Kastenform-Linie ohne Banderole, mit Gebrauchsmusteranmeldung Nr. 68.399.'},
         {'year': '2003–2005', 'title': 'Diversifizierung der Produktlinien', 'text': 'Die Linien Panettone, Kranzkuchen, Biskuit, Kastenform und Osterbrot kommen hinzu.'},
         {'year': '2006–2009', 'title': 'Werkserweiterung', 'text': 'Das Werk in Bell Ville, Córdoba, wächst auf 5.000 m².'},
@@ -496,7 +496,7 @@ _HISTORIA_DE = {
 _HISTORIA_ZH_CN = {
     'timeline': [
         {'year': '1992', 'title': '第一台自动化机器', 'text': 'Gabriel Markarian 和 Oscar Urbano 制造了第一台意式圣诞面包纸模自动化生产机器。'},
-        {'year': '1999', 'title': '公司成立', 'text': '正式成立为 Cartotécnica Hores SRL。'},
+        {'year': '1999', 'title': '公司成立', 'text': '正式成立为 Cartotecnica Hores SRL。'},
         {'year': '2002', 'title': '无带磅蛋糕模具', 'text': '推出无带磅蛋糕系列产品，工业设计注册号 68.399。'},
         {'year': '2003–2005', 'title': '产品线多元化', 'text': '新增圣诞面包、环形蛋糕、海绵蛋糕、磅蛋糕和复活节面包系列。'},
         {'year': '2006–2009', 'title': '工厂扩建', 'text': '位于科尔多瓦贝尔维尔的工厂扩建至5,000平方米。'},

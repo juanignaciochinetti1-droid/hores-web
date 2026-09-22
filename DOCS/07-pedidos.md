@@ -788,7 +788,7 @@ Odoo de fábrica para esos textos, no hace falta traducir nada ahí.
   incluidos los que ya existían antes, no solo los nuevos — tienen DOS
   impuestos de venta puestos a la vez (`taxes_id`): un "15%" que
   además es el impuesto por defecto configurado en la compañía
-  ("Cartotécnica Hores"), y un "VAT 21%" que en realidad pertenece a
+  ("Cartotecnica Hores"), y un "VAT 21%" que en realidad pertenece a
   otra compañía de demo distinta ("(AR) Responsable Inscripto",
   datos de ejemplo de la localización argentina de Odoo). Cualquier
   factura real hoy cobraría ~36% de impuesto. **A pedido explícito del
@@ -797,7 +797,7 @@ Odoo de fábrica para esos textos, no hace falta traducir nada ahí.
   adivinar por script.
 - **Sin lista de precios en pesos** (mismo relevamiento, 09/09/2026): la
   moneda de la compañía está bien configurada (ARS), pero **ninguna**
-  lista de precios de Cartotécnica Hores está en pesos — las únicas que
+  lista de precios de Cartotecnica Hores está en pesos — las únicas que
   tiene son "Default"/"Christmas"/"Benelux" en USD y "EUR" en euros, y
   esas mismas son las que ofrece el sitio a los visitantes. Todo pedido
   y factura, de siempre, se cotiza en dólares/euros en vez de pesos.

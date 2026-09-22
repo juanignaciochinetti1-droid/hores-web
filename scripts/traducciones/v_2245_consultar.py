@@ -4,10 +4,10 @@ from translate_helpers import bulk_translate
 VIEW_ID = 2245  # consultar_pedido_template
 
 ROWS = [
-    ("Consultar mi pedido — Cartotécnica Hores", "Consultar mi pedido — Cartotécnica Hores",
-     "Look up my order — Cartotécnica Hores", "Consultar meu pedido — Cartotécnica Hores",
-     "Consulta il tuo ordine — Cartotécnica Hores", "Suivre ma commande — Cartotécnica Hores",
-     "Bestellung nachverfolgen — Cartotécnica Hores", "查询我的订单 — Cartotécnica Hores"),
+    ("Consultar mi pedido — Cartotecnica Hores", "Consultar mi pedido — Cartotecnica Hores",
+     "Look up my order — Cartotecnica Hores", "Consultar meu pedido — Cartotecnica Hores",
+     "Consulta il tuo ordine — Cartotecnica Hores", "Suivre ma commande — Cartotecnica Hores",
+     "Bestellung nachverfolgen — Cartotecnica Hores", "查询我的订单 — Cartotecnica Hores"),
     ("Consultar mi pedido", "Consultar mi pedido", "Look up my order", "Consultar meu pedido",
      "Verifica il tuo ordine", "Suivre ma commande", "Bestellung nachverfolgen", "查询我的订单"),
     ("Ingresá el documento, el email o el teléfono que usaste al hacer el pedido.",

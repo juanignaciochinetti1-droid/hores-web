@@ -5,8 +5,8 @@ VIEW_ID = 2238  # pedido_gestionar_template
 
 ROWS = [
     ("Pedido", "Pedido", "Order", "Pedido", "Ordine", "Commande", "Bestellung", "订单"),
-    ("— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores",
-     "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores"),
+    ("— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores",
+     "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores"),
     ("Cancelado", "Cancelado", "Cancelled", "Cancelado", "Annullato", "Annulée", "Storniert", "已取消"),
     ("Presupuesto", "Presupuesto", "Quote", "Orçamento", "Preventivo", "Devis", "Angebot", "报价单"),
     ("Confirmado", "Confirmado", "Confirmed", "Confirmado", "Confermato", "Confirmée", "Bestätigt", "已确认"),

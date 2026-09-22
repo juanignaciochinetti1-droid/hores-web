@@ -69,7 +69,7 @@ También se corrigieron, con el mismo criterio (dato real o sin tocar):
 
 **28/08/2026, segunda vuelta — `/compromiso`**: se sumó contenido real
 tomado directo de `POLITICA_DE_INOCUIDAD_rev_06.pdf` (documento oficial
-de Cartotécnica Hores SRL, revisión 06, 24/06/2024, aprobado por
+de Cartotecnica Hores SRL, revisión 06, 24/06/2024, aprobado por
 Dirección — la misma política cuyos 4 objetivos ya se habían cargado en
 `/calidad`), sección "Proveedores y medio ambiente":
 
@@ -88,13 +88,13 @@ Dirección — la misma política cuyos 4 objetivos ya se habían cargado en
 los objetivos a futuro, los porcentajes por línea de producto, y si hay
 números reales de moldes/año y clientes para reemplazar el "+500"/"+150".
 
-## Orden del nombre de la empresa: "Cartotécnica Hores", no "Hores Cartotécnica"
+## Orden del nombre de la empresa: "Cartotecnica Hores", no "Hores Cartotecnica"
 
 Corregido el 01/09/2026, a pedido explícito. El nombre legal real es
-**Cartotécnica Hores SRL** (así consta en el propio timeline de
-`/historia`, "Se constituye formalmente como Cartotécnica Hores SRL",
+**Cartotecnica Hores SRL** (así consta en el propio timeline de
+`/historia`, "Se constituye formalmente como Cartotecnica Hores SRL",
 1999) — pero el sitio venía usando el orden invertido, "HORES
-Cartotécnica", en absolutamente todos lados: títulos de página,
+Cartotecnica", en absolutamente todos lados: títulos de página,
 meta-description, alt de imágenes, copyright del footer, mensaje de
 WhatsApp de respaldo. Se corrigió en los 27 lugares donde aparecía
 (9 archivos), en los 3 idiomas — cada título/alt/meta que tenía el
@@ -102,9 +102,9 @@ nombre de la empresa quedó sin traducción por un rato hasta que se
 retradujo (ver el gotcha en [idiomas](06-idiomas.md)).
 
 **De acá en más, cualquier texto nuevo que mencione a la empresa va
-"Cartotécnica Hores", no al revés** — es fácil escribirlo mal de
+"Cartotecnica Hores", no al revés** — es fácil escribirlo mal de
 memoria porque el logo (imagen, no texto) muestra "Hores" grande con
-"Cartotécnica" chico abajo, lo que visualmente sugiere el orden
+"Cartotecnica" chico abajo, lo que visualmente sugiere el orden
 equivocado a quien no conoce el nombre legal.
 
 ## Otras cosas pendientes / decisiones tomadas a propósito
@@ -127,7 +127,7 @@ equivocado a quien no conoce el nombre legal.
   [idiomas](06-idiomas.md#qué-falta--gaps-conocidos).
 - **eCommerce (carrito/checkout)**: conectado y funcionando, pero **todos
   los 30 productos migrados están en $0** — falta cargar precios
-  reales. La compañía real ("Cartotécnica Hores") sí tiene la moneda
+  reales. La compañía real ("Cartotecnica Hores") sí tiene la moneda
   bien configurada (ARS), pero ninguna de sus listas de precios está en
   pesos (solo USD/EUR, datos genéricos de Odoo) y buena parte del
   catálogo tiene un impuesto de venta duplicado (15% + 21% a la vez,
@@ -137,7 +137,7 @@ equivocado a quien no conoce el nombre legal.
   [pedidos](07-pedidos.md#qué-falta--decisiones-pendientes) para el
   detalle completo.
 - **Ficha de la empresa en Odoo (`res.company`)**: ya tiene el nombre
-  real ("Cartotécnica Hores") y país Argentina — pero conviene revisar
+  real ("Cartotecnica Hores") y país Argentina — pero conviene revisar
   el resto de los datos de contacto/fiscales antes de dar por
   "terminado" el backend, en la misma pasada donde se resuelva lo de
   impuestos/moneda de arriba.

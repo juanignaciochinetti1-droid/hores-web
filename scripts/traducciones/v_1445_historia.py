@@ -4,10 +4,10 @@ from translate_helpers import bulk_translate
 VIEW_ID = 1445  # historia_template
 
 ROWS = [
-    ("Nuestra historia — Cartotécnica Hores", "Nuestra historia — Cartotécnica Hores",
-     "Our history — Cartotécnica Hores", "Nossa história — Cartotécnica Hores",
-     "La nostra storia — Cartotécnica Hores", "Notre histoire — Cartotécnica Hores",
-     "Unsere Geschichte — Cartotécnica Hores", "我们的历史 — Cartotécnica Hores"),
+    ("Nuestra historia — Cartotecnica Hores", "Nuestra historia — Cartotecnica Hores",
+     "Our history — Cartotecnica Hores", "Nossa história — Cartotecnica Hores",
+     "La nostra storia — Cartotecnica Hores", "Notre histoire — Cartotecnica Hores",
+     "Unsere Geschichte — Cartotecnica Hores", "我们的历史 — Cartotecnica Hores"),
     ("Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.",
      "Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.",
      "More than 30 years manufacturing paper molds for baking in Bell Ville, Córdoba. Discover our history, values and goals.",

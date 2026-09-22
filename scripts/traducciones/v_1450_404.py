@@ -4,10 +4,10 @@ from translate_helpers import bulk_translate
 VIEW_ID = 1450  # pagina_no_encontrada
 
 ROWS = [
-    ("Página no encontrada — Cartotécnica Hores", "Página no encontrada — Cartotécnica Hores",
-     "Page not found — Cartotécnica Hores", "Página não encontrada — Cartotécnica Hores",
-     "Pagina non trovata — Cartotécnica Hores", "Page introuvable — Cartotécnica Hores",
-     "Seite nicht gefunden — Cartotécnica Hores", "页面未找到 — Cartotécnica Hores"),
+    ("Página no encontrada — Cartotecnica Hores", "Página no encontrada — Cartotecnica Hores",
+     "Page not found — Cartotecnica Hores", "Página não encontrada — Cartotecnica Hores",
+     "Pagina non trovata — Cartotecnica Hores", "Page introuvable — Cartotecnica Hores",
+     "Seite nicht gefunden — Cartotecnica Hores", "页面未找到 — Cartotecnica Hores"),
     ("No encontramos esta página", "No encontramos esta página", "We couldn't find this page",
      "Não encontramos esta página", "Non abbiamo trovato questa pagina", "Nous n'avons pas trouvé cette page",
      "Diese Seite wurde nicht gefunden", "未找到此页面"),

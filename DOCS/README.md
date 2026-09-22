@@ -1,4 +1,4 @@
-# Documentación del proyecto — Sitio HORES Cartotécnica sobre Odoo
+# Documentación del proyecto — Sitio HORES Cartotecnica sobre Odoo
 
 Esta carpeta documenta las decisiones de diseño, el stack técnico y la
 arquitectura del sitio, para que cualquiera que retome el proyecto (o vuelva
@@ -17,7 +17,7 @@ a él en unos meses) no tenga que reconstruir el contexto desde cero.
 
 ## Resumen de una línea
 
-Sitio web para HORES Cartotécnica (moldes de papel para panificación),
+Sitio web para HORES Cartotecnica (moldes de papel para panificación),
 construido como módulo custom (`mi_sitio_web`) sobre Odoo 19, corriendo en
 Docker localmente. Sin frameworks de frontend — HTML/CSS con estilos inline
 + JS vanilla puntual, siguiendo el lenguaje visual de los mockups originales

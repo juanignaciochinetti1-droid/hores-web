@@ -5,8 +5,8 @@ VIEW_ID = 1443  # producto_detalle_template
 SPAN12 = '<span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">{}</span>'
 
 ROWS = [
-    ("— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores",
-     "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores", "— Cartotécnica Hores"),
+    ("— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores",
+     "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores", "— Cartotecnica Hores"),
     ("← Catálogo", "← Catálogo", "← Catalog", "← Catálogo", "← Catalogo", "← Catalogue", "← Katalog", "← 目录"),
     ("Disponible", "Disponible", "Available", "Disponível", "Disponibile", "Disponible", "Verfügbar", "现货"),
     ("A pedido", "A pedido", "Made to order", "Sob encomenda", "Su richiesta", "Sur commande",

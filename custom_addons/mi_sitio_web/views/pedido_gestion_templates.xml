@@ -18,7 +18,7 @@
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
                  comentario largo en categoria_template (catalogo_templates.xml). -->
             <t t-set="no_header" t-value="True"/>
-            <t t-set="title">Pedido <t t-esc="order.name"/> — Cartotécnica Hores</t>
+            <t t-set="title">Pedido <t t-esc="order.name"/> — Cartotecnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
                 <t t-call="mi_sitio_web.head_assets"/>
                 <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -95,7 +95,7 @@
             <!-- Header genérico de Odoo duplicado con el nuestro — ver el
                  comentario largo en categoria_template (catalogo_templates.xml). -->
             <t t-set="no_header" t-value="True"/>
-            <t t-set="title">Consultar mi pedido — Cartotécnica Hores</t>
+            <t t-set="title">Consultar mi pedido — Cartotecnica Hores</t>
             <div id="wrap" class="oe_structure oe_empty">
                 <t t-call="mi_sitio_web.head_assets"/>
                 <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
