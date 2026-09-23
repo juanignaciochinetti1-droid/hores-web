@@ -130,7 +130,7 @@
         <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 20px;">Todos nuestros productos están autorizados para contacto directo con alimentos. Desarrollamos los procesos bajo un sistema de gestión de inocuidad certificado según norma ISO 22000:2018.</p>
         <a href="/calidad" class="hc-link-arrow" style="color:#c26a1e; font-weight:600; font-size:15px;">Ver calidad y certificaciones <span class="hc-arrow">→</span></a>
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
         <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Gestión de inocuidad certificada</div>
@@ -142,10 +142,6 @@
         <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
           <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">Latam</div>
           <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Comercialización regional</div>
-        </div>
-        <div class="hc-card" style="border:1px solid #e8e3d9; border-radius:13px; padding:22px; background:#ffffff;">
-          <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:20px; color:#c26a1e; margin-bottom:6px;">+31 años</div>
-          <div style="font-size:14px; line-height:1.5; color:#5a4f44;">Experiencia fabricando</div>
         </div>
       </div>
     </div>

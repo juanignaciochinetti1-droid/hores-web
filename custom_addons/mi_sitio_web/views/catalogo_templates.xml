@@ -782,7 +782,7 @@
 
         <!-- Métricas -->
         <section class="reveal" style="max-width:1200px; margin:0 auto; padding:56px 28px 24px;">
-          <div class="hc-card" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--cal-borde); border-radius:14px; overflow:hidden; background:#fff;">
+          <div class="hc-card" style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--cal-borde); border-radius:14px; overflow:hidden; background:#fff;">
             <div style="padding:28px 24px; border-right:1px solid var(--cal-divisor);">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">ISO 22000</div>
               <div style="font-size:13.5px; line-height:1.5; color:var(--cal-texto2);">Gestión de inocuidad certificada (2018)</div>
@@ -791,13 +791,9 @@
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">100%</div>
               <div style="font-size:13.5px; line-height:1.5; color:var(--cal-texto2);">Productos aptos para contacto con alimentos</div>
             </div>
-            <div style="padding:28px 24px; border-right:1px solid var(--cal-divisor);">
+            <div style="padding:28px 24px;">
               <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">Trazable</div>
               <div style="font-size:13.5px; line-height:1.5; color:var(--cal-texto2);">Control de lote y materia prima</div>
-            </div>
-            <div style="padding:28px 24px;">
-              <div style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:#c26a1e; margin-bottom:6px;">+31 años</div>
-              <div style="font-size:13.5px; line-height:1.5; color:var(--cal-texto2);">Experiencia fabricando</div>
             </div>
           </div>
         </section>

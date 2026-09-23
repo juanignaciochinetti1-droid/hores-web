@@ -73,7 +73,7 @@ _HISTORIA_ES = {
         {'year': '2011–2012', 'title': 'Certificación ISO 22000:2005', 'text': 'Se certifica el sistema de gestión de inocuidad ISO 22000:2005, con Bureau Veritas.'},
         {'year': '2015', 'title': 'Nuevo predio', 'text': 'Se adquiere un predio de 4,50 hectáreas para trasladar la planta, ante la necesidad de más capacidad de producción y almacenamiento.'},
         {'year': '2018–2020', 'title': 'Nueva planta', 'text': 'El 9 de marzo de 2020 se completa la mudanza a la nueva planta de 12.000 m², organizada en las áreas de Proceso de Materia Prima, Producción, Mantenimiento y Logística.'},
-        {'year': 'Hoy', 'title': 'Actualidad', 'text': 'Más de 31 años de trayectoria. La producción de Cartotecnica Hores se comercializa en distintos países, entre ellos Uruguay, Chile, Paraguay, Colombia y México.'},
+        {'year': 'Hoy', 'title': 'Actualidad', 'text': 'La producción de Cartotecnica Hores se comercializa en distintos países, entre ellos Uruguay, Chile, Paraguay, Colombia y México.'},
     ],
     # Texto real, tomado palabra por palabra de hores.com.ar/wp/empresa/
     # (confirmado de nuevo el 22/09/2026 contra el texto que pasó el usuario).
@@ -152,7 +152,7 @@ _HISTORIA_EN = {
         {'year': '2011–2012', 'title': 'ISO 22000:2005 certification', 'text': 'The ISO 22000:2005 food-safety management system is certified, with Bureau Veritas.'},
         {'year': '2015', 'title': 'New site acquired', 'text': 'A 4.50-hectare site is acquired to relocate the plant, driven by the need for more production and storage capacity.'},
         {'year': '2018–2020', 'title': 'New plant', 'text': 'On March 9, 2020, the move into the new 12,000 m² plant is completed, organized into Raw Material, Production, Maintenance and Logistics areas.'},
-        {'year': 'Today', 'title': 'Today', 'text': 'More than 31 years in business. Cartotecnica Hores products are sold in several countries, including Uruguay, Chile, Paraguay, Colombia and Mexico.'},
+        {'year': 'Today', 'title': 'Today', 'text': 'Cartotecnica Hores products are sold in several countries, including Uruguay, Chile, Paraguay, Colombia and Mexico.'},
     ],
     'mision_vision': [
         {'icon': '🎯', 'title': 'Mission', 'text': 'To produce and provide safe paper molds for the food industry, meeting the needs of our clients and providing the conditions for the growth of the people who make up the company.'},
@@ -224,7 +224,7 @@ _HISTORIA_PT = {
         {'year': '2011–2012', 'title': 'Certificação ISO 22000:2005', 'text': 'Certificação do sistema de gestão de inocuidade ISO 22000:2005, com a Bureau Veritas.'},
         {'year': '2015', 'title': 'Novo terreno', 'text': 'Aquisição de um terreno de 4,50 hectares para transferir a fábrica, diante da necessidade de mais capacidade de produção e armazenamento.'},
         {'year': '2018–2020', 'title': 'Nova fábrica', 'text': 'Em 9 de março de 2020, conclui-se a mudança para a nova fábrica de 12.000 m², organizada nas áreas de Processo de Matéria-Prima, Produção, Manutenção e Logística.'},
-        {'year': 'Hoje', 'title': 'Atualidade', 'text': 'Mais de 31 anos de trajetória. A produção da Cartotecnica Hores é comercializada em diversos países, entre eles Uruguai, Chile, Paraguai, Colômbia e México.'},
+        {'year': 'Hoje', 'title': 'Atualidade', 'text': 'A produção da Cartotecnica Hores é comercializada em diversos países, entre eles Uruguai, Chile, Paraguai, Colômbia e México.'},
     ],
     'mision_vision': [
         {'icon': '🎯', 'title': 'Missão', 'text': 'Produzir e fornecer moldes de papel inócuos para a indústria de alimentação, atendendo às necessidades dos clientes e proporcionando condições para o desenvolvimento das pessoas que formam a empresa.'},
