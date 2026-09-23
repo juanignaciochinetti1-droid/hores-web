@@ -294,7 +294,7 @@
 <!-- ============ Header compartido ============ -->
 <template id="site_header" name="Mi Sitio - Header">
   <div style="background:#c26a1e; color:#fff; font-size:12.5px; letter-spacing:.02em;">
-    <div style="max-width:1200px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+    <div style="max-width:1400px; margin:0 auto; padding:9px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
       <div style="display:flex; gap:22px; align-items:center; flex-wrap:wrap;">
         <span style="opacity:.82;">Ruta Prov. 3, Km. 183.5 — Bell Ville, Córdoba, Argentina</span>
         <span style="opacity:.82;">Tel./Fax: 54 3537 427085</span>
@@ -308,12 +308,21 @@
          (01/09/2026: "más centralizado los campos"). El nav queda
          centrado en el espacio disponible en vez de pegado al borde
          derecho; "Más" pasa a ser el último link del grupo central,
-         justo antes del carrito (mismo pedido). -->
-    <div style="max-width:1200px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+         justo antes del carrito (mismo pedido).
+
+         max-width subido de 1200 a 1400 (23/09/2026, a pedido explícito,
+         con captura: "el simbolo de hores tiralo mas para izquierda y
+         desde el carrito hasta el usuario estiralo mas a la derecha") —
+         con "Pedido a medida" y "Empleo" sumados como links de primer
+         nivel (ver más arriba), el nav ya no entraba en una sola línea a
+         1200px y "Más" caía a una segunda fila. Con más ancho, el logo y
+         el grupo de la derecha quedan más separados del centro (como se
+         pidió) y de paso el nav tiene el espacio que le faltaba. -->
+    <div style="max-width:1400px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
       <a href="/mi-sitio" style="display:flex; align-items:center; color:inherit;">
         <img src="/mi_sitio_web/static/src/img/logo_hores.png" alt="Cartotecnica Hores" style="height:56px; width:auto; display:block;"/>
       </a>
-      <nav style="flex:1; display:flex; justify-content:center; gap:24px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
+      <nav style="flex:1; display:flex; justify-content:center; gap:20px; align-items:center; font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; flex-wrap:wrap;">
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
         <a href="/mi-sitio#productos" style="color:#5a4f44;">Productos</a>
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
