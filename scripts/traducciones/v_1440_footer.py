@@ -21,7 +21,7 @@ ROWS = [
     ('FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', 'FAQ', '常见问题'),
     ('Consultar mi pedido', 'Consultar mi pedido', 'Look up my order', 'Consultar meu pedido',
      'Verifica il tuo ordine', 'Suivre ma commande', 'Bestellung nachverfolgen', '查询我的订单'),
-    ('Trabajá con nosotros', 'Trabajá con nosotros', 'Work with us', 'Trabalhe conosco',
+    ('Trabaje con nosotros', 'Trabaje con nosotros', 'Work with us', 'Trabalhe conosco',
      'Lavora con noi', 'Travaillez avec nous', 'Arbeite mit uns', '加入我们'),
     ('Contacto', 'Contacto', 'Contact', 'Contato', 'Contatti', 'Contact', 'Kontakt', '联系我们'),
     ('<span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span>',
@@ -32,7 +32,7 @@ ROWS = [
      '<span>© 2026 Cartotecnica Hores — Moules en papier pour la boulangerie</span><span>Panettone · Cake · Couronne · Génoise · Pain de Pâques</span>',
      '<span>© 2026 Cartotecnica Hores — Papierformen für die Bäckerei</span><span>Panettone · Kastenform · Kranzkuchen · Biskuit · Osterbrot</span>',
      '<span>© 2026 Cartotecnica Hores — 烘焙用纸模</span><span>圣诞面包 · 磅蛋糕 · 环形蛋糕 · 海绵蛋糕 · 复活节面包</span>'),
-    ('Escribinos por WhatsApp', 'Escribinos por WhatsApp', 'Write to us on WhatsApp', 'Escreva-nos pelo WhatsApp',
+    ('Escríbanos por WhatsApp', 'Escríbanos por WhatsApp', 'Write to us on WhatsApp', 'Escreva-nos pelo WhatsApp',
      'Scrivici su WhatsApp', 'Écrivez-nous sur WhatsApp', 'Schreib uns auf WhatsApp', '通过WhatsApp联系我们'),
     ('Volver arriba', 'Volver arriba', 'Back to top', 'Voltar ao topo', 'Torna su', 'Retour en haut', 'Nach oben', '返回顶部'),
 ]

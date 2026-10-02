@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Re-aplica las traducciones a los 7 idiomas de las 12 vistas propias de
+"""Re-aplica las traducciones a los 7 idiomas de las 14 vistas propias de
 mi_sitio_web. Correr esto SIEMPRE después de:
 
   - `button_immediate_upgrade` sobre el módulo (única forma de aplicar
@@ -44,6 +44,7 @@ SCRIPTS = [
     'v_2238_pedido.py',
     'v_2245_consultar.py',
     'v_2445_postulacion.py',
+    'v_2735_trabaja.py',
 ]
 
 failed = []
@@ -56,4 +57,4 @@ for name in SCRIPTS:
 if failed:
     print('\n!! Fallaron:', ', '.join(failed))
     sys.exit(1)
-print('\nListo -- las 12 vistas reescritas en los 7 idiomas.')
+print('\nListo -- las 14 vistas reescritas en los 7 idiomas.')

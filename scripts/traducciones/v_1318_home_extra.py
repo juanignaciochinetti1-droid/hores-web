@@ -35,8 +35,8 @@ ROWS = [
      'Cartotecnica-Hores-Werk in Bell Ville',
      'Cartotecnica Hores 位于贝尔维尔的工厂'),
 
-    ('Completá el formulario y te respondemos a la brevedad. También podés escribirnos por WhatsApp, email o acercarte a la planta.',
-     'Completá el formulario y te respondemos a la brevedad. También podés escribirnos por WhatsApp, email o acercarte a la planta.',
+    ('Complete el formulario y le respondemos a la brevedad. También puede escribirnos por WhatsApp, email o acercarse a la planta.',
+     'Complete el formulario y le respondemos a la brevedad. También puede escribirnos por WhatsApp, email o acercarse a la planta.',
      "Fill out the form and we'll get back to you shortly. You can also write to us on WhatsApp, email, or stop by the facility.",
      'Preencha o formulário e responderemos em breve. Você também pode nos escrever pelo WhatsApp, e-mail ou visitar a planta.',
      'Compila il modulo e ti risponderemo a breve. Puoi anche scriverci su WhatsApp, via email o venirci a trovare in stabilimento.',

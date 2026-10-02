@@ -178,7 +178,7 @@ ROWS = [
      "Zertifizierungen", "认证"),
     ("Documentación disponible", "Documentación disponible", "Documentation available", "Documentação disponível",
      "Documentazione disponibile", "Documentation disponible", "Verfügbare Dokumentation", "可提供文件"),
-    ("Solicitá los certificados y fichas técnicas que necesites para tu proceso.", "Solicitá los certificados y fichas técnicas que necesites para tu proceso.",
+    ("Solicite los certificados y fichas técnicas que necesite para su proceso.", "Solicite los certificados y fichas técnicas que necesite para su proceso.",
      "Request the certificates and spec sheets you need for your process.", "Solicite os certificados e fichas técnicas que precisar para o seu processo.",
      "Richiedi i certificati e le schede tecniche di cui hai bisogno per il tuo processo.", "Demandez les certificats et fiches techniques dont vous avez besoin pour votre processus.",
      "Fordern Sie die Zertifikate und Datenblätter an, die Sie für Ihren Prozess benötigen.", "如需相关证书或技术规格表，请与我们联系索取。"),

@@ -159,6 +159,44 @@ el siguiente paso.
   ya lo muestra por `t-esc` — si JS no corre, se ve el número final fijo,
   no queda en 0.
 
+## Tono y tratamiento (usted, no vos)
+
+**A pedido explícito (02/10/2026): "asegurate de que todo suene de
+manera formal y profesional".** Todo el contenido en español del sitio
+usa tratamiento de **usted**, no el tuteo informal ("vos") que tenía
+antes. Esto incluye textos de interfaz, formularios, mensajes de error,
+confirmaciones de JS (`confirm()`) y, sobre todo, la Política de
+Privacidad — un documento de tipo legal, donde el tratamiento formal es
+lo esperable.
+
+Patrón de conversión usado (no es exhaustivo, pero cubre los casos que
+más se repiten):
+
+| Voseo (viejo) | Usted (nuevo) |
+|---|---|
+| Conocé, Elegí, Revisá, Solicitá, Ingresá | Conozca, Elija, Revise, Solicite, Ingrese |
+| Escribinos, Contanos, Contactanos, Consultanos | Escríbanos, Cuéntenos, Contáctenos, Consúltenos |
+| Sumate, Dejanos, Completá | Súmese, Déjenos, Complete |
+| tu/tus pedido, perfil, caso, producción | su/sus pedido, perfil, caso, producción |
+| te contactamos / te avisamos | lo contactamos / le avisamos |
+| ¿Necesitás...? ¿Querés...? | ¿Necesita...? ¿Desea...? |
+
+**No se tocaron los emojis** usados como íconos (🌳 ♻️ ✓ 📅 etc.) — fue
+una exclusión explícita del mismo pedido, es un tema de tono de texto,
+no de estilo visual.
+
+**Los otros 6 idiomas no se tocaron** — el tuteo/voseo es un fenómeno
+del español rioplatense; inglés, portugués, italiano, francés, alemán
+y chino ya usaban un registro neutro/formal en sus propias traducciones,
+sin el equivalente de este problema.
+
+**Si se agrega contenido nuevo en español de acá en más, escribirlo
+directamente en tratamiento de usted** — no voseo a corregir después.
+
+Ver [idiomas](06-idiomas.md) (Gotcha #3) para el gotcha técnico que
+apareció al aplicar este cambio (las copias por idioma de `arch_db` no
+se actualizan solas) y cómo se corrigió a fondo, no solo en la base.
+
 ## Íconos
 
 Emoji Unicode directo en el HTML/Python (`🎯`, `📦`, `✓`, etc.), sin

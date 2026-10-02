@@ -218,15 +218,15 @@ ROWS = [
     ("Trabajemos de forma más sustentable", "Trabajemos de forma más sustentable", "Let's work more sustainably",
      "Vamos trabalhar de forma mais sustentável", "Lavoriamo in modo più sostenibile",
      "Travaillons de manière plus durable", "Lassen Sie uns nachhaltiger arbeiten", "让我们携手实现更可持续的发展"),
-    ("Consultanos por soluciones de envase más eficientes para tu producción.",
-     "Consultanos por soluciones de envase más eficientes para tu producción.",
+    ("Consúltenos por soluciones de envase más eficientes para su producción.",
+     "Consúltenos por soluciones de envase más eficientes para su producción.",
      "Ask us about more efficient packaging solutions for your production.",
      "Consulte-nos sobre soluções de embalagem mais eficientes para sua produção.",
      "Contattaci per soluzioni di imballaggio più efficienti per la tua produzione.",
      "Contactez-nous pour des solutions d'emballage plus efficaces pour votre production.",
      "Fragen Sie uns nach effizienteren Verpackungslösungen für Ihre Produktion.",
      "欢迎咨询更适合您生产需求的高效包装解决方案。"),
-    ("Contactanos", "Contactanos", "Contact us", "Fale conosco", "Contattaci", "Contactez-nous",
+    ("Contáctenos", "Contáctenos", "Contact us", "Fale conosco", "Contattaci", "Contactez-nous",
      "Kontaktieren Sie uns", "联系我们"),
 ]
 

@@ -404,6 +404,45 @@ visitante vaya a ver tiene que pasar por este helper, no por
 `request.redirect()` directo** — si se agrega una ruta nueva con su propio
 redirect, usar `_redirect()` o va a reproducirse este mismo bug.
 
+## Corrección de tono (02/10/2026): vos → usted, y un gap real en `reaplicar_todo.py`
+
+A pedido explícito (ver [sistema de diseño](03-sistema-de-diseno.md#tono-y-tratamiento-usted-no-vos)),
+se pasó todo el contenido en español de voseo a tratamiento de usted.
+Al aplicar el cambio se repitió el Gotcha #3 de más arriba: editar el
+XML y correr `button_immediate_upgrade` dejó **14 vistas con 76
+combinaciones vista×idioma** todavía en voseo (la copia en inglés se
+actualizó sola, las otras 6 no). Se corrigió por SQL directo sobre
+`arch_db`, verificado con un segundo barrido que no quedó ninguna
+coincidencia vieja.
+
+**Gap real encontrado en el proceso**: `reaplicar_todo.py` —el script
+que este mismo documento dice correr SIEMPRE después de un upgrade—
+tenía **13 scripts en su lista `SCRIPTS`, pero ya había 14 archivos
+`v_*.py` en la carpeta**: `v_2735_trabaja.py` (la página
+`/trabaja-con-nosotros`) existía pero nunca se había sumado a la lista.
+Si alguien hubiera seguido el protocolo al pie de la letra después de
+cualquier upgrade previo, esa página se habría quedado sin
+re-traducir en 6 idiomas sin ningún aviso. Ya se corrigió (se sumó a
+`SCRIPTS`, y se actualizó el conteo "12 vistas" → "14 vistas" en los
+comentarios del script).
+
+Los 13 scripts de traducción existentes (`v_1318_home.py`, etc.) además
+**contenían el texto viejo en voseo** como clave/valor de `es_AR` —
+corregido en el mismo cambio (74 reemplazos en 13 archivos), para que
+una futura corrida de `reaplicar_todo.py` no revierta el tratamiento de
+usted de vuelta al voseo.
+
+**Sigue faltando** (no se armó en este cambio, por estar fuera de
+alcance): no hay script `v_*.py` para `pedido_gestionar_link` (view
+2239, el link que se inyecta en `/shop/confirmation`) ni para
+`contacto_gracias_template` (view 1319, "Mi Sitio - Gracias") — ambas
+vistas tenían texto en voseo que se corrigió por SQL directo esta vez,
+pero quedarían sin cobertura si se vuelve a disparar el Gotcha #3. Y
+`pedido_personalizado_template` (la página `/pedido-personalizado`)
+nunca tuvo traducción real a los 6 idiomas no-español —si se la agrega
+al sitio multi-idioma en serio, hace falta armarle su propio script
+`v_<id>_pedido_personalizado.py` y sumarlo a `SCRIPTS`.
+
 ## Qué falta / gaps conocidos
 
 - El mensaje que arma `producto.whatsapp_url` ("Hola, quiero consultar
