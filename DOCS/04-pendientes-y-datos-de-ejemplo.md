@@ -76,7 +76,13 @@ Dirección — la misma política cuyos 4 objetivos ya se habían cargado en
 - Certificaciones reales de los proveedores de papel — esquemas
   **FSC** (manejo forestal) y autorizaciones **ISEGA** (contacto directo
   con alimentos) — sumadas a la sección "Bosques responsables" y a una
-  de las tarjetas de "Nuestros compromisos".
+  de las tarjetas de "Nuestros compromisos". **Actualización 02/10/2026,
+  a pedido explícito ("todo lo que sea de isega sacalo de la pagina")**:
+  se saca toda mención a ISEGA de esas dos apariciones (y de sus 7
+  copias por idioma en la base), incluido el script de traducciones
+  (`scripts/traducciones/v_1446_compromiso.py`) — queda solo FSC. No se
+  dio motivo; si hace falta reponerlo más adelante, el texto original
+  con ISEGA está en el historial de git (commit del 28/08/2026).
 - Sección nueva **"Residuos y agua"**: separación de residuos
   (coordinación con recicladoras externas para papel, plásticos y
   lubricantes) y tratamiento de las aguas residuales del lavado de las
