@@ -26,7 +26,7 @@
            comentario largo en categoria_template (catalogo_templates.xml). -->
       <t t-set="no_header" t-value="True"/>
       <t t-set="title">Pedido personalizado — Cartotecnica Hores</t>
-      <t t-set="website_meta_description">Desarrollamos moldes de papel a medida: otras medidas, capacidades, gramajes o impresión personalizada. Contanos qué necesitás y te preparamos una propuesta.</t>
+      <t t-set="website_meta_description">Desarrollamos moldes de papel a medida: otras medidas, capacidades, gramajes o impresión personalizada. Cuéntenos qué necesita y le preparamos una propuesta.</t>
       <div id="wrap" class="oe_structure oe_empty">
         <t t-call="mi_sitio_web.head_assets"/>
         <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -75,8 +75,8 @@
               <div style="display:grid; grid-template-columns:.85fr 1.15fr; gap:48px; align-items:start;">
                 <div>
                   <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:14px;">A medida</div>
-                  <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17;">¿No encontrás el molde que necesitás?</h1>
-                  <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 26px;">Desarrollamos moldes a medida: otras medidas, capacidades, gramajes o impresión personalizada según tu producción. Contanos qué necesitás y te preparamos una propuesta.</p>
+                  <h1 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:32px; margin:0 0 16px; color:#241d17;">¿No encuentra el molde que necesita?</h1>
+                  <p style="font-size:16.5px; line-height:1.65; color:#5a4f44; margin:0 0 26px;">Desarrollamos moldes a medida: otras medidas, capacidades, gramajes o impresión personalizada según su producción. Cuéntenos qué necesita y le preparamos una propuesta.</p>
                   <div style="display:flex; flex-direction:column; gap:14px; font-size:14.5px; color:#5a4f44; margin-bottom:26px;">
                     <div style="display:flex; align-items:center; gap:10px;"><span style="color:#c26a1e; font-weight:700;">✓</span> Medidas y capacidades a pedido</div>
                     <div style="display:flex; align-items:center; gap:10px;"><span style="color:#c26a1e; font-weight:700;">✓</span> Impresión personalizada</div>
@@ -88,7 +88,7 @@
                 </div>
                 <div style="background:#ffffff; border:1px solid #e8e3d9; border-radius:16px; padding:30px; box-shadow:0 2px 8px rgba(36,29,23,.05), 0 10px 26px rgba(36,29,23,.06);">
                   <div t-if="pedido_personalizado_error == 'campos'" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
-                    Revisá el formulario: completá nombre, email y el detalle del pedido, con un email válido.
+                    Revise el formulario: complete nombre, email y el detalle del pedido, con un email válido.
                   </div>
                   <div t-if="pedido_personalizado_error == 'formato'" style="background:#fdecea; border:1px solid #f3b9b0; color:#9c2b1f; border-radius:8px; padding:12px 14px; font-size:13.5px; margin-bottom:20px;">
                     La imagen tiene que ser JPG, PNG, WEBP o GIF.
@@ -122,13 +122,13 @@
                       </label>
                     </div>
                     <label style="display:block; margin-top:16px;">
-                      <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Contanos qué necesitás*</span>
+                      <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Cuéntenos qué necesita*</span>
                       <textarea required="required" rows="4" name="detalle" maxlength="5000" placeholder="Tipo de molde, medidas, capacidad, cantidad aproximada, impresión, plazos..." class="hc-custom-input" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:11px 13px; font-family:'Archivo',sans-serif; font-size:14.5px; color:#241d17; outline:none; resize:vertical;"></textarea>
                     </label>
                     <label style="display:block; margin-top:16px;">
                       <span style="display:block; font-size:13px; font-weight:600; color:#5a4f44; margin-bottom:6px;">Imagen de referencia (opcional)</span>
                       <input type="file" name="imagen" accept="image/*" class="hc-custom-input" style="width:100%; box-sizing:border-box; border:1px solid #d9ccb9; border-radius:8px; padding:9px 13px; font-family:'Archivo',sans-serif; font-size:13.5px; color:#8a7a67; background:#fff;"/>
-                      <span style="display:block; font-size:12px; color:#8a7a67; margin-top:6px;">Una foto del molde que querés replicar o un boceto. JPG, PNG, WEBP o GIF, hasta 8 MB.</span>
+                      <span style="display:block; font-size:12px; color:#8a7a67; margin-top:6px;">Una foto del molde que desea replicar o un boceto. JPG, PNG, WEBP o GIF, hasta 8 MB.</span>
                     </label>
                     <button type="submit" class="hc-custom-submit" style="margin-top:22px; width:100%; background:#c26a1e; color:#fff; border:none; padding:15px; border-radius:9px; font-family:'Archivo',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:background .18s ease;">Pedir presupuesto</button>
                   </form>

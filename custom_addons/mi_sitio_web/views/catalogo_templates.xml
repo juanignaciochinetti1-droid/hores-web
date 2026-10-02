@@ -408,7 +408,7 @@
           <a href="/compromiso" style="color:#cfccc5;">Compromiso</a>
           <a href="/mi-sitio#faq" style="color:#cfccc5;">FAQ</a>
           <a href="/mi-sitio/consultar-pedido" style="color:#cfccc5;">Consultar mi pedido</a>
-          <a href="/trabaja-con-nosotros" style="color:#cfccc5;">Trabajá con nosotros</a>
+          <a href="/trabaja-con-nosotros" style="color:#cfccc5;">Trabaje con nosotros</a>
         </div>
       </div>
       <div>
@@ -424,7 +424,7 @@
       <div style="max-width:1200px; margin:0 auto; padding:16px 28px; font-size:12.5px; color:#5c5c58; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;"><span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span><span><a href="/privacidad" style="color:#5c5c58;">Política de Privacidad</a> · Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span></div>
     </div>
   </footer>
-  <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20Cartot%C3%A9cnica%20Hores" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
+  <a href="https://wa.me/543537427085?text=Hola%2C%20quiero%20consultar%20por%20un%20producto%20de%20Cartot%C3%A9cnica%20Hores" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp" style="position:fixed; right:22px; bottom:22px; z-index:60; display:flex; align-items:center; gap:10px; background:#25d366; color:#fff; padding:14px 18px; border-radius:50px; font-family:'Archivo',sans-serif; font-weight:600; font-size:14.5px; box-shadow:0 10px 26px rgba(37,211,102,.42); text-decoration:none;">
     <img src="/mi_sitio_web/static/src/img/png-transparent-whatsapp-logo-whatsapp-computer-icons-telephone-call-whatsapp-grass-internet-mobile-phones-thumbnail.png" alt="" style="width:24px; height:24px; object-fit:contain;"/> WhatsApp
   </a>
   <button class="hc-back-to-top" style="left:22px; bottom:22px;" aria-label="Volver arriba">↑</button>
@@ -446,7 +446,7 @@
          DOCS/07-pedidos.md). -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title"><t t-esc="categoria.name if categoria else 'Categoría'"/> — Cartotecnica Hores</t>
-    <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por Cartotecnica Hores. Aptos para contacto alimentario, consultá por WhatsApp.</t>
+    <t t-set="website_meta_description">Moldes de papel <t t-esc="(categoria.name or '').lower()"/> fabricados por Cartotecnica Hores. Aptos para contacto alimentario, consulte por WhatsApp.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <div style="max-width:100%; overflow-x:hidden; background:#f6f4ef;">
@@ -554,7 +554,7 @@
               </div>
 
               <div t-if="producto.disponibilidad == 'sin_stock'" style="background:#f6e2df; color:#8a4a44; border-radius:10px; padding:14px 16px; font-size:14px; margin-bottom:26px; max-width:420px;">
-                Sin stock por el momento. Escribinos por WhatsApp y te avisamos apenas esté disponible.
+                Sin stock por el momento. Escríbanos por WhatsApp y le avisamos apenas esté disponible.
               </div>
               <div t-if="tiene_carrito" id="add-to-cart-block" style="display:none; background:#ffffff; border:1px solid #e8e3d9; border-radius:14px; padding:20px; margin-bottom:26px; max-width:420px;">
                 <p t-if="producto.disponibilidad == 'a_pedido'" style="font-size:13px; color:#8a7a67; margin:0 0 14px;">Este molde se fabrica a pedido — puede demorar unos días en producción.</p>
@@ -562,7 +562,7 @@
                   <label t-if="producto.variante_ids" style="display:block; margin-bottom:12px;">
                     <span style="display:block; font-size:12.5px; font-weight:600; color:#5a4f44; margin-bottom:5px;">Tamaño*</span>
                     <select name="variante" required="required" style="width:100%; border:1px solid #d9ccb9; border-radius:8px; padding:10px 12px; font-family:'Archivo',sans-serif; font-size:14px; color:#241d17;">
-                      <option value="">Elegí un tamaño</option>
+                      <option value="">Elija un tamaño</option>
                       <t t-foreach="producto.variante_ids" t-as="v">
                         <option t-if="v.sale_product_id" t-att-value="v.id" t-att-data-product-id="v.sale_product_id.id" t-att-data-tmpl-id="v.sale_product_id.product_tmpl_id.id" t-esc="' / '.join(filter(None, [v.code, v.dimensions, v.weight]))"/>
                       </t>
@@ -684,7 +684,7 @@
               var productId = select ? (select.selectedOptions[0] &amp;&amp; select.selectedOptions[0].getAttribute('data-product-id')) : form.getAttribute('data-product-id');
               var tmplId = select ? (select.selectedOptions[0] &amp;&amp; select.selectedOptions[0].getAttribute('data-tmpl-id')) : form.getAttribute('data-tmpl-id');
               if (!productId || !tmplId) {
-                mostrarMensaje('Elegí un tamaño antes de agregar al carrito.', false);
+                mostrarMensaje('Elija un tamaño antes de agregar al carrito.', false);
                 return;
               }
               var cantidadInput = form.querySelector('input[name="cantidad"]');
@@ -711,7 +711,7 @@
                 .then(function (data) {
                   if (boton) boton.disabled = false;
                   if (!data || data.error || !data.result) {
-                    mostrarMensaje('No pudimos agregarlo al carrito. Probá de nuevo.', false);
+                    mostrarMensaje('No pudimos agregarlo al carrito. Intente de nuevo.', false);
                     return;
                   }
                   mostrarMensaje('Agregado al carrito.', true);
@@ -732,7 +732,7 @@
                 })
                 .catch(function () {
                   if (boton) boton.disabled = false;
-                  mostrarMensaje('No pudimos agregarlo al carrito. Probá de nuevo.', false);
+                  mostrarMensaje('No pudimos agregarlo al carrito. Intente de nuevo.', false);
                 });
             });
           });
@@ -911,7 +911,7 @@
           <div style="max-width:44em; margin-bottom:30px;">
             <div style="font-size:12.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c26a1e; margin-bottom:10px;">Certificaciones</div>
             <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:30px; margin:0 0 10px; color:var(--cal-texto);">Documentación disponible</h2>
-            <p style="font-size:16px; line-height:1.55; color:var(--cal-texto2); margin:0;">Solicitá los certificados y fichas técnicas que necesites para tu proceso.</p>
+            <p style="font-size:16px; line-height:1.55; color:var(--cal-texto2); margin:0;">Solicite los certificados y fichas técnicas que necesite para su proceso.</p>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
             <div class="hc-card" style="border:1px solid var(--cal-borde); border-radius:14px; padding:28px; background:#fff; display:flex; flex-direction:column; gap:12px;">
@@ -951,7 +951,7 @@
   <t t-call="website.layout">
     <t t-set="no_header" t-value="True"/>
     <t t-set="title">Política de Privacidad — Cartotecnica Hores</t>
-    <t t-set="website_meta_description">Qué datos personales recolecta Cartotecnica Hores, para qué se usan y cómo ejercer tus derechos según la Ley 25.326 de Protección de Datos Personales.</t>
+    <t t-set="website_meta_description">Qué datos personales recolecta Cartotecnica Hores, para qué se usan y cómo ejercer sus derechos según la Ley 25.326 de Protección de Datos Personales.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <!-- Mismas variables que calidad_template (ver el comentario largo
@@ -985,20 +985,20 @@
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:var(--cal-texto);">Qué datos pedimos y dónde</h2>
               <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0 0 12px;">Cartotecnica Hores SRL ("nosotros") recolecta datos personales en tres lugares del sitio, siempre porque el visitante los completa voluntariamente:</p>
               <ul style="font-size:16px; line-height:1.8; color:var(--cal-texto2); margin:0; padding-left:22px;">
-                <li><strong style="color:var(--cal-texto);">Formulario de contacto</strong>: nombre, empresa, email y el mensaje que escribís.</li>
-                <li><strong style="color:var(--cal-texto);">Pedido / checkout</strong>: nombre, empresa, email, teléfono y tipo/número de documento (DNI, CUIT, etc.), para poder coordinar el pedido con vos.</li>
-                <li><strong style="color:var(--cal-texto);">Postulación laboral</strong>: nombre, email, teléfono y el currículum (CV) que adjuntás.</li>
+                <li><strong style="color:var(--cal-texto);">Formulario de contacto</strong>: nombre, empresa, email y el mensaje que escribe.</li>
+                <li><strong style="color:var(--cal-texto);">Pedido / checkout</strong>: nombre, empresa, email, teléfono y tipo/número de documento (DNI, CUIT, etc.), para poder coordinar el pedido con usted.</li>
+                <li><strong style="color:var(--cal-texto);">Postulación laboral</strong>: nombre, email, teléfono y el currículum (CV) que adjunta.</li>
               </ul>
             </div>
 
             <div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:var(--cal-texto);">Para qué los usamos</h2>
-              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">Únicamente para responder tu consulta, coordinar el pedido que hiciste (incluyendo la entrega, que se coordina por WhatsApp o email) o evaluar tu postulación laboral. No usamos estos datos para ningún otro fin.</p>
+              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">Únicamente para responder su consulta, coordinar el pedido que realizó (incluyendo la entrega, que se coordina por WhatsApp o email) o evaluar su postulación laboral. No usamos estos datos para ningún otro fin.</p>
             </div>
 
             <div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:var(--cal-texto);">Con quién los compartimos</h2>
-              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">No vendemos ni cedemos tus datos a terceros. Solo se comparten con quien haga falta para cumplir lo que pediste — por ejemplo, con el transporte al coordinar una entrega — y nada más que lo necesario para eso.</p>
+              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">No vendemos ni cedemos sus datos a terceros. Solo se comparten con quien haga falta para cumplir lo que solicitó — por ejemplo, con el transporte al coordinar una entrega — y nada más que lo necesario para eso.</p>
             </div>
 
             <div>
@@ -1008,8 +1008,8 @@
 
             <div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; margin:0 0 12px; color:var(--cal-texto);">Tus derechos</h2>
-              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0 0 12px;">De acuerdo a la Ley 25.326 de Protección de Datos Personales, tenés derecho a acceder, rectificar, actualizar o pedir la supresión de tus datos personales en cualquier momento. La Agencia de Acceso a la Información Pública, como órgano de control de la Ley 25.326, tiene la atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de las normas sobre protección de datos personales.</p>
-              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">Para ejercer cualquiera de estos derechos, escribinos a <a href="mailto:administracion@hores.com.ar" style="color:#c26a1e; font-weight:600;">administracion@hores.com.ar</a>.</p>
+              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0 0 12px;">De acuerdo a la Ley 25.326 de Protección de Datos Personales, usted tiene derecho a acceder, rectificar, actualizar o pedir la supresión de sus datos personales en cualquier momento. La Agencia de Acceso a la Información Pública, como órgano de control de la Ley 25.326, tiene la atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de las normas sobre protección de datos personales.</p>
+              <p style="font-size:16px; line-height:1.7; color:var(--cal-texto2); margin:0;">Para ejercer cualquiera de estos derechos, escríbanos a <a href="mailto:administracion@hores.com.ar" style="color:#c26a1e; font-weight:600;">administracion@hores.com.ar</a>.</p>
             </div>
 
             <div>
@@ -1214,9 +1214,9 @@
           <div style="max-width:1200px; margin:0 auto; padding:52px 28px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
             <div>
               <h2 style="font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; margin:0 0 8px; color:#fff;">Trabajemos de forma más sustentable</h2>
-              <p style="font-size:16px; line-height:1.5; color:#dcecd3; margin:0; max-width:40em;">Consultanos por soluciones de envase más eficientes para tu producción.</p>
+              <p style="font-size:16px; line-height:1.5; color:#dcecd3; margin:0; max-width:40em;">Consúltenos por soluciones de envase más eficientes para su producción.</p>
             </div>
-            <a href="/mi-sitio#contacto" style="background:#1f2e1c; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Contactanos</a>
+            <a href="/mi-sitio#contacto" style="background:#1f2e1c; color:#fff; padding:14px 26px; border-radius:9px; font-weight:600; font-size:15px;">Contáctenos</a>
           </div>
         </section>
 
@@ -1232,7 +1232,7 @@
          comentario largo en categoria_template. -->
     <t t-set="no_header" t-value="True"/>
     <t t-set="title">Nuestra historia — Cartotecnica Hores</t>
-    <t t-set="website_meta_description">Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conocé nuestra trayectoria, valores y objetivos.</t>
+    <t t-set="website_meta_description">Más de 30 años fabricando moldes de papel para panificación en Bell Ville, Córdoba. Conozca nuestra trayectoria, valores y objetivos.</t>
     <div id="wrap" class="oe_structure oe_empty">
       <t t-call="mi_sitio_web.head_assets"/>
       <style>
