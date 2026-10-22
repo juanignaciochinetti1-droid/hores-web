@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Re-aplica las traducciones a los 7 idiomas de las 14 vistas propias de
+"""Re-aplica las traducciones a los 7 idiomas de las 17 vistas propias de
 mi_sitio_web. Correr esto SIEMPRE después de:
 
   - `button_immediate_upgrade` sobre el módulo (única forma de aplicar
@@ -33,6 +33,7 @@ HERE = Path(__file__).resolve().parent
 SCRIPTS = [
     'v_1318_home.py',
     'v_1318_home_extra.py',
+    'v_1319_gracias.py',
     'v_1439_header.py',
     'v_1440_footer.py',
     'v_1442_categoria.py',
@@ -42,9 +43,11 @@ SCRIPTS = [
     'v_1446_compromiso.py',
     'v_1450_404.py',
     'v_2238_pedido.py',
+    'v_2239_pedido_link.py',
     'v_2245_consultar.py',
     'v_2445_postulacion.py',
     'v_2735_trabaja.py',
+    'v_2736_pedido_personalizado.py',
 ]
 
 failed = []
@@ -57,4 +60,4 @@ for name in SCRIPTS:
 if failed:
     print('\n!! Fallaron:', ', '.join(failed))
     sys.exit(1)
-print('\nListo -- las 14 vistas reescritas en los 7 idiomas.')
+print('\nListo -- las 17 vistas reescritas en los 7 idiomas.')

@@ -432,16 +432,35 @@ corregido en el mismo cambio (74 reemplazos en 13 archivos), para que
 una futura corrida de `reaplicar_todo.py` no revierta el tratamiento de
 usted de vuelta al voseo.
 
-**Sigue faltando** (no se armó en este cambio, por estar fuera de
-alcance): no hay script `v_*.py` para `pedido_gestionar_link` (view
-2239, el link que se inyecta en `/shop/confirmation`) ni para
-`contacto_gracias_template` (view 1319, "Mi Sitio - Gracias") — ambas
-vistas tenían texto en voseo que se corrigió por SQL directo esta vez,
-pero quedarían sin cobertura si se vuelve a disparar el Gotcha #3. Y
-`pedido_personalizado_template` (la página `/pedido-personalizado`)
-nunca tuvo traducción real a los 6 idiomas no-español —si se la agrega
-al sitio multi-idioma en serio, hace falta armarle su propio script
-`v_<id>_pedido_personalizado.py` y sumarlo a `SCRIPTS`.
+### Corrección del 22/10/2026: 3 vistas sin traducir a ningún idioma, ni siquiera `es_AR`
+
+A pedido explícito ("hay partes de la página que no se traducen a otro
+idioma"), se encontraron las 3 vistas que quedaban pendientes del
+punto anterior — pero el problema real no era voseo, era que **no
+tenían ningún término traducido en absoluto**: `get_field_translations`
+devolvía las 7 claves de idioma vacías (`""`) para cada término, en
+las 3 vistas, confirmado antes de tocar nada. En `/en`, `/it`, etc. se
+veía el texto en español sin más (no un error, no un fallback raro —
+exactamente el síntoma reportado).
+
+Las 3 vistas:
+- `pedido_gestionar_link` (view 2239, el link "Gestionar mi pedido"
+  que se inyecta en `/shop/confirmation`) — nunca tuvo script.
+- `contacto_gracias_template` (view 1319, "Mi Sitio - Gracias") —
+  nunca tuvo script.
+- `pedido_personalizado_template` (view 2736, página
+  `/pedido-personalizado`) — nunca tuvo traducción a los 6 idiomas
+  no-español, documentado como pendiente desde que se agregó la
+  página (21/09/2026).
+
+**Corregido**: se armaron `v_2239_pedido_link.py`, `v_1319_gracias.py`
+y `v_2736_pedido_personalizado.py` (mismo patrón que el resto, con
+`bulk_translate` y `source_lang='es_AR'`), se corrieron contra la base,
+se sumaron los 3 a `SCRIPTS` en `reaplicar_todo.py` (ahora 17 vistas,
+no 14), y se verificó con `curl` en los 7 idiomas — `/pedido-personalizado`
+completo (h1, meta, labels de formulario, placeholders, botón) y
+`/mi-sitio/gracias` no mostraron texto residual en español en ningún
+idioma.
 
 ## Qué falta / gaps conocidos
 
