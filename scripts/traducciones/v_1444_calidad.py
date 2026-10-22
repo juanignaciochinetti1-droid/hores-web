@@ -219,15 +219,15 @@ ROWS = [
      "View catalog <span class=\"hc-arrow\">→</span>", "Ver catálogo <span class=\"hc-arrow\">→</span>",
      "Vedi catalogo <span class=\"hc-arrow\">→</span>", "Voir le catalogue <span class=\"hc-arrow\">→</span>",
      "Katalog ansehen <span class=\"hc-arrow\">→</span>", "查看目录 <span class=\"hc-arrow\">→</span>"),
-    ("¿Necesitás la documentación de calidad?", "¿Necesitás la documentación de calidad?", "Need quality documentation?",
-     "Precisa da documentação de qualidade?", "Hai bisogno della documentazione sulla qualità?",
-     "Besoin de la documentation qualité ?", "Benötigen Sie Qualitätsdokumente?", "需要品质相关文件吗？"),
-    ("Escribinos y te enviamos los certificados y fichas técnicas correspondientes.", "Escribinos y te enviamos los certificados y fichas técnicas correspondientes.",
-     "Write to us and we'll send you the corresponding certificates and spec sheets.", "Escreva para nós e enviaremos os certificados e fichas técnicas correspondentes.",
-     "Scrivici e ti invieremo i certificati e le schede tecniche corrispondenti.", "Écrivez-nous et nous vous enverrons les certificats et fiches techniques correspondants.",
-     "Schreiben Sie uns, und wir senden Ihnen die entsprechenden Zertifikate und Datenblätter zu.", "联系我们，我们会将相应的证书和技术规格表发送给您。"),
-    ("Solicitar documentación", "Solicitar documentación", "Request documentation", "Solicitar documentação",
-     "Richiedi documentazione", "Demander la documentation", "Dokumentation anfordern", "申请文件"),
+    # Las 3 filas que estaban acá ("¿Necesitás la documentación de
+    # calidad?" / "Escribinos y te enviamos..." / "Solicitar
+    # documentación") se sacaron (22/10/2026): ese texto ya no existe en
+    # ningún lado de calidad_template, se reescribió por completo a
+    # "Solicite los certificados y fichas técnicas que necesite para su
+    # proceso." (ver más abajo) en algún cambio anterior. No eran un bug
+    # -- el texto viejo no se mostraba en ningún idioma porque no
+    # quedaba ningún elemento que lo usara -- pero quedaban confusas
+    # para quien edite este script después.
 ]
 
 bulk_translate(VIEW_ID, ROWS)

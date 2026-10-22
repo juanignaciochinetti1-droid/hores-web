@@ -17,8 +17,12 @@ ROWS = [
      "Contattaci su WhatsApp", "Contacter sur WhatsApp", "Über WhatsApp anfragen", "通过WhatsApp咨询"),
     ("Agregar al carrito", "Agregar al carrito", "Add to cart", "Adicionar ao carrinho", "Aggiungi al carrello",
      "Ajouter au panier", "In den Warenkorb", "加入购物车"),
-    ("Sin stock por el momento. Escríbanos por WhatsApp y te avisamos apenas esté disponible.",
-     "Sin stock por el momento. Escríbanos por WhatsApp y te avisamos apenas esté disponible.",
+    # Clave actualizada (22/10/2026): "te avisamos" -> "le avisamos" --
+    # quedo afuera de la conversion vos->usted del 02/10/2026 (esos 74
+    # reemplazos tocaron 13 scripts, este no estaba en esa lista), asi
+    # que la fila vieja con voseo quedo huerfana. Ver DOCS/06-idiomas.md.
+    ("Sin stock por el momento. Escríbanos por WhatsApp y le avisamos apenas esté disponible.",
+     "Sin stock por el momento. Escríbanos por WhatsApp y le avisamos apenas esté disponible.",
      "Out of stock for now. Write to us on WhatsApp and we'll let you know as soon as it's available.",
      "Sem estoque no momento. Escreva para nós pelo WhatsApp e avisaremos assim que estiver disponível.",
      "Al momento non disponibile. Scrivici su WhatsApp e ti avviseremo non appena sarà disponibile.",

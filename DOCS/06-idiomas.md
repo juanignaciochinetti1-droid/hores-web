@@ -637,6 +637,55 @@ vista antes de asumir que es un bug — algunos links (`"Ver factura
 →"`, `"Cómo llegar →"`) genuinamente siguen con la flecha como texto
 suelto y están bien así.
 
+### Cuarta pasada el mismo día: un residuo de voseo que la limpieza del 02/10 no alcanzó, y un cartel de Odoo sin traducir
+
+Un cuarto pedido explícito de revisar ("busca cualquier fallo y
+arreglalo") encontró 2 cosas más, de naturaleza distinta a los
+huecos de arriba:
+
+**1. "Powered by Odoo — The #1 Open Source eCommerce" visible en
+`/shop`, carrito y checkout.** No es contenido propio del sitio — es
+el cartel de autopromoción de Odoo (`web.brand_promotion`), que la
+plataforma nunca traduce a ningún idioma (queda fijo en inglés
+siempre) y que además rompe la estética del resto del sitio con un
+link y logo ajenos al diseño. **Ojo**: su `<div
+class="o_brand_promotion">` no vive estructuralmente dentro de
+`website.layout` (se inserta con un `t-call` puntual desde otras
+plantillas, ver `web/views/webclient_templates.xml`), así que no se
+puede ocultar con un xpath sobre `website.layout` como la barra de
+copyright (`o_footer_copyright`) — hay que heredar
+`web.brand_promotion` directamente. Corregido en
+`footer_override_templates.xml` (template nuevo
+`brand_promotion_oculto`).
+
+**2. El mensaje de "sin stock" de la ficha de producto todavía tenía
+voseo** (`"...y **te** avisamos apenas esté disponible."`) a pesar de
+la conversión vos→usted del 02/10/2026 — ese cambio tocó 13 scripts
+de traducción (ver más arriba, "74 reemplazos") pero
+`v_1443_producto.py` no estaba en esa lista, así que este término en
+particular quedó afuera. Corregido a "...y **le** avisamos...".
+
+**De paso**, se encontraron y limpiaron 3 filas muertas en
+`v_1444_calidad.py` (`"¿Necesitás la documentación de calidad?"`,
+`"Escribinos y te enviamos..."`, `"Solicitar documentación"`) — texto
+que ya no existe en ningún lado de `calidad_template` (se reescribió
+por completo a "Solicite los certificados y fichas técnicas que
+necesite para su proceso." en algún cambio anterior). No eran un bug
+visible, solo quedaban confusas para quien edite el script después.
+
+**Moraleja**: el grep de voseo que se corrió una sola vez el
+02/10/2026 no garantiza que quede limpio para siempre — cualquier
+script de traducción que no se haya tocado en esa pasada puede seguir
+teniendo texto viejo. Si se vuelve a sospechar esto, repetir:
+
+```
+grep -niE '\b(vos|tenés|querés|necesitás|podés|sabés|decís|escribís|contás|dejanos|escribinos|contanos|consultanos|contactanos|elegí|conocé|revisá|solicitá|ingresá|sumate|completá|te avisamos|te contactamos|tu pedido|tu perfil|tu caso)\b' scripts/traducciones/*.py
+```
+
+(cuidado: "vos" también aparece en francés — "vos droits", "vos
+données" — no es voseo ahí, hay que mirar el contexto de cada
+resultado antes de "corregirlo".)
+
 ## Qué falta / gaps conocidos
 
 - Si se agrega una página o sección nueva al sitio, su texto nuevo queda
