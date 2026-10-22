@@ -75,4 +75,23 @@
             </div>
         </xpath>
     </template>
+
+    <!-- "Powered by Odoo - The #1 Open Source eCommerce" (encontrado en
+         la auditoría de traducciones del 22/10/2026): visible en /shop,
+         carrito y checkout, nunca en español ni en ningún otro idioma
+         del sitio (Odoo no lo traduce, queda siempre en inglés) y rompe
+         la estética cuidada del resto del sitio con un link y logo
+         ajenos al diseño. El <div class="o_brand_promotion"> no vive
+         estructuralmente dentro de website.layout (se inserta via
+         t-call puntual desde otras plantillas, ver web/views/
+         webclient_templates.xml), así que no se puede apuntar con un
+         xpath sobre website.layout como la barra de copyright de
+         arriba — hay que heredar el template que lo define
+         directamente (web.brand_promotion) y ocultarlo ahí, una sola
+         vez, para que valga en cualquier página que lo llame. -->
+    <template id="brand_promotion_oculto" inherit_id="web.brand_promotion">
+        <xpath expr="//div[hasclass('o_brand_promotion')]" position="attributes">
+            <attribute name="style">display:none;</attribute>
+        </xpath>
+    </template>
 </odoo>
