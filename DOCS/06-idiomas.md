@@ -462,17 +462,91 @@ completo (h1, meta, labels de formulario, placeholders, botón) y
 `/mi-sitio/gracias` no mostraron texto residual en español en ningún
 idioma.
 
+### Auditoría completa del 22/10/2026: "hay partes que no se traducen, con todos los idiomas cargados"
+
+A pedido explícito ("revisa errores, bugs, choques... porque se tiene
+que traducir TODA la página"), se auditaron sistemáticamente las 3
+fuentes de texto del punto "Cómo está traducido el contenido" (arriba),
+no solo las vistas. Se encontraron 3 problemas reales, independientes
+del de la sesión anterior (las 3 vistas sin script):
+
+**1. El catálogo de productos (datos de modelo) nunca se tradujo a
+italiano/francés/alemán/chino.** `categoria.name`,
+`producto.name/summary/description`, `producto.spec.label/value` y
+`producto.feature.name` son campos `translate=True` — y a diferencia
+de las vistas (que se corrigieron a fondo en la sesión del 02/09), esos
+4 idiomas mostraban el valor de `en_US` tal cual (todo el catálogo
+real, no datos de ejemplo). Confirmado leyendo cada campo con
+`context={'lang': ...}` por XML-RPC: `it_IT`/`fr_FR`/`de_DE`/`zh_CN`
+devolvían exactamente el mismo string que `en_US`, nunca se habían
+escrito traducciones propias para esos 4. Es decir: nunca se tradujo el
+catálogo a esos idiomas, se activaron en el selector sin cumplir la
+regla del punto de arriba ("cada idioma nuevo... tiene que traer su
+traducción completa antes de sumarse al switcher").
+
+Corregido traduciendo a mano las 5 categorías, 7 nombres de producto, 6
+resúmenes+descripciones (el producto 14 no tiene, es `False` en los 7
+idiomas por igual), 49 specs (label+value) y 27 features, a los 4
+idiomas, vía `write()` directo con `context={'lang': ...}` (no
+`update_field_translations`, que es solo para `arch_db` de vistas —
+estos son campos de modelo normales). Script usado (no committeado,
+corrido una sola vez desde el scratchpad de la sesión): agrupa los 49
+specs y 27 features por texto en español exacto para no repetir
+traducción en records idénticos, y escribe por id para categoría/
+nombre/resumen/descripción. Verificado con `curl` en `/it`, `/fr`,
+`/de`, `/zh_CN` sobre `/categoria/<slug>` y `/producto/<id>` — ya no
+aparece ningún texto en inglés en esos 4 idiomas.
+
+**2. Tres vistas más sin ninguna traducción** (mismo síntoma que
+`pedido_gestionar_link`/`contacto_gracias_template`/
+`pedido_personalizado_template` de la sesión anterior, encontradas
+ahora al listar las 30 vistas reales del módulo vía `ir.model.data` y
+comparar contra las 17 que sí tenían script):
+- `privacidad_template` (view 2733, página `/privacidad`) — la Política
+  de Privacidad **completa**, 25 términos, sin ninguna traducción, ni
+  siquiera propia en español explícito.
+- `footer_override` (view 2237) — el botón "← Volver al sitio" que
+  aparece en `/shop`, carrito y checkout.
+- `volver_al_carrito_texto` (view 2242) — "Realizar otro pedido" en el
+  carrito (`website_sale.navigation_buttons`).
+
+Se armaron `v_2733_privacidad.py`, `v_2237_footer_override.py` y
+`v_2242_volver_carrito.py` y se sumaron a `SCRIPTS` en
+`reaplicar_todo.py` (ahora 20 vistas). De paso, al traducir
+`privacidad_template` se encontró un residuo real de voseo que la
+corrección del 02/10 no tocó porque esta vista nunca se había editado
+en esa sesión: el `<h2>` "Tus derechos" (el resto de esa sección ya
+decía "usted tiene derecho...") — corregido a "Sus derechos" en el XML
+y traducido en el mismo script.
+
+**3. El mensaje de WhatsApp de cada producto quedaba fijo en
+español.** `producto.whatsapp_url` (`models/producto.py`) armaba el
+texto del link de `wa.me` con un string Python fijo, sin mirar el
+idioma activo — documentado antes como "postergado a propósito"
+porque el negocio opera en español. Con el pedido explícito de
+traducir TODA la página, se revirtió esa decisión: se localizó con dos
+diccionarios por idioma (`_WHATSAPP_CON_PRODUCTO`/
+`_WHATSAPP_SIN_PRODUCTO`) y `self.env.lang`, mismo patrón que
+`_historia_data` en `controllers/main.py`. `rec.name` ya se traducía
+solo (es el campo del catálogo, parte del punto 1) — solo faltaba
+localizar la frase fija alrededor.
+
+Las vistas backend-only del módulo (`view_mi_sitio_web_producto_form`/
+`_list`, `view_mi_sitio_web_categoria_list` — pantallas de Ajustes que
+solo usa el equipo, no visitantes del sitio) se revisaron y se dejaron
+sin traducir a propósito, igual criterio que siempre.
+
 ## Qué falta / gaps conocidos
 
-- El mensaje que arma `producto.whatsapp_url` ("Hola, quiero consultar
-  por...") queda siempre en español, sin importar el idioma de la página.
-  No se localizó todavía — es texto generado en Python (no QWeb ni campo
-  de modelo), y el negocio opera en español de todas formas, así que se
-  postergó a propósito.
 - Si se agrega una página o sección nueva al sitio, su texto nuevo queda
   **solo en español** hasta que se traduzca a mano con el mecanismo que
   corresponda (punto 1, 2 o 3 arriba según de dónde salga el texto) — no
-  hay traducción automática ni un aviso si falta.
+  hay traducción automática ni un aviso si falta. Si el texto nuevo sale
+  de un campo `translate=True` (catálogo), recordar que `source_lang`
+  no alcanza para datos de modelo fuera de vistas — hay que escribir
+  cada idioma con `write(..., context={'lang': idioma})` directo (ver
+  el punto 1 de arriba), no con `update_field_translations` (esa es
+  solo para `arch_db`).
 - Los datos de Historia siguen siendo de ejemplo en los 3 idiomas (ver
   [pendientes](04-pendientes-y-datos-de-ejemplo.md)); cuando se reemplacen
   por reales hay que traducirlos a los 3 diccionarios, no solo al español.

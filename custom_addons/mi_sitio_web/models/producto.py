@@ -56,13 +56,41 @@ class MiSitioWebProducto(models.Model):
 
     whatsapp_url = fields.Char(string='Link de WhatsApp', compute='_compute_whatsapp_url')
 
+    # Frases por idioma (05/09/2026 antes, 22/10/2026 ahora): este texto no
+    # vive en arch_db ni en un campo translate=True, asi que el mecanismo
+    # de traduccion de vistas no lo toca -- antes se dejaba fijo en
+    # espanol a proposito ("el negocio opera en espanol de todas formas"),
+    # pero a pedido explicito de traducir TODA la pagina se localiza por
+    # self.env.lang, igual que _historia_data en controllers/main.py.
+    _WHATSAPP_CON_PRODUCTO = {
+        'es_AR': "Hola, quiero consultar por {name}",
+        'en_US': "Hi, I'd like to ask about {name}",
+        'pt_BR': "Olá, gostaria de consultar sobre {name}",
+        'it_IT': "Ciao, vorrei chiedere informazioni su {name}",
+        'fr_FR': "Bonjour, je voudrais me renseigner sur {name}",
+        'de_DE': "Hallo, ich habe eine Frage zu {name}",
+        'zh_CN': "您好，我想咨询一下{name}",
+    }
+    _WHATSAPP_SIN_PRODUCTO = {
+        'es_AR': "Hola, quiero consultar por un producto de Cartotecnica Hores",
+        'en_US': "Hi, I'd like to ask about a Cartotecnica Hores product",
+        'pt_BR': "Olá, gostaria de consultar sobre um produto da Cartotecnica Hores",
+        'it_IT': "Ciao, vorrei chiedere informazioni su un prodotto di Cartotecnica Hores",
+        'fr_FR': "Bonjour, je voudrais me renseigner sur un produit de Cartotecnica Hores",
+        'de_DE': "Hallo, ich habe eine Frage zu einem Produkt von Cartotecnica Hores",
+        'zh_CN': "您好，我想咨询一下Cartotecnica Hores的产品",
+    }
+
     @api.depends('name', 'code')
     def _compute_whatsapp_url(self):
+        lang = self.env.lang or 'es_AR'
+        con_producto = self._WHATSAPP_CON_PRODUCTO.get(lang, self._WHATSAPP_CON_PRODUCTO['es_AR'])
+        sin_producto = self._WHATSAPP_SIN_PRODUCTO.get(lang, self._WHATSAPP_SIN_PRODUCTO['es_AR'])
         for rec in self:
             if rec.name:
-                texto = f"Hola, quiero consultar por {rec.name}" + (f" ({rec.code})" if rec.code else "")
+                texto = con_producto.format(name=rec.name) + (f" ({rec.code})" if rec.code else "")
             else:
-                texto = "Hola, quiero consultar por un producto de Cartotecnica Hores"
+                texto = sin_producto
             rec.whatsapp_url = f"https://wa.me/{WHATSAPP_PHONE}?text={quote(texto)}"
 
 
