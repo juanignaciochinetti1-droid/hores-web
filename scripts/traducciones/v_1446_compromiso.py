@@ -4,6 +4,14 @@ from translate_helpers import bulk_translate
 VIEW_ID = 1446  # compromiso_template
 
 ROWS = [
+    # "Producción" y "Reciclado" (pasos 02 y 04 de "Del diseño al
+    # reciclado") nunca se habian traducido a ningun idioma -- se
+    # usa la misma palabra "Producción" que en calidad_template/
+    # historia_template, pero arch_db es por vista, asi que cada una
+    # necesita su propia entrada. Encontrado en la auditoria del
+    # 22/10/2026 -- ver DOCS/06-idiomas.md.
+    ("Producción", "Producción", "Production", "Produção", "Produzione", "Production", "Produktion", "生产"),
+    ("Reciclado", "Reciclado", "Recycling", "Reciclagem", "Riciclo", "Recyclage", "Recycling", "回收"),
     ("Compromiso ambiental — Cartotecnica Hores", "Compromiso ambiental — Cartotecnica Hores",
      "Environmental commitment — Cartotecnica Hores", "Compromisso ambiental — Cartotecnica Hores",
      "Impegno ambientale — Cartotecnica Hores", "Engagement environnemental — Cartotecnica Hores",

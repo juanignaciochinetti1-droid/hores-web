@@ -24,14 +24,37 @@ ROWS = [
     ('Trabaje con nosotros', 'Trabaje con nosotros', 'Work with us', 'Trabalhe conosco',
      'Lavora con noi', 'Travaillez avec nous', 'Arbeite mit uns', '加入我们'),
     ('Contacto', 'Contacto', 'Contact', 'Contato', 'Contatti', 'Contact', 'Kontakt', '联系我们'),
-    ('<span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span>',
-     '<span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span><span>Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua</span>',
-     '<span>© 2026 Cartotecnica Hores — Paper molds for baking</span><span>Panettone · Pound cake · Ring cake · Sponge cake · Christmas bread</span>',
-     '<span>© 2026 Cartotecnica Hores — Moldes de papel para panificação</span><span>Panetone · Bolo inglês · Rosca · Pão de ló · Pão de Natal</span>',
-     '<span>© 2026 Cartotecnica Hores — Stampi di carta per la panificazione</span><span>Panettone · Plumcake · Ciambella · Pan di Spagna · Pane di Pasqua</span>',
-     '<span>© 2026 Cartotecnica Hores — Moules en papier pour la boulangerie</span><span>Panettone · Cake · Couronne · Génoise · Pain de Pâques</span>',
-     '<span>© 2026 Cartotecnica Hores — Papierformen für die Bäckerei</span><span>Panettone · Kastenform · Kranzkuchen · Biskuit · Osterbrot</span>',
-     '<span>© 2026 Cartotecnica Hores — 烘焙用纸模</span><span>圣诞面包 · 磅蛋糕 · 环形蛋糕 · 海绵蛋糕 · 复活节面包</span>'),
+    # Las 2 filas de abajo reemplazan una fila vieja con una clave
+    # combinada ("<span>copyright</span><span>tagline</span>" en un solo
+    # termino) que dejo de matchear nada el dia que se agrego el link de
+    # "Politica de Privacidad" DENTRO del segundo <span> -- la insercion
+    # de un <a> ahi partio ese <span> en terminos nuevos y distintos
+    # (el <a> por un lado, el texto suelto que le sigue por otro), asi
+    # que la clave vieja quedo huerfana (corria sin error pero no
+    # escribia nada, nunca matcheaba un termino real). Encontrado y
+    # corregido en la auditoria del 22/10/2026 -- ver DOCS/06-idiomas.md.
+    # "Pedido a medida" (nav, mismo caso que en site_header) se agrego
+    # despues de que este script se escribio y nunca se tradujo.
+    ('Pedido a medida', 'Pedido a medida', 'Custom order', 'Pedido personalizado',
+     'Ordine personalizzato', 'Commande personnalisée', 'Individuelle Bestellung', '定制订单'),
+    ('<span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span>',
+     '<span>© 2026 Cartotecnica Hores — Moldes de papel para panificación</span>',
+     '<span>© 2026 Cartotecnica Hores — Paper molds for baking</span>',
+     '<span>© 2026 Cartotecnica Hores — Moldes de papel para panificação</span>',
+     '<span>© 2026 Cartotecnica Hores — Stampi di carta per la panificazione</span>',
+     '<span>© 2026 Cartotecnica Hores — Moules en papier pour la boulangerie</span>',
+     '<span>© 2026 Cartotecnica Hores — Papierformen für die Bäckerei</span>',
+     '<span>© 2026 Cartotecnica Hores — 烘焙用纸模</span>'),
+    ('Política de Privacidad', 'Política de Privacidad', 'Privacy Policy', 'Política de Privacidade',
+     'Informativa sulla Privacy', 'Politique de confidentialité', 'Datenschutzrichtlinie', '隐私政策'),
+    ('· Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua',
+     '· Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua',
+     '· Panettone · Pound Cake · Ring Cake · Sponge Cake · Christmas Bread',
+     '· Panetone · Bolo Inglês · Rosca · Pão de Ló · Pão de Natal',
+     '· Panettone · Plumcake · Ciambella · Pan di Spagna · Pane di Natale',
+     '· Panettone · Cake · Couronne · Gâteau Éponge · Pain de Noël',
+     '· Panettone · Rührkuchen · Kranzkuchen · Biskuitkuchen · Weihnachtsbrot',
+     '· 潘妮托尼 · 磅蛋糕 · 环形蛋糕 · 海绵蛋糕 · 圣诞面包'),
     ('Escríbanos por WhatsApp', 'Escríbanos por WhatsApp', 'Write to us on WhatsApp', 'Escreva-nos pelo WhatsApp',
      'Scrivici su WhatsApp', 'Écrivez-nous sur WhatsApp', 'Schreib uns auf WhatsApp', '通过WhatsApp联系我们'),
     ('Volver arriba', 'Volver arriba', 'Back to top', 'Voltar ao topo', 'Torna su', 'Retour en haut', 'Nach oben', '返回顶部'),

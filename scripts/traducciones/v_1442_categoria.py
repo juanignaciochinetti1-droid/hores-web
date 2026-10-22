@@ -30,9 +30,17 @@ ROWS = [
      "Auf Bestellung", "定制生产"),
     ("Sin stock", "Sin stock", "Out of stock", "Sem estoque", "Non disponibile", "Rupture de stock",
      "Nicht vorrätig", "缺货"),
-    ("Ver ficha técnica completa →", "Ver ficha técnica completa →", "View full spec sheet →",
-     "Ver ficha técnica completa →", "Vedi la scheda tecnica completa →", "Voir la fiche technique complète →",
-     "Vollständiges Datenblatt ansehen →", "查看完整技术规格表 →"),
+    # Clave actualizada (22/10/2026): la flecha paso a su propio
+    # <span class="hc-arrow"> (mismo patron en todo el sitio) -- la fila
+    # vieja con "→" suelto quedo huerfana. Ver DOCS/06-idiomas.md.
+    ("Ver ficha técnica completa <span class=\"hc-arrow\">→</span>",
+     "Ver ficha técnica completa <span class=\"hc-arrow\">→</span>",
+     "View full spec sheet <span class=\"hc-arrow\">→</span>",
+     "Ver ficha técnica completa <span class=\"hc-arrow\">→</span>",
+     "Vedi la scheda tecnica completa <span class=\"hc-arrow\">→</span>",
+     "Voir la fiche technique complète <span class=\"hc-arrow\">→</span>",
+     "Vollständiges Datenblatt ansehen <span class=\"hc-arrow\">→</span>",
+     "查看完整技术规格表 <span class=\"hc-arrow\">→</span>"),
     ("Consultar por WhatsApp", "Consultar por WhatsApp", "Ask on WhatsApp", "Consultar pelo WhatsApp",
      "Contattaci su WhatsApp", "Contacter sur WhatsApp", "Über WhatsApp anfragen", "通过WhatsApp咨询"),
 ]

@@ -55,14 +55,18 @@ ROWS = [
     ("alcance regional", "alcance regional", "regional reach", "alcance regional", "portata regionale", "portée régionale", "regionale Reichweite", "区域覆盖"),
     ("apto alimentario", "apto alimentario", "food-safe", "apto alimentar", "idoneo alimentare", "apte au contact alimentaire", "lebensmittelecht", "食品级"),
     ("Qué hacemos", "Qué hacemos", "What we do", "O que fazemos", "Cosa facciamo", "Ce que nous faisons", "Was wir tun", "我们的业务"),
-    ("Cartotecnica Hores diseña, desarrolla y fabrica moldes y envases de papel para la industria alimentaria, panaderías profesionales y grandes clientes.",
-     "Cartotecnica Hores diseña, desarrolla y fabrica moldes y envases de papel para la industria alimentaria, panaderías profesionales y grandes clientes.",
-     "Cartotecnica Hores designs, develops and manufactures paper molds and packaging for the food industry, professional bakeries and large clients.",
-     "A Cartotecnica Hores projeta, desenvolve e fabrica moldes e embalagens de papel para a indústria alimentícia, padarias profissionais e grandes clientes.",
-     "Cartotecnica Hores progetta, sviluppa e produce stampi e confezioni di carta per l'industria alimentare, panifici professionali e grandi clienti.",
-     "Cartotecnica Hores conçoit, développe et fabrique des moules et emballages en papier pour l'industrie alimentaire, les boulangeries professionnelles et les grands clients.",
-     "Cartotecnica Hores entwirft, entwickelt und fertigt Papierformen und -verpackungen für die Lebensmittelindustrie, professionelle Bäckereien und Großkunden.",
-     "Cartotecnica Hores 为食品行业、专业面包房和大客户设计、开发和生产纸质模具及包装。"),
+    # Clave actualizada (22/10/2026): el parrafo del XML paso de "moldes
+    # y envases de papel" a "moldes de papel" (se saco "y envases") en
+    # algun cambio posterior -- la fila vieja quedo huerfana (corria sin
+    # error, nunca escribia nada). Ver DOCS/06-idiomas.md.
+    ("Cartotecnica Hores diseña, desarrolla y fabrica moldes de papel para la industria alimentaria, panaderías profesionales y grandes clientes.",
+     "Cartotecnica Hores diseña, desarrolla y fabrica moldes de papel para la industria alimentaria, panaderías profesionales y grandes clientes.",
+     "Cartotecnica Hores designs, develops and manufactures paper molds for the food industry, professional bakeries and large accounts.",
+     "A Cartotecnica Hores projeta, desenvolve e fabrica moldes de papel para a indústria alimentícia, padarias profissionais e grandes clientes.",
+     "Cartotecnica Hores progetta, sviluppa e produce stampi di carta per l'industria alimentare, panifici professionali e grandi clienti.",
+     "Cartotecnica Hores conçoit, développe et fabrique des moules en carton pour l'industrie alimentaire, les boulangeries professionnelles et les grands comptes.",
+     "Cartotecnica Hores entwickelt, konstruiert und fertigt Papierformen für die Lebensmittelindustrie, professionelle Bäckereien und Großkunden.",
+     "Cartotecnica Hores为食品行业、专业烘焙坊及大客户设计、开发和制造纸模。"),
     ("Investigación y Desarrollo", "Investigación y Desarrollo", "Research and Development", "Pesquisa e Desenvolvimento",
      "Ricerca e Sviluppo", "Recherche et Développement", "Forschung und Entwicklung", "研发"),
     ("Innovamos constantemente: nuevos mercados, mejores diseños y cambios positivos para el sector.",
@@ -105,14 +109,19 @@ ROWS = [
      "Wählen Sie eine Linie und rufen Sie das Datenblatt mit einem Klick auf.",
      "选择一个系列，一键查看技术规格表。"),
     ("Personalizable", "Personalizable", "Customizable", "Personalizável", "Personalizzabile", "Personnalisable", "Individualisierbar", "可定制"),
-    ('<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Spec sheet →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Scheda tecnica →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Fiche technique →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Datenblatt →</span>',
-     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">技术规格表 →</span>'),
+    # Clave actualizada (22/10/2026): la flecha paso de texto suelto
+    # "→" a su propio <span class="hc-arrow">→</span> anidado en algun
+    # cambio posterior (mismo patron que el link "Ficha tecnica" de
+    # categoria_template/producto_detalle_template) -- la fila vieja
+    # quedo huerfana. Ver DOCS/06-idiomas.md.
+    ('<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Spec sheet <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Ficha técnica <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Scheda tecnica <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Fiche technique <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">Datenblatt <span class="hc-arrow">→</span></span>',
+     '<span style="font-size:13px; font-weight:600; letter-spacing:.02em; color:#c26a1e;">技术规格表 <span class="hc-arrow">→</span></span>'),
     ("Calidad y certificaciones", "Calidad y certificaciones", "Quality and certifications", "Qualidade e certificações",
      "Qualità e certificazioni", "Qualité et certifications", "Qualität und Zertifizierungen", "品质与认证"),
     ("Autorizados para el contacto con alimentos", "Autorizados para el contacto con alimentos",
@@ -127,9 +136,17 @@ ROWS = [
      "Tous nos produits sont autorisés au contact direct avec les aliments. Nous développons nos processus dans le cadre d'un système de gestion de la sécurité alimentaire certifié selon la norme ISO 22000:2018.",
      "Alle unsere Produkte sind für den direkten Lebensmittelkontakt zugelassen. Wir entwickeln unsere Prozesse im Rahmen eines nach ISO 22000:2018 zertifizierten Lebensmittelsicherheitsmanagementsystems.",
      "我们所有产品均获准直接接触食品。我们按照ISO 22000:2018认证的食品安全管理体系开展生产流程。"),
-    ("Ver calidad y certificaciones →", "Ver calidad y certificaciones →", "View quality and certifications →",
-     "Ver qualidade e certificações →", "Vedi qualità e certificazioni →", "Voir qualité et certifications →",
-     "Qualität und Zertifizierungen ansehen →", "查看品质与认证 →"),
+    # Clave actualizada (22/10/2026): la flecha paso a su propio
+    # <span class="hc-arrow"> -- la fila vieja con "→" suelto quedo
+    # huerfana. Ver DOCS/06-idiomas.md.
+    ("Ver calidad y certificaciones <span class=\"hc-arrow\">→</span>",
+     "Ver calidad y certificaciones <span class=\"hc-arrow\">→</span>",
+     "View quality and certifications <span class=\"hc-arrow\">→</span>",
+     "Ver qualidade e certificações <span class=\"hc-arrow\">→</span>",
+     "Vedi qualità e certificazioni <span class=\"hc-arrow\">→</span>",
+     "Voir qualité et certifications <span class=\"hc-arrow\">→</span>",
+     "Qualität und Zertifizierungen ansehen <span class=\"hc-arrow\">→</span>",
+     "查看品质与认证 <span class=\"hc-arrow\">→</span>"),
     ("Gestión de inocuidad certificada", "Gestión de inocuidad certificada", "Certified food-safety management",
      "Gestão de inocuidade certificada", "Gestione della sicurezza alimentare certificata",
      "Gestion de la sécurité alimentaire certifiée", "Zertifiziertes Lebensmittelsicherheitsmanagement", "认证食品安全管理"),

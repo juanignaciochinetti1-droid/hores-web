@@ -536,6 +536,107 @@ Las vistas backend-only del módulo (`view_mi_sitio_web_producto_form`/
 solo usa el equipo, no visitantes del sitio) se revisaron y se dejaron
 sin traducir a propósito, igual criterio que siempre.
 
+### Segunda pasada el mismo día: 4 huecos más, encontrados comparando contra `en_US`
+
+A pedido de una segunda revisión ("busca cualquier fallo"), se escaneó
+`get_field_translations` de las 30 vistas completas buscando cualquier
+término con algún idioma vacío, y se filtraron a mano los falsos
+positivos (texto idéntico a propósito en los 7 idiomas: marca, emojis,
+números de paso, siglas como "FAQ"/"ISO 22000", direcciones/teléfono,
+y cognados reales como "Production"/"Contact" en francés, que son la
+misma palabra en inglés y francés). De los que quedaron, 4 eran huecos
+reales — reconocibles porque la propia clave (el valor bajo `en_US`,
+que hace de "fuente") seguía en **español**, es decir nunca se habían
+traducido ni siquiera al inglés:
+
+- **"Pedido a medida"** (link de nav en `site_header` y `site_footer`)
+  — se agregó cuando se reorganizó el nav (pasó de la lupa "Más" a link
+  de primer nivel) después de que esos 2 scripts ya estaban escritos, y
+  nunca se agregó a ninguno de los dos. Mostraba literalmente "Pedido a
+  medida" en los 7 idiomas, incluido `/en`.
+- **El copyright del footer, "Política de Privacidad" y la lista de
+  productos del footer** (`"<span>© 2026 Cartotecnica Hores —
+  ...</span>"`, `"Política de Privacidad"`,
+  `"· Pan dulce · Budín · Rosca · Bizcochuelo · Pan de Pascua"`) — el
+  script viejo (`v_1440_footer.py`) tenía una fila con una clave que
+  combinaba el copyright y la lista de productos en un solo término
+  (`"<span>...</span><span>...</span>"`), armada cuando esos dos
+  bloques eran un solo `<span>` cada uno sin nada más adentro. Cuando
+  más tarde se agregó el link `<a href="/privacidad">` DENTRO del
+  segundo `<span>` (para enlazar la Política de Privacidad desde el
+  footer), QWeb separó ese `<span>` en 2 términos nuevos (el `<a>` por
+  un lado, el texto suelto que le sigue por otro) — la clave vieja del
+  script dejó de matchear cualquier término real. El script seguía
+  corriendo sin ningún error (ver `bulk_translate`, no valida que la
+  clave exista), simplemente no escribía nada: exactamente el tipo de
+  falla silenciosa más difícil de notar sin un escaneo explícito como
+  este. Reemplazada esa fila vieja por 3 filas nuevas con las claves
+  reales actuales.
+- **"Producción" y "Reciclado"** (pasos 02 y 04 del timeline "Del
+  diseño al reciclado" en `/compromiso`) — nunca se habían traducido,
+  a pesar de que la palabra "Producción" sí estaba bien traducida en
+  `calidad_template` e `historia_template` (son vistas distintas, cada
+  una con su propio `arch_db` — traducir un término en una vista no
+  traduce ese mismo texto en otra).
+
+**Moraleja para la próxima vez que se reestructure un bloque de HTML
+que ya tiene términos traducidos** (como pasó con el `<span>` del
+footer): correr este mismo escaneo comparando contra `en_US` después
+del cambio, no asumir que una fila de traducción vieja sigue
+aplicando solo porque el script corre sin error.
+
+### Tercera pasada el mismo día: el patrón de la flecha huérfana, repetido 6 veces más
+
+Afinando el escaneo anterior (en vez de "algún idioma vacío", buscar
+específicamente términos cuya *clave* — lo que debería ser `en_US` —
+seguía en español, filtrando los falsos positivos ya conocidos:
+acentos sueltos en texto en inglés como "Córdoba"/"résumé"), aparecieron
+6 casos reales más, todos la misma causa de fondo que
+`pedido_gestionar_link`/`site_footer` de más arriba — un cambio de
+estilo posterior envolvió la flecha "→" en su propio
+`<span class="hc-arrow">→</span>` (para poder animarla distinto al
+texto, probablemente) y dejó huérfanas las filas que todavía tenían
+"→" como texto suelto pegado a la palabra:
+
+- `home_template`: "Ver calidad y certificaciones →", el link "Ficha
+  técnica →" de cada tarjeta de producto, y el párrafo "Qué hacemos"
+  (clave vieja decía "moldes **y envases** de papel", el texto actual
+  dice solo "moldes de papel" — un cambio de contenido, no de estilo,
+  pero el mismo síntoma de clave huérfana).
+- `calidad_template`: el badge "ISO 22000:2018 — Gestión de inocuidad
+  certificada" (clave vieja tenía colores hex fijos, el actual usa
+  variables CSS `var(--cal-texto)`/`var(--cal-texto2)`), "Solicitar
+  por email →" y "Ver catálogo →".
+- `categoria_template`: "Ver ficha técnica completa →" (en cada
+  tarjeta de producto de la categoría).
+
+Las 7 vistas afectadas en total (contando la del footer de la pasada
+anterior) mostraban el texto en **español en los 7 idiomas**, link
+por link, hasta corregirlas. Se corrigieron las claves en
+`v_1318_home.py`, `v_1444_calidad.py` y `v_1442_categoria.py` y se
+volvieron a correr contra la base; verificado con `curl` en
+es/en/it/zh_CN sin texto residual.
+
+`v_1445_historia.py` tenía una fila más con el mismo síntoma
+("Volver al sitio →") pero **no es un bug visible**: ese link ya no
+existe en ningún lado de `historia_template` (se reemplazó en algún
+momento por el botón flotante `hc-back-to-top`, que no es un término
+traducible de texto) — la fila está muerta, no escribe nada porque no
+hay nada que debiera escribir. Se deja así a propósito, no hace falta
+limpiarla.
+
+**Grep útil para encontrar este patrón de nuevo** (flechas sueltas que
+podrían haber quedado envueltas en `hc-arrow` en algún momento):
+
+```
+grep -rn '→' scripts/traducciones/*.py | grep -v 'hc-arrow'
+```
+
+Cualquier resultado hay que verificarlo contra el XML real de esa
+vista antes de asumir que es un bug — algunos links (`"Ver factura
+→"`, `"Cómo llegar →"`) genuinamente siguen con la flecha como texto
+suelto y están bien así.
+
 ## Qué falta / gaps conocidos
 
 - Si se agrega una página o sección nueva al sitio, su texto nuevo queda

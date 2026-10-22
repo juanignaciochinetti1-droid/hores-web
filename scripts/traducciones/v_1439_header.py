@@ -29,6 +29,12 @@ ROWS = [
      '<span aria-hidden="true">👤</span>\n          <span>Anmelden</span>',
      '<span aria-hidden="true">👤</span>\n          <span>登录</span>'),
     ('Contacto', 'Contacto', 'Contact', 'Contato', 'Contatti', 'Contact', 'Kontakt', '联系我们'),
+    # "Pedido a medida" se sumo como link de nivel superior del nav
+    # despues de que este script se escribio -- nunca se habia traducido
+    # a ningun idioma, ni siquiera a en_US (encontrado en la auditoria
+    # del 22/10/2026, DOCS/06-idiomas.md).
+    ('Pedido a medida', 'Pedido a medida', 'Custom order', 'Pedido personalizado',
+     'Ordine personalizzato', 'Commande personnalisée', 'Individuelle Bestellung', '定制订单'),
 ]
 
 bulk_translate(VIEW_ID, ROWS)
