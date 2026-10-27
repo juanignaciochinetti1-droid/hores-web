@@ -67,6 +67,63 @@ También se corrigieron, con el mismo criterio (dato real o sin tocar):
   etc.) es una decisión de catálogo más grande que enriquecer texto
   existente. Queda pendiente si se decide sumarlo.
 
+## Auditoría del sitemap real (27/10/2026)
+
+A pedido explícito ("qué otras áreas revisar"), se comparó el
+`sitemap.xml` que genera Odoo de verdad contra lo que debería contener.
+Encontrado y corregido:
+
+- **`/categoria/<slug>` y `/producto/<id>` nunca habían aparecido en el
+  sitemap**, a pesar de tener `sitemap=True` puesto desde que se
+  escribieron (`controllers/main.py`). Causa: `sitemap=True` (un
+  booleano a secas) solo funciona para una ruta sin segmentos
+  dinámicos — para `<string:slug>` o `<int:id>`, Odoo no tiene forma
+  de enumerar qué valores existen a menos que se le dé un generador
+  (`sitemap=una_funcion`, mismo patrón que `sitemap_products` de
+  `website_sale` para `/shop/<producto>`). Corregido con
+  `sitemap_categorias`/`sitemap_productos` en `controllers/main.py` —
+  es decir, **todo este tiempo el catálogo real del sitio no tenía
+  ninguna señal explícita para que Google lo indexe**, más allá de
+  encontrarlo por link interno.
+- **`/mi-sitio/gracias`** (página de agradecimiento del formulario de
+  contacto) estaba en el sitemap — es una página transaccional, no
+  contenido. Corregido con `sitemap=False` (la de postulación ya lo
+  tenía bien).
+- **`/contactus` y `/website/info`** (páginas nativas de Odoo, nunca
+  tocadas) mostraban el header genérico de fábrica ("My Website",
+  teléfono de ejemplo "+1 555-555-5556") a cualquiera que llegara por
+  Google o escribiera la URL a mano — mismo bug de fondo que ya pasó
+  con `/shop` y `/jobs` antes de arreglarse, solo que estas dos rutas
+  nunca se habían visitado. Se agregaron redirects propios (`/contactus`
+  → `/mi-sitio#contacto`, `/website/info` → `/mi-sitio`) en
+  `controllers/main.py`, se despublicó el `website.page` de fábrica de
+  `/contactus` (id 3, compartido entre todos los websites de la
+  instancia) y se desactivaron las vistas
+  `website.website_info`/`website.show_website_info` (Ajustes → Sitio
+  Web) para que tampoco vuelvan a aparecer en el sitemap.
+- **`/shop/<producto>-<id>`** (fichas nativas de eCommerce, una por
+  variante — ~57 URLs) siguen apareciendo en el sitemap aunque
+  `robots.txt` les pone `Disallow: /shop/` a propósito (para que Google
+  indexe `/producto/<id>`, la ficha propia, y no la duplicada). No se
+  tocó: es el generador de sitemap nativo de `website_sale`
+  (`sitemap_products`), y pisarlo con seguridad implica reescribir la
+  ruta de checkout nativa — riesgo innecesario para una mejora menor
+  (Google ya respeta el `Disallow` y no las indexa aunque aparezcan
+  listadas; en el peor caso, Search Console puede marcarlas como
+  "indexada aunque bloqueada por robots.txt", un aviso, no un error).
+  Queda como pendiente de bajo impacto si se quiere pulir del todo.
+
+**Sin resolver, queda para decidir**: `/terms` (página nativa de
+"Términos y condiciones") también aparece en el sitemap y muestra el
+mismo header genérico de fábrica — pero a diferencia de `/contactus`,
+esta depende de una configuración real de Contabilidad
+(`ir.config_parameter` `account.use_invoice_terms` = Verdadero,
+`res.company.terms_type` = 'html'), que también controla el texto de
+términos y condiciones que puede imprimirse en presupuestos/facturas
+reales. No se tocó porque silenciarlo acá podría significar sacarle
+ese texto a documentos reales si el equipo de Ventas/Administración
+ya lo usa — es una decisión de negocio, no un bug técnico puro.
+
 **28/08/2026, segunda vuelta — `/compromiso`**: se sumó contenido real
 tomado directo de `POLITICA_DE_INOCUIDAD_rev_06.pdf` (documento oficial
 de Cartotecnica Hores SRL, revisión 06, 24/06/2024, aprobado por

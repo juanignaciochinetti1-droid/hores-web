@@ -778,7 +778,63 @@ class MiSitioWeb(http.Controller):
     def compras(self, **kwargs):
         return _redirect('/mi-sitio#productos')
 
-    @http.route('/categoria/<string:slug>', type='http', auth='public', website=True, sitemap=True)
+    # /contactus (27/10/2026, encontrado auditando el sitemap real):
+    # website trae esta página de "Contáctanos" genérica instalada de
+    # fábrica (website.page id 3, website_id=False -- compartida entre
+    # todos los websites de la instancia) y nunca se tocó -- mismo bug
+    # de fondo que ya pasó con /shop y /jobs antes de arreglarse: una
+    # pantalla sin estilar, con el header genérico de Odoo ("My
+    # Website", teléfono de ejemplo "+1 555-555-5556") visible para
+    # cualquiera que llegue por Google o escriba la URL a mano, y
+    # estaba en el sitemap. No hace falta desactivar el website.page
+    # de fábrica -- una ruta propia con el mismo path gana por sobre
+    # ella (mi_sitio_web carga después de website en la cadena de
+    # dependencias), igual que /compras arriba.
+    @http.route('/contactus', type='http', auth='public', website=True, sitemap=False)
+    def contactus_redirect(self, **kwargs):
+        return _redirect('/mi-sitio#contacto')
+
+    # /website/info (mismo hallazgo, 27/10/2026): página nativa de Odoo
+    # ("Información de este sitio") que lista las apps instaladas y la
+    # versión -- irrelevante para un visitante real y un dato de más
+    # para exponer públicamente (igual criterio que ocultar "Powered by
+    # Odoo" en footer_override_templates.xml). Se desactivaron además
+    # las vistas website.website_info / website.show_website_info
+    # (active=False, Ajustes → Sitio Web) para que tampoco aparezca en
+    # el sitemap -- esa desactivación sola no alcanza para bloquear el
+    # acceso directo a la URL (el controlador nativo no la revisa antes
+    # de renderizar), por eso hace falta esta ruta además.
+    @http.route('/website/info', type='http', auth='public', website=True, sitemap=False)
+    def website_info_oculto(self, **kwargs):
+        return _redirect('/mi-sitio')
+
+    def sitemap_categorias(env, rule, qs):
+        """`sitemap=True` (un booleano a secas) no alcanza para una ruta
+        con un segmento dinámico como <string:slug> -- Odoo no tiene
+        forma de "adivinar" qué valores de slug existen, así que
+        simplemente la omite del sitemap generado, sin ningún error ni
+        aviso (encontrado el 27/10/2026, auditando el sitemap real:
+        /categoria/<slug> y /producto/<id> nunca habían aparecido en
+        sitemap.xml a pesar de tener sitemap=True puesto desde que se
+        escribieron). El patrón correcto -- un generador que haga el
+        `yield` de cada URL real -- es el mismo que usa
+        website_sale.sitemap_products (ver sitemap_products en
+        website_sale/controllers/main.py) para /shop/<producto>.
+
+        Solo se listan las categorías con más de un producto publicado
+        -- las de uno solo redirigen derecho a /producto/<id> (ver
+        categoria() más abajo), así que su URL "real" para SEO es esa,
+        no /categoria/<slug>."""
+        categorias = env['mi_sitio_web.categoria'].sudo().search([])
+        for cat in categorias:
+            productos = cat.producto_ids.filtered('is_published')
+            if len(productos) <= 1:
+                continue
+            loc = '/categoria/%s' % cat.slug
+            if not qs or qs.lower() in loc.lower():
+                yield {'loc': loc}
+
+    @http.route('/categoria/<string:slug>', type='http', auth='public', website=True, sitemap=sitemap_categorias)
     def categoria(self, slug, **kwargs):
         categoria = request.env['mi_sitio_web.categoria'].sudo().search([('slug', '=', slug)], limit=1)
         if not categoria:
@@ -798,7 +854,16 @@ class MiSitioWeb(http.Controller):
             'productos': productos,
         })
 
-    @http.route('/producto/<int:producto_id>', type='http', auth='public', website=True, sitemap=True)
+    def sitemap_productos(env, rule, qs):
+        """Mismo motivo que sitemap_categorias() más arriba --
+        sitemap=True no enumera un <int:producto_id> solo."""
+        productos = env['mi_sitio_web.producto'].sudo().search([('is_published', '=', True)])
+        for prod in productos:
+            loc = '/producto/%d' % prod.id
+            if not qs or qs.lower() in loc.lower():
+                yield {'loc': loc}
+
+    @http.route('/producto/<int:producto_id>', type='http', auth='public', website=True, sitemap=sitemap_productos)
     def producto_detalle(self, producto_id, **kwargs):
         producto = request.env['mi_sitio_web.producto'].sudo().browse(producto_id)
         if not producto.exists() or not producto.is_published:
@@ -875,7 +940,11 @@ class MiSitioWeb(http.Controller):
         # formulario y duplicar el Lead.
         return _redirect('/mi-sitio/gracias')
 
-    @http.route('/mi-sitio/gracias', type='http', auth='public', website=True)
+    # sitemap=False (27/10/2026, auditando el sitemap real): sin un
+    # sitemap explícito, una ruta sin segmentos dinámicos entra sola --
+    # esta es una página de confirmación transaccional (se llega acá
+    # después de mandar un formulario), no contenido real para indexar.
+    @http.route('/mi-sitio/gracias', type='http', auth='public', website=True, sitemap=False)
     def contacto_gracias(self, **kwargs):
         return request.render('mi_sitio_web.contacto_gracias_template', {})
 
