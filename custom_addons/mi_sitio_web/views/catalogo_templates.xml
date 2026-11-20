@@ -182,14 +182,30 @@
      (portal.language_selector) pero con la estética propia del sitio en
      vez de las clases default de Bootstrap. */
   .oe_structure .hc-lang-selector { position: relative; }
+  /* Botón circular con solo el globo (20/11/2026, a pedido explícito:
+     "para el boton de idiomas solo dejar un logo que se entienda") --
+     mismo criterio que hc-account-btn de más abajo: el nombre del
+     idioma activo (que arma el propio template nativo
+     portal.language_selector, sin forma de sacarlo del todo sin
+     tocarlo) se oculta solo visualmente (clip/width 1px, patrón
+     "visually-hidden" manual) para que lo siga leyendo un lector de
+     pantalla -- no se usa el parámetro _txt_class del template nativo
+     para esto porque lo comparten el botón Y cada item del
+     desplegable; ocultarlo por ahí dejaría la lista de idiomas sin
+     texto también. Acá se apunta solo a .hc-lang-btn (el botón), así
+     que el desplegable sigue mostrando el nombre completo de cada
+     idioma como antes. */
   .oe_structure .hc-lang-btn {
-    display: flex; align-items: center; gap: 6px; background: #ffffff;
-    border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
-    border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
-    font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
-    transition: border-color .15s ease, color .15s ease;
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex-shrink: 0; background: #ffffff;
+    border: 1px solid #d9ccb9; color: #5a4f44; border-radius: 50%;
+    cursor: pointer; transition: border-color .15s ease, color .15s ease;
   }
-  .oe_structure .hc-lang-btn::before { content: '🌐'; font-size: 13px; line-height: 1; }
+  .oe_structure .hc-lang-btn span {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  .oe_structure .hc-lang-btn::before { content: '🌐'; font-size: 17px; line-height: 1; }
   .oe_structure .hc-lang-btn:hover { border-color: #c26a1e; color: #c26a1e; }
   .oe_structure .hc-lang-menu {
     background: #ffffff; border: 1px solid #e8e3d9; border-radius: 10px;
@@ -215,21 +231,21 @@
     content: '✓'; font-weight: 700;
   }
 
-  /* Link de cuenta/login del header — mismo tratamiento "chip" que el
-     selector de idioma de al lado (fondo blanco, borde, píldora), para
-     que se vea como un botón real y no como un ícono suelto flotando
-     al final de la barra (02/09/2026, a pedido: "que podrias hacer
-     para mejorarlo?" sobre el ícono pelado que quedó antes). */
+  /* Link de cuenta/login del header -- botón circular con solo el
+     ícono (20/11/2026, a pedido explícito: "que el boton quede solo el
+     icono y que sea un boton circular"). Antes era un chip con texto
+     (02/09/2026, a pedido de ese momento: "que podrias hacer para
+     mejorarlo?" sobre el ícono pelado que había antes de eso) -- el
+     nombre/"Ingresar" se queda como texto para lectores de pantalla
+     (span.visually-hidden, clase nativa de Bootstrap) en vez de
+     sacarlo del todo, para no perder esa información para quien
+     navega con lector de pantalla. */
   .oe_structure .hc-account-btn {
-    display: flex; align-items: center; gap: 6px; background: #ffffff;
-    border: 1px solid #d9ccb9; color: #5a4f44; padding: 8px 13px;
-    border-radius: 20px; font-family: 'Archivo', sans-serif; font-weight: 600;
-    font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
-    text-decoration: none; transition: border-color .15s ease, color .15s ease;
-    max-width: 140px;
-  }
-  .oe_structure .hc-account-btn span:last-child {
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex-shrink: 0; background: #ffffff;
+    border: 1px solid #d9ccb9; color: #5a4f44; border-radius: 50%;
+    font-size: 17px; text-decoration: none;
+    transition: border-color .15s ease, color .15s ease;
   }
   .oe_structure .hc-account-btn:hover { border-color: #c26a1e; color: #c26a1e; }
 
@@ -252,6 +268,28 @@
     font-weight: 500; letter-spacing: normal; text-transform: none; color: #5a4f44;
   }
   .oe_structure .hc-more-menu .dropdown-item:hover { background: #f6f4ef; color: #c26a1e; }
+
+  /* Resalta en qué página/sección está el visitante -- antes el link
+     activo se veía exactamente igual que el resto, sin ninguna pista de
+     "estás acá" (a pedido explícito: "que se note mas en que seccion
+     estas, que se remarque mejor"). Mismo naranja de marca que el resto
+     del sitio + una rayita abajo, para que se note incluso para quien no
+     distingue bien el color. Las clases las pone el script de más abajo
+     (comparando la URL actual para las páginas propias, con scrollspy
+     para las anclas de la home) -- no por QWeb, para no duplicar la
+     lógica de "página actual" en el controlador además de acá. */
+  .oe_structure header nav > a.hc-nav-active,
+  .oe_structure header nav .hc-more-btn.hc-nav-active {
+    color: #c26a1e !important; position: relative;
+  }
+  .oe_structure header nav > a.hc-nav-active::after,
+  .oe_structure header nav .hc-more-btn.hc-nav-active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -8px;
+    height: 2px; background: #c26a1e; border-radius: 2px;
+  }
+  .oe_structure .hc-more-menu .dropdown-item.active {
+    background: #f6e0c2 !important; color: #c26a1e !important; font-weight: 700;
+  }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -287,6 +325,60 @@
     } else {
       revealEls.forEach(function (el) { el.classList.add('is-visible'); });
     }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var nav = document.querySelector('header nav');
+    if (!nav) return;
+    var moreBtn = nav.querySelector('.hc-more-btn');
+    var links = nav.querySelectorAll('a[href]');
+
+    var limpiarPath = function (path) { return path.replace(/\/$/, '') || '/'; };
+    var actual = limpiarPath(window.location.pathname);
+
+    var marcar = function (link) {
+      if (link.classList.contains('dropdown-item')) {
+        link.classList.add('active');
+        if (moreBtn) moreBtn.classList.add('hc-nav-active');
+      } else {
+        link.classList.add('hc-nav-active');
+      }
+    };
+
+    // Páginas propias (Calidad, Pedido a medida, Empleo, Historia,
+    // Compromiso): compara la URL actual contra cada link, sin pasar por
+    // el controlador -- cada link ya trae el prefijo de idioma correcto
+    // puesto por Odoo al renderizar, así que comparar .pathname alcanza
+    // en cualquier idioma.
+    links.forEach(function (link) {
+      if (link.hash) return;
+      if (limpiarPath(link.pathname) === actual) marcar(link);
+    });
+
+    // Secciones ancla de la home (Empresa/Productos/FAQ): solo existen
+    // en /mi-sitio -- en cualquier otra página este bloque no encuentra
+    // ninguna sección con ese id y no hace nada (mismo criterio que el
+    // resto de los scripts acá arriba).
+    var anclas = [];
+    links.forEach(function (link) {
+      if (!link.hash) return;
+      var seccion = document.getElementById(link.hash.slice(1));
+      if (seccion) anclas.push({ link: link, seccion: seccion });
+    });
+    if (!anclas.length || !('IntersectionObserver' in window)) return;
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var match = anclas.filter(function (a) { return a.seccion === entry.target; })[0];
+        if (!match) return;
+        links.forEach(function (l) { l.classList.remove('hc-nav-active', 'active'); });
+        if (moreBtn) moreBtn.classList.remove('hc-nav-active');
+        marcar(match.link);
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    anclas.forEach(function (a) { obs.observe(a.seccion); });
   });
 </script>
 </template>
@@ -326,23 +418,25 @@
         <a href="/mi-sitio#empresa" style="color:#5a4f44;">Empresa</a>
         <a href="/mi-sitio#productos" style="color:#5a4f44;">Productos</a>
         <a href="/calidad" style="color:#5a4f44;">Calidad</a>
-        <a href="/pedido-personalizado" style="color:#5a4f44;">Pedido a medida</a>
-        <a href="/trabaja-con-nosotros" style="color:#5a4f44;">Empleo</a>
-        <!-- Historia/Compromiso/FAQ agrupados en un desplegable
-             (01/09/2026, a pedido explícito: "que no ocupen tanto
-             espacio") — mismo mecanismo de Bootstrap
-             (data-bs-toggle="dropdown") que ya usa el selector de
-             idioma de acá al lado, con clases hc-more-* en vez de las
-             de Bootstrap por defecto para que combine con el resto del
-             nav en vez de verse como un botón aparte. "Pedido a medida"
-             y "Empleo" salieron de acá (23/09/2026, a pedido explícito:
-             "quiero que esten junto a productos y calidad") y pasaron a
-             ser links de primer nivel, arriba. -->
+        <a href="/compromiso" style="color:#5a4f44;">Compromiso</a>
+        <!-- Agrupados en un desplegable (01/09/2026, a pedido explícito:
+             "que no ocupen tanto espacio") — mismo mecanismo de
+             Bootstrap (data-bs-toggle="dropdown") que ya usa el
+             selector de idioma de acá al lado, con clases hc-more-* en
+             vez de las de Bootstrap por defecto para que combine con
+             el resto del nav en vez de verse como un botón aparte.
+             Composición actual (20/11/2026, a pedido explícito: "en el
+             cabezal quiero que se vean empresa, calidad, compromiso y
+             productos, lo demas dejalo dentro del mas") — Compromiso
+             pasó a link de primer nivel, arriba; Pedido a medida y
+             Empleo (que habían salido de acá el 23/09/2026) volvieron
+             a este desplegable. -->
         <div class="dropdown hc-more-selector">
           <button class="hc-more-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Más</button>
           <div class="dropdown-menu hc-more-menu" role="menu">
+            <a class="dropdown-item" href="/pedido-personalizado" role="menuitem">Pedido a medida</a>
+            <a class="dropdown-item" href="/trabaja-con-nosotros" role="menuitem">Empleo</a>
             <a class="dropdown-item" href="/historia" role="menuitem">Historia</a>
-            <a class="dropdown-item" href="/compromiso" role="menuitem">Compromiso</a>
             <a class="dropdown-item" href="/mi-sitio#faq" role="menuitem">FAQ</a>
           </div>
         </div>
@@ -376,13 +470,13 @@
              (cliente o vos como admin) va directo al portal (/my) y
              muestra el nombre de pila (no hace falta traducir un nombre
              propio); si no, ofrece "Ingresar". -->
-        <a t-if="not request.env.user._is_public()" href="/my" class="hc-account-btn">
+        <a t-if="not request.env.user._is_public()" href="/my" class="hc-account-btn" t-att-title="request.env.user.name.split(' ')[0]">
           <span aria-hidden="true">👤</span>
-          <span t-esc="request.env.user.name.split(' ')[0]"/>
+          <span class="visually-hidden" t-esc="request.env.user.name.split(' ')[0]"/>
         </a>
-        <a t-else="" href="/web/login" class="hc-account-btn">
+        <a t-else="" href="/web/login" class="hc-account-btn" title="Ingresar">
           <span aria-hidden="true">👤</span>
-          <span>Ingresar</span>
+          <span class="visually-hidden">Ingresar</span>
         </a>
       </div>
     </div>
