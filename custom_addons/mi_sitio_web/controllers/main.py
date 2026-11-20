@@ -690,7 +690,20 @@ def _pedidos_por_dato(env, dato):
     # desde_carrito cancela para mandar al cliente nuevo a CRM en vez de
     # a pago (ver shop_payment) -- nunca fue un pedido real, no tiene
     # que aparecer acá como si lo fuera.
-    candidatos = env['sale.order'].sudo().search([('mi_sitio_lead_cancelado', '=', False)])
+    #
+    # state not in ('draft', 'sent'): mismo filtro que ya tiene
+    # _es_cliente_nuevo() más abajo, y por el mismo motivo -- un carrito
+    # abandonado (el visitante cargó la dirección y cerró la pestaña
+    # antes de pagar) nunca se confirma, pero sin este filtro aparecía
+    # listado acá como si fuera un pedido real (bug real, encontrado en
+    # revisión de código, 20/11/2026): con fecha y un link "Gestionar"
+    # funcional, gestionable incluso (PEDIDO_ESTADOS_GESTIONABLES incluye
+    # draft/sent) -- se podía "cancelar" o "pedir un cambio" sobre algo
+    # que nunca fue un pedido de verdad.
+    candidatos = env['sale.order'].sudo().search([
+        ('mi_sitio_lead_cancelado', '=', False),
+        ('state', 'not in', ('draft', 'sent')),
+    ])
     return candidatos.filtered(coincide)
 
 
