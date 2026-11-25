@@ -36,7 +36,7 @@
             <div style="font-size:13px; color:#8a7a67;"><a href="/mi-sitio" style="color:#8a7a67;">Inicio</a> <span style="opacity:.6;">/</span> Pedido personalizado</div>
           </div>
 
-          <section class="reveal" style="background:#f6f4ef;">
+          <section style="background:#f6f4ef;">
             <style>
               #pedido-personalizado .hc-custom-input {
                 transition: border-color .18s ease, box-shadow .18s ease;

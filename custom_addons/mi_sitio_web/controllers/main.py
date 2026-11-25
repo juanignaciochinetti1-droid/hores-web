@@ -78,16 +78,16 @@ _HISTORIA_ES = {
     # Texto real, tomado palabra por palabra de hores.com.ar/wp/empresa/
     # (confirmado de nuevo el 22/09/2026 contra el texto que pasó el usuario).
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Misión', 'text': 'Producir y proveer moldes de papel inocuos para la industria de la alimentación, atendiendo las necesidades de los clientes y brindando las condiciones para el desarrollo de las personas que forman la empresa.'},
-        {'icon': '👁️', 'title': 'Visión', 'text': 'Posicionarse como una de las principales empresas a nivel mundial en la producción de moldes de papel para la industria de la alimentación.'},
+        {'title': 'Misión', 'text': 'Producir y proveer moldes de papel inocuos para la industria de la alimentación, atendiendo las necesidades de los clientes y brindando las condiciones para el desarrollo de las personas que forman la empresa.'},
+        {'title': 'Visión', 'text': 'Posicionarse como una de las principales empresas a nivel mundial en la producción de moldes de papel para la industria de la alimentación.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Precisión', 'text': 'Medidas exactas y consistentes en cada lote de producción.'},
-        {'icon': '🤝', 'title': 'Compromiso', 'text': 'Con la calidad del producto y con cada cliente.'},
-        {'icon': '⚡', 'title': 'Agilidad', 'text': 'Procesos ágiles para responder a tiempo a cada pedido.'},
-        {'icon': '💬', 'title': 'Cercanía', 'text': 'Trato directo y personalizado con cada cliente.'},
-        {'icon': '📈', 'title': 'Mejora continua', 'text': 'Revisamos y optimizamos procesos de forma constante.'},
-        {'icon': '✓', 'title': 'Calidad', 'text': 'Gestión de inocuidad certificada ISO 22000:2018.'},
+        {'title': 'Precisión', 'text': 'Medidas exactas y consistentes en cada lote de producción.'},
+        {'title': 'Compromiso', 'text': 'Con la calidad del producto y con cada cliente.'},
+        {'title': 'Agilidad', 'text': 'Procesos ágiles para responder a tiempo a cada pedido.'},
+        {'title': 'Cercanía', 'text': 'Trato directo y personalizado con cada cliente.'},
+        {'title': 'Mejora continua', 'text': 'Revisamos y optimizamos procesos de forma constante.'},
+        {'title': 'Calidad', 'text': 'Gestión de inocuidad certificada ISO 22000:2018.'},
     ],
     # Distribución de ejemplo por línea de producto (categorías reales del
     # catálogo) — reemplaza el desglose por industria del prototipo
@@ -132,10 +132,10 @@ _HISTORIA_ES = {
         {'codigo': 'py', 'nombre': 'Paraguay', 'etiqueta': 'exportación'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Expansión regional', 'text': 'Ampliar la presencia comercial en nuevos mercados de la región.'},
-        {'icon': '🏭', 'title': 'Nueva planta', 'text': 'Evaluar la incorporación de capacidad productiva adicional.'},
-        {'icon': '⚙️', 'title': 'Industria 4.0', 'text': 'Incorporar tecnología para optimizar procesos productivos.'},
-        {'icon': '🌱', 'title': 'Certificación ISO 14001', 'text': 'Avanzar en la gestión ambiental de nuestros procesos.'},
+        {'title': 'Expansión regional', 'text': 'Ampliar la presencia comercial en nuevos mercados de la región.'},
+        {'title': 'Nueva planta', 'text': 'Evaluar la incorporación de capacidad productiva adicional.'},
+        {'title': 'Industria 4.0', 'text': 'Incorporar tecnología para optimizar procesos productivos.'},
+        {'title': 'Certificación ISO 14001', 'text': 'Avanzar en la gestión ambiental de nuestros procesos.'},
     ],
 }
 
@@ -155,16 +155,16 @@ _HISTORIA_EN = {
         {'year': 'Today', 'title': 'Today', 'text': 'Cartotecnica Hores products are sold in several countries, including Uruguay, Chile, Paraguay, Colombia and Mexico.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Mission', 'text': 'To produce and provide safe paper molds for the food industry, meeting the needs of our clients and providing the conditions for the growth of the people who make up the company.'},
-        {'icon': '👁️', 'title': 'Vision', 'text': 'To become one of the leading companies worldwide in the production of paper molds for the food industry.'},
+        {'title': 'Mission', 'text': 'To produce and provide safe paper molds for the food industry, meeting the needs of our clients and providing the conditions for the growth of the people who make up the company.'},
+        {'title': 'Vision', 'text': 'To become one of the leading companies worldwide in the production of paper molds for the food industry.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Precision', 'text': 'Exact, consistent measurements in every production batch.'},
-        {'icon': '🤝', 'title': 'Commitment', 'text': 'To product quality and to each client.'},
-        {'icon': '⚡', 'title': 'Agility', 'text': 'Agile processes to respond to every order on time.'},
-        {'icon': '💬', 'title': 'Closeness', 'text': 'Direct, personalized dealings with each client.'},
-        {'icon': '📈', 'title': 'Continuous improvement', 'text': 'We constantly review and optimize our processes.'},
-        {'icon': '✓', 'title': 'Quality', 'text': 'ISO 22000:2018 certified food-safety management.'},
+        {'title': 'Precision', 'text': 'Exact, consistent measurements in every production batch.'},
+        {'title': 'Commitment', 'text': 'To product quality and to each client.'},
+        {'title': 'Agility', 'text': 'Agile processes to respond to every order on time.'},
+        {'title': 'Closeness', 'text': 'Direct, personalized dealings with each client.'},
+        {'title': 'Continuous improvement', 'text': 'We constantly review and optimize our processes.'},
+        {'title': 'Quality', 'text': 'ISO 22000:2018 certified food-safety management.'},
     ],
     'sectores': [
         {'label': 'Panettone', 'pct': 35},
@@ -204,10 +204,10 @@ _HISTORIA_EN = {
         {'codigo': 'py', 'nombre': 'Paraguay', 'etiqueta': 'export'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Regional expansion', 'text': 'Expand commercial presence in new markets across the region.'},
-        {'icon': '🏭', 'title': 'New plant', 'text': 'Evaluate adding additional production capacity.'},
-        {'icon': '⚙️', 'title': 'Industry 4.0', 'text': 'Adopt technology to optimize production processes.'},
-        {'icon': '🌱', 'title': 'ISO 14001 Certification', 'text': 'Advance the environmental management of our processes.'},
+        {'title': 'Regional expansion', 'text': 'Expand commercial presence in new markets across the region.'},
+        {'title': 'New plant', 'text': 'Evaluate adding additional production capacity.'},
+        {'title': 'Industry 4.0', 'text': 'Adopt technology to optimize production processes.'},
+        {'title': 'ISO 14001 Certification', 'text': 'Advance the environmental management of our processes.'},
     ],
 }
 
@@ -227,16 +227,16 @@ _HISTORIA_PT = {
         {'year': 'Hoje', 'title': 'Atualidade', 'text': 'A produção da Cartotecnica Hores é comercializada em diversos países, entre eles Uruguai, Chile, Paraguai, Colômbia e México.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Missão', 'text': 'Produzir e fornecer moldes de papel inócuos para a indústria de alimentação, atendendo às necessidades dos clientes e proporcionando condições para o desenvolvimento das pessoas que formam a empresa.'},
-        {'icon': '👁️', 'title': 'Visão', 'text': 'Posicionar-se como uma das principais empresas do mundo na produção de moldes de papel para a indústria de alimentação.'},
+        {'title': 'Missão', 'text': 'Produzir e fornecer moldes de papel inócuos para a indústria de alimentação, atendendo às necessidades dos clientes e proporcionando condições para o desenvolvimento das pessoas que formam a empresa.'},
+        {'title': 'Visão', 'text': 'Posicionar-se como uma das principais empresas do mundo na produção de moldes de papel para a indústria de alimentação.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Precisão', 'text': 'Medidas exatas e consistentes em cada lote de produção.'},
-        {'icon': '🤝', 'title': 'Compromisso', 'text': 'Com a qualidade do produto e com cada cliente.'},
-        {'icon': '⚡', 'title': 'Agilidade', 'text': 'Processos ágeis para responder a tempo a cada pedido.'},
-        {'icon': '💬', 'title': 'Proximidade', 'text': 'Atendimento direto e personalizado com cada cliente.'},
-        {'icon': '📈', 'title': 'Melhoria contínua', 'text': 'Revisamos e otimizamos processos de forma constante.'},
-        {'icon': '✓', 'title': 'Qualidade', 'text': 'Gestão de inocuidade certificada ISO 22000:2018.'},
+        {'title': 'Precisão', 'text': 'Medidas exatas e consistentes em cada lote de produção.'},
+        {'title': 'Compromisso', 'text': 'Com a qualidade do produto e com cada cliente.'},
+        {'title': 'Agilidade', 'text': 'Processos ágeis para responder a tempo a cada pedido.'},
+        {'title': 'Proximidade', 'text': 'Atendimento direto e personalizado com cada cliente.'},
+        {'title': 'Melhoria contínua', 'text': 'Revisamos e otimizamos processos de forma constante.'},
+        {'title': 'Qualidade', 'text': 'Gestão de inocuidade certificada ISO 22000:2018.'},
     ],
     'sectores': [
         {'label': 'Panetone', 'pct': 35},
@@ -276,10 +276,10 @@ _HISTORIA_PT = {
         {'codigo': 'py', 'nombre': 'Paraguai', 'etiqueta': 'exportação'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Expansão regional', 'text': 'Ampliar a presença comercial em novos mercados da região.'},
-        {'icon': '🏭', 'title': 'Nova fábrica', 'text': 'Avaliar a incorporação de capacidade produtiva adicional.'},
-        {'icon': '⚙️', 'title': 'Indústria 4.0', 'text': 'Incorporar tecnologia para otimizar processos produtivos.'},
-        {'icon': '🌱', 'title': 'Certificação ISO 14001', 'text': 'Avançar na gestão ambiental de nossos processos.'},
+        {'title': 'Expansão regional', 'text': 'Ampliar a presença comercial em novos mercados da região.'},
+        {'title': 'Nova fábrica', 'text': 'Avaliar a incorporação de capacidade produtiva adicional.'},
+        {'title': 'Indústria 4.0', 'text': 'Incorporar tecnologia para otimizar processos produtivos.'},
+        {'title': 'Certificação ISO 14001', 'text': 'Avançar na gestão ambiental de nossos processos.'},
     ],
 }
 
@@ -299,16 +299,16 @@ _HISTORIA_IT = {
         {'year': 'Oggi', 'title': 'Attualità', 'text': 'Presenza consolidata nel mercato argentino e nel resto della regione, con oltre 25 anni di storia formale.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Missione', 'text': 'Produrre e fornire stampi di carta sicuri per l\'industria alimentare, soddisfacendo le esigenze dei clienti e offrendo condizioni per la crescita personale.'},
-        {'icon': '👁️', 'title': 'Visione', 'text': 'Diventare una delle principali aziende al mondo nella produzione di stampi di carta per l\'alimentazione.'},
+        {'title': 'Missione', 'text': 'Produrre e fornire stampi di carta sicuri per l\'industria alimentare, soddisfacendo le esigenze dei clienti e offrendo condizioni per la crescita personale.'},
+        {'title': 'Visione', 'text': 'Diventare una delle principali aziende al mondo nella produzione di stampi di carta per l\'alimentazione.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Precisione', 'text': 'Misure esatte e costanti in ogni lotto di produzione.'},
-        {'icon': '🤝', 'title': 'Impegno', 'text': 'Verso la qualità del prodotto e verso ogni cliente.'},
-        {'icon': '⚡', 'title': 'Agilità', 'text': 'Processi agili per rispondere puntualmente a ogni ordine.'},
-        {'icon': '💬', 'title': 'Vicinanza', 'text': 'Rapporto diretto e personalizzato con ogni cliente.'},
-        {'icon': '📈', 'title': 'Miglioramento continuo', 'text': 'Rivediamo e ottimizziamo costantemente i processi.'},
-        {'icon': '✓', 'title': 'Qualità', 'text': 'Gestione della sicurezza alimentare certificata ISO 22000:2018.'},
+        {'title': 'Precisione', 'text': 'Misure esatte e costanti in ogni lotto di produzione.'},
+        {'title': 'Impegno', 'text': 'Verso la qualità del prodotto e verso ogni cliente.'},
+        {'title': 'Agilità', 'text': 'Processi agili per rispondere puntualmente a ogni ordine.'},
+        {'title': 'Vicinanza', 'text': 'Rapporto diretto e personalizzato con ogni cliente.'},
+        {'title': 'Miglioramento continuo', 'text': 'Rivediamo e ottimizziamo costantemente i processi.'},
+        {'title': 'Qualità', 'text': 'Gestione della sicurezza alimentare certificata ISO 22000:2018.'},
     ],
     'sectores': [
         {'label': 'Panettone', 'pct': 35},
@@ -348,10 +348,10 @@ _HISTORIA_IT = {
         {'codigo': 'py', 'nombre': 'Paraguay', 'etiqueta': 'esportazione'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Espansione regionale', 'text': 'Ampliare la presenza commerciale in nuovi mercati della regione.'},
-        {'icon': '🏭', 'title': 'Nuovo stabilimento', 'text': 'Valutare l\'aggiunta di capacità produttiva.'},
-        {'icon': '⚙️', 'title': 'Industria 4.0', 'text': 'Adottare tecnologia per ottimizzare i processi produttivi.'},
-        {'icon': '🌱', 'title': 'Certificazione ISO 14001', 'text': 'Avanzare nella gestione ambientale dei nostri processi.'},
+        {'title': 'Espansione regionale', 'text': 'Ampliare la presenza commerciale in nuovi mercati della regione.'},
+        {'title': 'Nuovo stabilimento', 'text': 'Valutare l\'aggiunta di capacità produttiva.'},
+        {'title': 'Industria 4.0', 'text': 'Adottare tecnologia per ottimizzare i processi produttivi.'},
+        {'title': 'Certificazione ISO 14001', 'text': 'Avanzare nella gestione ambientale dei nostri processi.'},
     ],
 }
 
@@ -368,16 +368,16 @@ _HISTORIA_FR = {
         {'year': 'Aujourd\'hui', 'title': 'Actualité', 'text': 'Présence consolidée sur le marché argentin et dans le reste de la région, avec plus de 25 ans d\'histoire formelle.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Mission', 'text': 'Produire et fournir des moules en papier sûrs pour l\'industrie alimentaire, en répondant aux besoins des clients et en offrant des conditions de développement personnel.'},
-        {'icon': '👁️', 'title': 'Vision', 'text': 'Devenir l\'une des principales entreprises mondiales dans la production de moules en papier pour l\'alimentation.'},
+        {'title': 'Mission', 'text': 'Produire et fournir des moules en papier sûrs pour l\'industrie alimentaire, en répondant aux besoins des clients et en offrant des conditions de développement personnel.'},
+        {'title': 'Vision', 'text': 'Devenir l\'une des principales entreprises mondiales dans la production de moules en papier pour l\'alimentation.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Précision', 'text': 'Mesures exactes et constantes à chaque lot de production.'},
-        {'icon': '🤝', 'title': 'Engagement', 'text': 'Envers la qualité du produit et envers chaque client.'},
-        {'icon': '⚡', 'title': 'Agilité', 'text': 'Des processus agiles pour répondre à temps à chaque commande.'},
-        {'icon': '💬', 'title': 'Proximité', 'text': 'Relation directe et personnalisée avec chaque client.'},
-        {'icon': '📈', 'title': 'Amélioration continue', 'text': 'Nous révisons et optimisons nos processus en permanence.'},
-        {'icon': '✓', 'title': 'Qualité', 'text': 'Gestion de la sécurité alimentaire certifiée ISO 22000:2018.'},
+        {'title': 'Précision', 'text': 'Mesures exactes et constantes à chaque lot de production.'},
+        {'title': 'Engagement', 'text': 'Envers la qualité du produit et envers chaque client.'},
+        {'title': 'Agilité', 'text': 'Des processus agiles pour répondre à temps à chaque commande.'},
+        {'title': 'Proximité', 'text': 'Relation directe et personnalisée avec chaque client.'},
+        {'title': 'Amélioration continue', 'text': 'Nous révisons et optimisons nos processus en permanence.'},
+        {'title': 'Qualité', 'text': 'Gestion de la sécurité alimentaire certifiée ISO 22000:2018.'},
     ],
     'sectores': [
         {'label': 'Panettone', 'pct': 35},
@@ -417,10 +417,10 @@ _HISTORIA_FR = {
         {'codigo': 'py', 'nombre': 'Paraguay', 'etiqueta': 'exportation'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Expansion régionale', 'text': 'Développer la présence commerciale sur de nouveaux marchés de la région.'},
-        {'icon': '🏭', 'title': 'Nouvelle usine', 'text': 'Évaluer l\'ajout de capacité de production supplémentaire.'},
-        {'icon': '⚙️', 'title': 'Industrie 4.0', 'text': 'Adopter la technologie pour optimiser les processus de production.'},
-        {'icon': '🌱', 'title': 'Certification ISO 14001', 'text': 'Faire progresser la gestion environnementale de nos processus.'},
+        {'title': 'Expansion régionale', 'text': 'Développer la présence commerciale sur de nouveaux marchés de la région.'},
+        {'title': 'Nouvelle usine', 'text': 'Évaluer l\'ajout de capacité de production supplémentaire.'},
+        {'title': 'Industrie 4.0', 'text': 'Adopter la technologie pour optimiser les processus de production.'},
+        {'title': 'Certification ISO 14001', 'text': 'Faire progresser la gestion environnementale de nos processus.'},
     ],
 }
 
@@ -437,16 +437,16 @@ _HISTORIA_DE = {
         {'year': 'Heute', 'title': 'Gegenwart', 'text': 'Konsolidierte Präsenz auf dem argentinischen Markt und in der restlichen Region, mit mehr als 25 Jahren formeller Geschichte.'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': 'Mission', 'text': 'Sichere Papierformen für die Lebensmittelindustrie herzustellen und bereitzustellen, die Bedürfnisse der Kunden zu erfüllen und Bedingungen für die persönliche Entwicklung zu schaffen.'},
-        {'icon': '👁️', 'title': 'Vision', 'text': 'Eines der führenden Unternehmen weltweit in der Herstellung von Papierformen für die Lebensmittelindustrie zu werden.'},
+        {'title': 'Mission', 'text': 'Sichere Papierformen für die Lebensmittelindustrie herzustellen und bereitzustellen, die Bedürfnisse der Kunden zu erfüllen und Bedingungen für die persönliche Entwicklung zu schaffen.'},
+        {'title': 'Vision', 'text': 'Eines der führenden Unternehmen weltweit in der Herstellung von Papierformen für die Lebensmittelindustrie zu werden.'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': 'Präzision', 'text': 'Exakte, gleichbleibende Maße in jeder Produktionscharge.'},
-        {'icon': '🤝', 'title': 'Engagement', 'text': 'Für Produktqualität und für jeden Kunden.'},
-        {'icon': '⚡', 'title': 'Agilität', 'text': 'Agile Prozesse, um jede Bestellung pünktlich zu bearbeiten.'},
-        {'icon': '💬', 'title': 'Nähe', 'text': 'Direkter, persönlicher Umgang mit jedem Kunden.'},
-        {'icon': '📈', 'title': 'Kontinuierliche Verbesserung', 'text': 'Wir überprüfen und optimieren unsere Prozesse ständig.'},
-        {'icon': '✓', 'title': 'Qualität', 'text': 'Zertifiziertes Lebensmittelsicherheitsmanagement ISO 22000:2018.'},
+        {'title': 'Präzision', 'text': 'Exakte, gleichbleibende Maße in jeder Produktionscharge.'},
+        {'title': 'Engagement', 'text': 'Für Produktqualität und für jeden Kunden.'},
+        {'title': 'Agilität', 'text': 'Agile Prozesse, um jede Bestellung pünktlich zu bearbeiten.'},
+        {'title': 'Nähe', 'text': 'Direkter, persönlicher Umgang mit jedem Kunden.'},
+        {'title': 'Kontinuierliche Verbesserung', 'text': 'Wir überprüfen und optimieren unsere Prozesse ständig.'},
+        {'title': 'Qualität', 'text': 'Zertifiziertes Lebensmittelsicherheitsmanagement ISO 22000:2018.'},
     ],
     'sectores': [
         {'label': 'Panettone', 'pct': 35},
@@ -486,10 +486,10 @@ _HISTORIA_DE = {
         {'codigo': 'py', 'nombre': 'Paraguay', 'etiqueta': 'Export'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': 'Regionale Expansion', 'text': 'Die kommerzielle Präsenz in neuen Märkten der Region ausbauen.'},
-        {'icon': '🏭', 'title': 'Neues Werk', 'text': 'Die Erweiterung der Produktionskapazität prüfen.'},
-        {'icon': '⚙️', 'title': 'Industrie 4.0', 'text': 'Technologie zur Optimierung der Produktionsprozesse einführen.'},
-        {'icon': '🌱', 'title': 'ISO-14001-Zertifizierung', 'text': 'Das Umweltmanagement unserer Prozesse weiterentwickeln.'},
+        {'title': 'Regionale Expansion', 'text': 'Die kommerzielle Präsenz in neuen Märkten der Region ausbauen.'},
+        {'title': 'Neues Werk', 'text': 'Die Erweiterung der Produktionskapazität prüfen.'},
+        {'title': 'Industrie 4.0', 'text': 'Technologie zur Optimierung der Produktionsprozesse einführen.'},
+        {'title': 'ISO-14001-Zertifizierung', 'text': 'Das Umweltmanagement unserer Prozesse weiterentwickeln.'},
     ],
 }
 
@@ -506,16 +506,16 @@ _HISTORIA_ZH_CN = {
         {'year': '至今', 'title': '现状', 'text': '在阿根廷市场及地区其他国家保持稳固地位，正式经营历史超过25年。'},
     ],
     'mision_vision': [
-        {'icon': '🎯', 'title': '使命', 'text': '为食品行业生产和提供安全的纸模产品，满足客户需求，并为员工个人发展创造条件。'},
-        {'icon': '👁️', 'title': '愿景', 'text': '成为全球食品用纸模生产领域的主要企业之一。'},
+        {'title': '使命', 'text': '为食品行业生产和提供安全的纸模产品，满足客户需求，并为员工个人发展创造条件。'},
+        {'title': '愿景', 'text': '成为全球食品用纸模生产领域的主要企业之一。'},
     ],
     'valores': [
-        {'icon': '🎯', 'title': '精准', 'text': '每批生产的尺寸精确一致。'},
-        {'icon': '🤝', 'title': '承诺', 'text': '致力于产品质量与每一位客户。'},
-        {'icon': '⚡', 'title': '敏捷', 'text': '流程灵活高效，及时响应每一笔订单。'},
-        {'icon': '💬', 'title': '亲近', 'text': '与每位客户保持直接、个性化的沟通。'},
-        {'icon': '📈', 'title': '持续改进', 'text': '持续审视并优化生产流程。'},
-        {'icon': '✓', 'title': '品质', 'text': 'ISO 22000:2018 认证的食品安全管理体系。'},
+        {'title': '精准', 'text': '每批生产的尺寸精确一致。'},
+        {'title': '承诺', 'text': '致力于产品质量与每一位客户。'},
+        {'title': '敏捷', 'text': '流程灵活高效，及时响应每一笔订单。'},
+        {'title': '亲近', 'text': '与每位客户保持直接、个性化的沟通。'},
+        {'title': '持续改进', 'text': '持续审视并优化生产流程。'},
+        {'title': '品质', 'text': 'ISO 22000:2018 认证的食品安全管理体系。'},
     ],
     'sectores': [
         {'label': '圣诞面包', 'pct': 35},
@@ -555,10 +555,10 @@ _HISTORIA_ZH_CN = {
         {'codigo': 'py', 'nombre': '巴拉圭', 'etiqueta': '出口'},
     ],
     'objetivos': [
-        {'icon': '🚀', 'title': '区域扩张', 'text': '拓展在本地区新市场的商业布局。'},
-        {'icon': '🏭', 'title': '新工厂', 'text': '评估增加生产产能的可能性。'},
-        {'icon': '⚙️', 'title': '工业4.0', 'text': '引入技术以优化生产流程。'},
-        {'icon': '🌱', 'title': 'ISO 14001 认证', 'text': '推进生产流程的环境管理。'},
+        {'title': '区域扩张', 'text': '拓展在本地区新市场的商业布局。'},
+        {'title': '新工厂', 'text': '评估增加生产产能的可能性。'},
+        {'title': '工业4.0', 'text': '引入技术以优化生产流程。'},
+        {'title': 'ISO 14001 认证', 'text': '推进生产流程的环境管理。'},
     ],
 }
 
