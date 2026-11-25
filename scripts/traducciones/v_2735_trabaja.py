@@ -41,10 +41,17 @@ ROWS = [
      "Laissez-nous votre CV. Nous l'ajoutons à notre base de candidats et vous contactons dès qu'un poste correspond à votre profil.",
      "Hinterlassen Sie uns Ihren Lebenslauf. Wir nehmen ihn in unseren Bewerberpool auf und melden uns, sobald eine passende Stelle frei wird.",
      "请提交您的简历。我们会将其纳入候选人库，一旦有合适的职位空缺即与您联系。"),
-    ("Planta de Cartotecnica Hores en Bell Ville", "Planta de Cartotecnica Hores en Bell Ville",
-     "Cartotecnica Hores plant in Bell Ville", "Fábrica da Cartotecnica Hores em Bell Ville",
-     "Stabilimento Cartotecnica Hores a Bell Ville", "Usine Cartotecnica Hores à Bell Ville",
-     "Werk Cartotecnica Hores in Bell Ville", "位于贝尔维尔的 Cartotecnica Hores 工厂"),
+    # Imagen cambiada de la foto aérea de la planta a una ilustración de
+    # entrevista de trabajo (25/11/2026, a pedido explícito). Esta fila
+    # queda igual aunque la foto vieja ya no esté más en el módulo -- si
+    # se borra, reaplicar_todo.py (que corre bulk_translate por término,
+    # no por vista entera) no vuelve a tocar el alt viejo en ningún
+    # idioma, y quedaría mezclado con el resto. Más simple reemplazar la
+    # fila entera, misma posición, que dejar dos.
+    ("Ilustración de una entrevista de trabajo", "Ilustración de una entrevista de trabajo",
+     "Job interview illustration", "Ilustração de uma entrevista de emprego",
+     "Illustrazione di un colloquio di lavoro", "Illustration d'un entretien d'embauche",
+     "Illustration eines Vorstellungsgesprächs", "求职面试插图"),
     ("Revise el formulario: complete nombre y un email válido.",
      "Revise el formulario: complete nombre y un email válido.",
      "Check the form: fill in your name and a valid email.",
