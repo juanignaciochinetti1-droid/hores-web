@@ -56,6 +56,25 @@ class MiSitioWebProducto(models.Model):
 
     whatsapp_url = fields.Char(string='Link de WhatsApp', compute='_compute_whatsapp_url')
 
+    def write(self, vals):
+        res = super().write(vals)
+        if 'is_published' in vals:
+            self._invalidar_cache_sitemap()
+        return res
+
+    def _invalidar_cache_sitemap(self):
+        """Odoo cachea /sitemap.xml por 12hs (SITEMAP_CACHE_TIME, en
+        website/controllers/main.py del core) -- sin esto, publicar o
+        despublicar un producto tarda hasta 12hs en reflejarse ahí, aunque
+        la página en sí (/producto/<id>, la categoría, la home) ya cambia
+        al instante (encontrado el 26/11/2026, a pedido explícito: "habria
+        que arreglar eso para que el producto se actualice al instante").
+        Borrar el adjunto cacheado fuerza que Odoo lo regenere solo en la
+        próxima visita a /sitemap.xml -- incluye todos los sitemaps
+        cacheados (uno por combinación de website + host), no solo el del
+        dominio con el que se está probando esto."""
+        self.env['ir.attachment'].sudo().search([('url', 'like', '/sitemap-%.xml')]).unlink()
+
     # Frases por idioma (05/09/2026 antes, 22/10/2026 ahora): este texto no
     # vive en arch_db ni en un campo translate=True, asi que el mecanismo
     # de traduccion de vistas no lo toca -- antes se dejaba fijo en

@@ -28,6 +28,16 @@ class MiSitioWebCategoria(models.Model):
     sequence = fields.Integer(string='Orden', default=10)
     producto_ids = fields.One2many('mi_sitio_web.producto', 'category_id', string='Productos')
 
+    def write(self, vals):
+        res = super().write(vals)
+        if 'slug' in vals:
+            # Mismo motivo que mi_sitio_web.producto._invalidar_cache_sitemap
+            # -- cambiar el slug cambia la URL que entra al sitemap
+            # (/categoria/<slug>), y sin esto Odoo sigue sirviendo la URL
+            # vieja desde la caché hasta 12hs (SITEMAP_CACHE_TIME).
+            self.env['ir.attachment'].sudo().search([('url', 'like', '/sitemap-%.xml')]).unlink()
+        return res
+
     @api.constrains('slug')
     def _check_slug_format(self):
         # El slug se usa tal cual en la URL pública (/categoria/<slug>): si
